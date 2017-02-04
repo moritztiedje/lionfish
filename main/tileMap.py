@@ -1,19 +1,10 @@
-from enum import Enum
-
-
-class TileMap(Enum):
-    WATER = 0
-    LAND = 1
-
-def arrayFromFile(filepath):
-    dummyMapFile = open(filepath, mode="rb")
-    content = dummyMapFile.readline()
-    contentLines = content.split(b'\x02')
+def array_from_file(file_path):
+    dummy_map_file = open(file_path, mode="rb")
+    content = dummy_map_file.readline()
+    content_lines = content.split(b'\x02')
 
     area_map = []
-    for line in contentLines:
+    for line in content_lines:
         area_map.append(list(map(int, line)))
 
     return area_map
-
-arrayFromFile("./dummyMap")

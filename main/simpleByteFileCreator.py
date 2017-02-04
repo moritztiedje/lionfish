@@ -1,12 +1,12 @@
 landSize = 4
 
-map = []
+area_map = []
 
 coastline = []
 for _ in range(landSize + 2):
     coastline.append(0)
 
-map.append(coastline)
+area_map.append(coastline)
 
 landline = []
 landline.append(0)
@@ -15,11 +15,11 @@ for _ in range(landSize):
 landline.append(0)
 
 for _ in range(landSize):
-    map.append(landline)
+    area_map.append(landline)
 
-map.append(coastline)
+area_map.append(coastline)
 
 dummyMapFile = open("./dummyMap", mode="wb")
-for line in map:
+for line in area_map:
     dummyMapFile.write(bytearray(line))
     dummyMapFile.write(b'\x02')

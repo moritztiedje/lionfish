@@ -1,5 +1,5 @@
 import pygame
-from main.tileMap import arrayFromFile
+from main.tileMap import array_from_file
 from main.gui import GUI
 
 
@@ -9,7 +9,7 @@ display_height = 600
 window = GUI(display_width, display_height)
 clock = pygame.time.Clock()
 gameOver = False
-area_map = arrayFromFile('./dummyMap')
+area_map = array_from_file('./dummyMap')
 
 while not gameOver:
     for event in pygame.event.get():
