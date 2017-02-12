@@ -4,7 +4,6 @@ import pygame
 class GUI:
     def __init__(self, game_window):
         self.__game_window = game_window
-        self.__white = (255, 255, 255)
 
         self.__views = []
 
@@ -22,7 +21,7 @@ class GUI:
                 view.handle_click(mouse_position)
 
     def display(self, game_state):
-        self.__game_window.fill(self.__white)
+        self.__game_window.clear()
 
         for view, view_handle in self.__views:
             if view_handle():

@@ -5,6 +5,7 @@ from main.GUI.point import Point
 from main.GUI.gui import GUI
 from main.GUI.view import AreaMapView, WorldMapView
 from main.gameState import GameState
+from main.gameWindow import GameWindow
 
 
 class Game:
@@ -17,16 +18,14 @@ class Game:
                                   pygame.image.load('../artwork/images/worldButton.png'),
                                   game_state.set_world_map_active)
 
-        display_width = 800
-        display_height = 600
-        game_display = pygame.display.set_mode((display_width, display_height))
+        game_window = GameWindow()
 
-        area_map_view = AreaMapView(game_display)
+        area_map_view = AreaMapView(game_window)
         area_map_view.register_button(world_map_button)
 
-        world_map_view = WorldMapView(game_display)
+        world_map_view = WorldMapView(game_window)
 
-        window = GUI(game_display)
+        window = GUI(game_window)
         window.register_view(area_map_view, game_state.is_area_map_active)
         window.register_view(world_map_view, game_state.is_world_map_active)
 

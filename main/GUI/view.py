@@ -7,6 +7,9 @@ from main.GUI.point import Point
 
 class View(metaclass=ABCMeta):
     def __init__(self, game_window):
+        """
+        :type game_window: main.gameWindow.GameWindow
+        """
         self._game_window = game_window
         self.__buttons = []
 
@@ -51,11 +54,11 @@ class AreaMapView(View):
         :type coordinate: main.GUI.point.Point
         """
         if coordinate.get_x() % 2 == 0:
-            display_coordinate = (coordinate.get_x() * 104, coordinate.get_y() * 104)
+            display_coordinate = Point(coordinate.get_x() * 104, coordinate.get_y() * 104)
         else:
-            display_coordinate = (coordinate.get_x() * 104, coordinate.get_y() * 104 + 52)
+            display_coordinate = Point(coordinate.get_x() * 104, coordinate.get_y() * 104 + 52)
 
-        self._game_window.blit(image, display_coordinate)
+        self._game_window.display(image, display_coordinate)
 
 
 class WorldMapView(View):
@@ -83,6 +86,6 @@ class WorldMapView(View):
         """
         :type coordinate: main.GUI.point.Point
         """
-        display_coordinate = (coordinate.get_x() * 50, coordinate.get_y() * 50)
+        display_coordinate = Point(coordinate.get_x() * 50, coordinate.get_y() * 50)
 
-        self._game_window.blit(image, display_coordinate)
+        self._game_window.display(image, display_coordinate)
