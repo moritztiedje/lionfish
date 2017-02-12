@@ -3,7 +3,7 @@ import pygame
 from main.GUI.button import Button
 from main.GUI.point import Point
 from main.GUI.gui import GUI
-from main.GUI.view import AreaMapView
+from main.GUI.view import AreaMapView, WorldMapView
 from main.gameState import GameState
 
 
@@ -24,8 +24,11 @@ class Game:
         area_map_view = AreaMapView(game_display)
         area_map_view.register_button(world_map_button)
 
+        world_map_view = WorldMapView(game_display)
+
         window = GUI(game_display)
         window.register_view(area_map_view, game_state.is_area_map_active)
+        window.register_view(world_map_view, game_state.is_world_map_active)
 
         self.__game_state = game_state
         self.__window = window
