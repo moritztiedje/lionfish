@@ -15,12 +15,10 @@ class Button:
         self.__action = action
 
     def handle_click(self, mouse_position):
-        if mouse_position[0] >= self.__bottom_left.get_x() and \
-                        mouse_position[0] <= self.__top_right.get_x() and \
-                        WINDOW_HEIGHT - mouse_position[1] >= self.__bottom_left.get_y() and \
-                        WINDOW_HEIGHT - mouse_position[1] <= self.__top_right.get_y():
+        if self.__bottom_left.get_x() <= mouse_position[0] <= self.__top_right.get_x() and \
+                self.__bottom_left.get_y() <= WINDOW_HEIGHT - mouse_position[1] <= self.__top_right.get_y():
             self.__action()
 
     def display(self, game_window):
         coordinate = Point(self.__bottom_left.get_x(), self.__top_right.get_y())
-        game_window.display(self.__image, coordinate)
+        game_window.display_absolute(self.__image, coordinate)
