@@ -1,13 +1,11 @@
-import pygame
-from pygame.constants import K_UP, K_RIGHT, K_LEFT, K_DOWN
-
-
 class GUI:
-    def __init__(self, game_window):
+    def __init__(self, game_window, game_controller):
         """
         :type game_window: main.gameWindow.GameWindow
+        :type game_controller: main.gameController.GameController
         """
         self.__game_window = game_window
+        self.__game_controller = game_controller
 
         self.__views = []
 
@@ -15,19 +13,11 @@ class GUI:
         self.__views.append((view, view_handle))
 
     def trigger_control_logic(self):
-        mouse_is_clicking = pygame.mouse.get_pressed()[0] == 1
-        if mouse_is_clicking:
-            self.__handle_click(pygame.mouse.get_pos())
+        mouse_click = self.__game_controller.mouse_click()
+        if mouse_click:
+            self.__handle_click(mouse_click)
 
-        keys = pygame.key.get_pressed()
-        if keys[K_UP]:
-            self.__game_window.camera_up()
-        if keys[K_DOWN]:
-            self.__game_window.camera_down()
-        if keys[K_LEFT]:
-            self.__game_window.camera_left()
-        if keys[K_RIGHT]:
-            self.__game_window.camera_right()
+        self.__game_controller.handle_base_logic()
 
     def __handle_click(self, mouse_position):
         for view, view_handle in self.__views:

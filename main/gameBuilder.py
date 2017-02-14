@@ -3,7 +3,8 @@ import pygame
 from main.GUI.button import Button
 from main.GUI.point import Point
 from main.GUI.gui import GUI
-from main.GUI.view import AreaMapView, WorldMapView
+from main.GUI.view import AreaMapView, WorldMapView, MenuView
+from main.gameController import GameController
 from main.gameState import GameState
 from main.gameWindow import GameWindow
 
@@ -13,24 +14,47 @@ class Game:
         pygame.init()
 
         game_state = GameState()
-        world_map_button = Button(Point(720, 570),
-                                  Point(800, 600),
-                                  pygame.image.load('../artwork/images/worldButton.png'),
-                                  game_state.set_world_map_active)
-
         game_window = GameWindow()
+        game_controller = GameController(game_window)
 
-        area_map_view = AreaMapView(game_window)
-        area_map_view.register_button(world_map_button)
-
-        world_map_view = WorldMapView(game_window)
-
-        window = GUI(game_window)
-        window.register_view(area_map_view, game_state.is_area_map_active)
-        window.register_view(world_map_view, game_state.is_world_map_active)
+        window = GUI(game_window, game_controller)
+        window.register_view(self.__build_area_map_view(game_state, game_window),
+                             game_state.is_area_map_active)
+        window.register_view(self.__build_world_map_view(game_window),
+                             game_state.is_world_map_active)
+        window.register_view(self.__build_main_menu_view(game_window),
+                             game_state.is_menu_visible)
 
         self.__game_state = game_state
         self.__window = window
+
+    @staticmethod
+    def __build_area_map_view(game_state, game_window):
+        world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
+                                  Point(game_window.get_width() - 50, game_window.get_height() - 10),
+                                  pygame.image.load('../artwork/images/worldButton.png'),
+                                  game_state.set_world_map_active)
+        area_map_view = AreaMapView(game_window)
+        area_map_view.register_button(world_map_button)
+        return area_map_view
+
+    def __build_main_menu_view(self, game_window):
+        main_menu_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 40),
+                                  Point(game_window.get_width() - 10, game_window.get_height() - 10),
+                                  pygame.image.load('../artwork/images/menu/gear.png'),
+                                  self.__quit_game)
+        main_menu_view = MenuView(game_window)
+        main_menu_view.register_button(main_menu_button)
+        return main_menu_view
+
+    @staticmethod
+    def __build_world_map_view(game_window):
+        return WorldMapView(game_window)
+
+    @staticmethod
+    def __quit_game():
+        pygame.quit()
+        quit()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -46,5 +70,4 @@ class Game:
             pygame.display.update()
             clock.tick(60)
 
-        pygame.quit()
-        quit()
+        self.__quit_game()

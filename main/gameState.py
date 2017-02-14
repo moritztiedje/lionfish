@@ -8,6 +8,10 @@ class GameState:
         self.__world_map = array_from_file('./dummyWorldMap')
         self.__display_mode = self.DisplayMode.AREA_MAP
 
+    @staticmethod
+    def is_menu_visible():
+        return True
+
     def set_world_map_active(self):
         self.__display_mode = self.DisplayMode.WORLD_MAP
 

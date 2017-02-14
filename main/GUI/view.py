@@ -31,6 +31,10 @@ class View(metaclass=ABCMeta):
             button.display(self._game_window)
 
 
+class MenuView(View):
+    pass
+
+
 class AreaMapView(View):
     def __init__(self, game_window):
         super().__init__(game_window)

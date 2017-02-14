@@ -1,20 +1,26 @@
 import pygame
 
-from main.constants import WINDOW_HEIGHT, WINDOW_WIDTH
-
 
 class GameWindow:
     def __init__(self):
-        self.__window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.__window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.__camera_position = [0, 0]
+        self.__width = self.__window.get_width()
+        self.__height = self.__window.get_height()
+
+    def get_width(self):
+        return self.__width
+
+    def get_height(self):
+        return self.__height
 
     def display(self, image, point):
         inverted_coordinate = (point.get_x() - self.__camera_position[0],
-                               WINDOW_HEIGHT - point.get_y() + self.__camera_position[1])
+                               self.__height - point.get_y() + self.__camera_position[1])
         self.__window.blit(image, inverted_coordinate)
 
     def display_absolute(self, image, point):
-        inverted_coordinate = (point.get_x(), WINDOW_HEIGHT - point.get_y())
+        inverted_coordinate = (point.get_x(), self.__height - point.get_y())
         self.__window.blit(image, inverted_coordinate)
 
     def clear(self):
