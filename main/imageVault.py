@@ -18,7 +18,16 @@ class ImageVault:
             ImageEnum.WORLD_LAND: pygame.image.load('../artwork/images/world tiles/land.png'),
             ImageEnum.WORLD_WATER: pygame.image.load('../artwork/images/world tiles/water.png')
         }
-        self.__camera_zoom = 1
+        self.__hexagon_size = (156, 104)
+        self.__square_size = (50, 50)
 
     def get(self, image_code):
         return self.__images[image_code]
+
+    def set_camera_zoom(self, camera_zoom):
+        new_hexagon_size = (int(camera_zoom * self.__hexagon_size[0]),
+                            int(camera_zoom * self.__hexagon_size[1]))
+        self.__images[ImageEnum.BORDER] = pygame.transform.scale(self.__images[ImageEnum.BORDER],
+                                                                 new_hexagon_size)
+        self.__images[ImageEnum.WATER] = pygame.transform.scale(self.__images[ImageEnum.WATER],
+                                                                new_hexagon_size)

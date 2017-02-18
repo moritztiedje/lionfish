@@ -48,20 +48,9 @@ class AreaMapView(View):
         for x in range(0, len(area_map)):
             for y in range(0, len(area_map[x])):
                 if area_map[x][y] == 1:
-                    self.__display_cell(self.__border, Point(x, y))
+                    self._game_window.display_hexagon(self.__border, Point(x, y))
                 if area_map[x][y] == 0:
-                    self.__display_cell(self.__water, Point(x, y))
-
-    def __display_cell(self, image, coordinate):
-        """
-        :type coordinate: main.GUI.point.Point
-        """
-        if coordinate.get_x() % 2 == 0:
-            display_coordinate = Point(coordinate.get_x() * 104, coordinate.get_y() * 104)
-        else:
-            display_coordinate = Point(coordinate.get_x() * 104, coordinate.get_y() * 104 + 52)
-
-        self._game_window.display(image, display_coordinate)
+                    self._game_window.display_hexagon(self.__water, Point(x, y))
 
 
 class WorldMapView(View):
@@ -81,15 +70,6 @@ class WorldMapView(View):
         for x in range(0, len(world_map)):
             for y in range(0, len(world_map[x])):
                 if world_map[x][y] == 1:
-                    self.__display_cell(self.__land, Point(x, y))
+                    self._game_window.display_square(self.__land, Point(x, y))
                 if world_map[x][y] == 0:
-                    self.__display_cell(self.__water, Point(x, y))
-
-    def __display_cell(self, image, coordinate):
-        """
-        :type coordinate: main.GUI.point.Point
-        :type image: ImageEnum
-        """
-        display_coordinate = Point(coordinate.get_x() * 50, coordinate.get_y() * 50)
-
-        self._game_window.display(image, display_coordinate)
+                    self._game_window.display_square(self.__water, Point(x, y))

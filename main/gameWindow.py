@@ -1,5 +1,6 @@
 import pygame
 
+from main.GUI.point import Point
 from main.imageVault import ImageVault
 
 
@@ -53,3 +54,23 @@ class GameWindow:
     def camera_zoom_out(self):
         self.__camera_zoom /= 2
         self.__image_vault.set_camera_zoom(self.__camera_zoom)
+
+    def display_hexagon(self, sprite, coordinate):
+        """
+        :type coordinate: main.GUI.point.Point
+        """
+        if coordinate.get_x() % 2 == 0:
+            display_coordinate = Point(coordinate.get_x() * 104 * self.__camera_zoom,
+                                       coordinate.get_y() * 104 * self.__camera_zoom)
+        else:
+            display_coordinate = Point(coordinate.get_x() * 104 * self.__camera_zoom,
+                                       (coordinate.get_y() * 104 + 52) * self.__camera_zoom)
+        self.display(sprite, display_coordinate)
+
+    def display_square(self, sprite, coordinate):
+        """
+        :type coordinate: main.GUI.point.Point
+        """
+        display_coordinate = Point(coordinate.get_x() * 50 * self.__camera_zoom,
+                                   coordinate.get_y() * 50 * self.__camera_zoom)
+        self.display(sprite, display_coordinate)

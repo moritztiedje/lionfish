@@ -46,11 +46,11 @@ class Game:
         zoom_in_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 80),
                                 Point(game_window.get_width() - 10, game_window.get_height() - 50),
                                 pygame.image.load('../artwork/images/menu/magnify.png'),
-                                self.__quit_game)
+                                game_window.camera_zoom_in)
         zoom_out_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 120),
                                  Point(game_window.get_width() - 10, game_window.get_height() - 90),
                                  pygame.image.load('../artwork/images/menu/reduce.png'),
-                                 self.__quit_game)
+                                 game_window.camera_zoom_out)
         main_menu_view = MenuView(game_window)
         main_menu_view.register_button(main_menu_button)
         main_menu_view.register_button(zoom_in_button)
