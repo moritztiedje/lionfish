@@ -13,7 +13,7 @@ class GUI:
         self.__views.append((view, view_handle))
 
     def trigger_control_logic(self):
-        mouse_click = self.__game_controller.mouse_click()
+        mouse_click = self.__game_controller.mouse_left_click()
         if mouse_click:
             self.__handle_click(mouse_click)
 

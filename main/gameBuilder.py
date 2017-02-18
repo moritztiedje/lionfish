@@ -43,8 +43,18 @@ class Game:
                                   Point(game_window.get_width() - 10, game_window.get_height() - 10),
                                   pygame.image.load('../artwork/images/menu/gear.png'),
                                   self.__quit_game)
+        zoom_in_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 80),
+                                Point(game_window.get_width() - 10, game_window.get_height() - 50),
+                                pygame.image.load('../artwork/images/menu/magnify.png'),
+                                self.__quit_game)
+        zoom_out_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 120),
+                                 Point(game_window.get_width() - 10, game_window.get_height() - 90),
+                                 pygame.image.load('../artwork/images/menu/reduce.png'),
+                                 self.__quit_game)
         main_menu_view = MenuView(game_window)
         main_menu_view.register_button(main_menu_button)
+        main_menu_view.register_button(zoom_in_button)
+        main_menu_view.register_button(zoom_out_button)
         return main_menu_view
 
     @staticmethod

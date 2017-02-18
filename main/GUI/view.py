@@ -1,8 +1,7 @@
 from abc import ABCMeta
 
-import pygame
-
 from main.GUI.point import Point
+from main.imageVault import ImageEnum
 
 
 class View(metaclass=ABCMeta):
@@ -39,8 +38,8 @@ class AreaMapView(View):
     def __init__(self, game_window):
         super().__init__(game_window)
 
-        self.__border = pygame.image.load('../artwork/images/border.png')
-        self.__water = pygame.image.load('../artwork/images/water.png')
+        self.__border = ImageEnum.BORDER
+        self.__water = ImageEnum.WATER
 
     def display(self, game_state):
         super().display(game_state)
@@ -69,8 +68,8 @@ class WorldMapView(View):
     def __init__(self, game_window):
         super().__init__(game_window)
 
-        self.__land = pygame.image.load('../artwork/images/world tiles/land.png')
-        self.__water = pygame.image.load('../artwork/images/world tiles/water.png')
+        self.__land = ImageEnum.WORLD_LAND
+        self.__water = ImageEnum.WORLD_WATER
 
     def display(self, game_state):
         """
@@ -89,6 +88,7 @@ class WorldMapView(View):
     def __display_cell(self, image, coordinate):
         """
         :type coordinate: main.GUI.point.Point
+        :type image: ImageEnum
         """
         display_coordinate = Point(coordinate.get_x() * 50, coordinate.get_y() * 50)
 

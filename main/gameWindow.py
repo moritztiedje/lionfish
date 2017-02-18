@@ -1,5 +1,7 @@
 import pygame
 
+from main.imageVault import ImageVault
+
 
 class GameWindow:
     def __init__(self):
@@ -7,6 +9,8 @@ class GameWindow:
         self.__camera_position = [0, 0]
         self.__width = self.__window.get_width()
         self.__height = self.__window.get_height()
+        self.__camera_zoom = 1
+        self.__image_vault = ImageVault()
 
     def get_width(self):
         return self.__width
@@ -15,9 +19,13 @@ class GameWindow:
         return self.__height
 
     def display(self, image, point):
+        """
+        :type image: main.imageVault.ImageEnum
+        :type point: main.GUI.point.Point
+        """
         inverted_coordinate = (point.get_x() - self.__camera_position[0],
                                self.__height - point.get_y() + self.__camera_position[1])
-        self.__window.blit(image, inverted_coordinate)
+        self.__window.blit(self.__image_vault.get(image), inverted_coordinate)
 
     def display_absolute(self, image, point):
         inverted_coordinate = (point.get_x(), self.__height - point.get_y())
@@ -37,3 +45,11 @@ class GameWindow:
 
     def camera_right(self):
         self.__camera_position[0] += 2
+
+    def camera_zoom_in(self):
+        self.__camera_zoom *= 2
+        self.__image_vault.set_camera_zoom(self.__camera_zoom)
+
+    def camera_zoom_out(self):
+        self.__camera_zoom /= 2
+        self.__image_vault.set_camera_zoom(self.__camera_zoom)
