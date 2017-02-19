@@ -1,4 +1,4 @@
-from main.GUI.point import Point
+from main.GUI.BaseComponents.point import Point
 
 
 class Button:

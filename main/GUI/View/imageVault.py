@@ -2,6 +2,8 @@ from enum import Enum
 
 import pygame
 
+from main.constants import HEXAGON_FIELD_WIDTH, HEXAGON_FIELD_HEIGHT
+
 
 class ImageEnum(Enum):
     BORDER = 1
@@ -25,8 +27,8 @@ class ImageVault:
         return self.__images[image_code]
 
     def set_camera_zoom(self, camera_zoom):
-        new_hexagon_size = (int(camera_zoom * self.__hexagon_size[0]),
-                            int(camera_zoom * self.__hexagon_size[1]))
+        new_hexagon_size = (int(camera_zoom * HEXAGON_FIELD_WIDTH),
+                            int(camera_zoom * HEXAGON_FIELD_HEIGHT))
         self.__images[ImageEnum.BORDER] = pygame.transform.scale(self.__images[ImageEnum.BORDER],
                                                                  new_hexagon_size)
         self.__images[ImageEnum.WATER] = pygame.transform.scale(self.__images[ImageEnum.WATER],

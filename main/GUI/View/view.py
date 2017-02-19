@@ -1,7 +1,7 @@
 from abc import ABCMeta
 
-from main.GUI.point import Point
-from main.imageVault import ImageEnum
+from main.GUI.BaseComponents.point import Point
+from main.GUI.View.imageVault import ImageEnum
 
 
 class View(metaclass=ABCMeta):

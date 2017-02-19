@@ -1,7 +1,8 @@
 import pygame
 
-from main.GUI.point import Point
-from main.imageVault import ImageVault
+from main.GUI.BaseComponents.point import Point
+from main.GUI.View.imageVault import ImageVault
+from main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, SQUARE_FIELD_HEIGHT
 
 
 class GameWindow:
@@ -59,18 +60,16 @@ class GameWindow:
         """
         :type coordinate: main.GUI.point.Point
         """
-        if coordinate.get_x() % 2 == 0:
-            display_coordinate = Point(coordinate.get_x() * 104 * self.__camera_zoom,
-                                       coordinate.get_y() * 104 * self.__camera_zoom)
-        else:
-            display_coordinate = Point(coordinate.get_x() * 104 * self.__camera_zoom,
-                                       (coordinate.get_y() * 104 + 52) * self.__camera_zoom)
-        self.display(sprite, display_coordinate)
+        x_coordinate = coordinate.get_x() * HEXAGON_FIELD_WIDTH_SPACING * self.__camera_zoom
+        y_coordinate = coordinate.get_y() * HEXAGON_FIELD_HEIGHT * self.__camera_zoom
+        if coordinate.get_x() % 2 != 0:
+            y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self.__camera_zoom
+        self.display(sprite, Point(x_coordinate, y_coordinate))
 
     def display_square(self, sprite, coordinate):
         """
         :type coordinate: main.GUI.point.Point
         """
-        display_coordinate = Point(coordinate.get_x() * 50 * self.__camera_zoom,
-                                   coordinate.get_y() * 50 * self.__camera_zoom)
+        display_coordinate = Point(coordinate.get_x() * SQUARE_FIELD_WIDTH * self.__camera_zoom,
+                                   coordinate.get_y() * SQUARE_FIELD_HEIGHT * self.__camera_zoom)
         self.display(sprite, display_coordinate)

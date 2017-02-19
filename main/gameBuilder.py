@@ -1,12 +1,12 @@
 import pygame
 
-from main.GUI.button import Button
-from main.GUI.point import Point
+from main.GUI.BaseComponents.button import Button
+from main.GUI.BaseComponents.point import Point
+from main.GUI.Controller.gameController import GameController
+from main.GUI.View.gameWindow import GameWindow
+from main.GUI.View.view import AreaMapView, MenuView, WorldMapView
 from main.GUI.gui import GUI
-from main.GUI.view import AreaMapView, WorldMapView, MenuView
-from main.gameController import GameController
-from main.gameState import GameState
-from main.gameWindow import GameWindow
+from main.Model.gameState import GameState
 
 
 class Game:
@@ -17,16 +17,16 @@ class Game:
         game_window = GameWindow()
         game_controller = GameController(game_window)
 
-        window = GUI(game_window, game_controller)
-        window.register_view(self.__build_area_map_view(game_state, game_window),
-                             game_state.is_area_map_active)
-        window.register_view(self.__build_world_map_view(game_window),
-                             game_state.is_world_map_active)
-        window.register_view(self.__build_main_menu_view(game_window),
-                             game_state.is_menu_visible)
+        gui = GUI(game_window, game_controller)
+        gui.register_view(self.__build_area_map_view(game_state, game_window),
+                          game_state.is_area_map_active)
+        gui.register_view(self.__build_world_map_view(game_window),
+                          game_state.is_world_map_active)
+        gui.register_view(self.__build_main_menu_view(game_window),
+                          game_state.is_menu_visible)
 
         self.__game_state = game_state
-        self.__window = window
+        self.__gui = gui
 
     @staticmethod
     def __build_area_map_view(game_state, game_window):
@@ -75,8 +75,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     game_over = True
 
-            self.__window.trigger_control_logic()
-            self.__window.display(self.__game_state)
+            self.__gui.trigger_control_logic()
+            self.__gui.display(self.__game_state)
             pygame.display.update()
             clock.tick(60)
 

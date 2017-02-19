@@ -1,5 +1,6 @@
-from main.tileMap import array_from_file
 from enum import Enum
+
+from mapGeneration.tileMap import array_from_file
 
 
 class GameState:
