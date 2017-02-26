@@ -1,5 +1,4 @@
-from main.GUI.BaseComponents.point import Point
-
+from src.main.GUI.BaseComponents.point import Point
 
 class Button:
     def __init__(self, bottom_left, top_right, image, action):

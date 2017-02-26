@@ -1,7 +1,7 @@
 import pygame
 from pygame.constants import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
-from main.GUI.Controller.mouseController import MouseController
+from src.main.GUI.Controller.mouseController import MouseController
 
 
 class GameController:
