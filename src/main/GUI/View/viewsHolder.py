@@ -10,6 +10,8 @@ class ViewsHolder:
         """
         :type game_window: main.gameWindow.GameWindow
         """
+
+        # TODO: The order of these views is equivalent to z-index, that is shit
         self.__views = [
             self.__build_area_map_view(game_window),
             self.__build_main_menu_view(game_window),
