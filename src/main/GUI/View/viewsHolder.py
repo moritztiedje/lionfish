@@ -14,13 +14,13 @@ class ViewsHolder:
         # TODO: The order of these views is equivalent to z-index, that is shit
         self.__views = [
             self.__build_area_map_view(game_window),
+            self.__build_world_map_view(game_window),
             self.__build_main_menu_view(game_window),
-            self.__build_world_map_view(game_window)
         ]
 
         # TODO use enum here
         self.__views[0].activate()
-        self.__views[1].activate()
+        self.__views[2].activate()
 
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
@@ -62,7 +62,7 @@ class ViewsHolder:
     def __set_world_map_active(self):
         # TODO: Use enums here
         self.__views[0].deactivate()
-        self.__views[2].activate()
+        self.__views[1].activate()
 
     def __camera_zoom_in(self):
         for view in self.__views:
