@@ -13,18 +13,26 @@ class GameController:
         self.__mouse_controller = MouseController(self.__game_window.get_height())
 
     def handle_base_logic(self):
-        self.__handle_camera_movement()
+        return self.__handle_camera_movement()
 
     def __handle_camera_movement(self):
         keys = pygame.key.get_pressed()
-        if keys[K_UP]:
-            self.__game_window.camera_up()
-        if keys[K_DOWN]:
-            self.__game_window.camera_down()
-        if keys[K_LEFT]:
-            self.__game_window.camera_left()
-        if keys[K_RIGHT]:
-            self.__game_window.camera_right()
+
+        key_action_map = {
+            K_UP: self.__game_window.camera_up,
+            K_DOWN: self.__game_window.camera_down,
+            K_LEFT: self.__game_window.camera_left,
+            K_RIGHT: self.__game_window.camera_right,
+        }
+
+        any_key_was_pressed = False
+        for key in key_action_map.keys():
+            if keys[key]:
+                action = key_action_map.get(key)
+                action()
+                any_key_was_pressed = True
+
+        return any_key_was_pressed
 
     def mouse_left_click(self):
         return self.__mouse_controller.mouse_left_click()
