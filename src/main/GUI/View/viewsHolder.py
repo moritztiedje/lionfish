@@ -79,7 +79,8 @@ class ViewsHolder:
             if view.is_active():
                 view.display(game_state)
 
-    def handle_click(self, mouse_position):
+    def handle_click(self, mouse_position, relative_mouse_position):
         for view in self.__views:
             if view.is_active():
                 view.handle_click(mouse_position)
+                view.handle_relative_click(relative_mouse_position)

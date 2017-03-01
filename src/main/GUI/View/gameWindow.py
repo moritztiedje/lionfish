@@ -15,6 +15,9 @@ class GameWindow:
     def get_height(self):
         return self.__height
 
+    def get_camera_position(self):
+        return self.__camera_position
+
     def display(self, image, point):
         """
         :type image: main.imageVault.ImageEnum

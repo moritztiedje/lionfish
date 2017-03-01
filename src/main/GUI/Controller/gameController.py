@@ -7,7 +7,7 @@ from src.main.GUI.Controller.mouseController import MouseController
 class GameController:
     def __init__(self, game_window):
         """
-        :type game_window: main.gameWindow.GameWindow
+        :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
         self.__game_window = game_window
         self.__mouse_controller = MouseController(self.__game_window.get_height())
@@ -35,6 +35,10 @@ class GameController:
         return any_key_was_pressed
 
     def mouse_left_click(self):
-        return self.__mouse_controller.mouse_left_click()
+        mouse_position = self.__mouse_controller.mouse_left_click()
+        if mouse_position:
+            camera_position = self.__game_window.get_camera_position()
+            relative_mouse_position = (mouse_position[0] + camera_position[0], mouse_position[1] + camera_position[1])
+            return mouse_position, relative_mouse_position
 
-
+        return None, None

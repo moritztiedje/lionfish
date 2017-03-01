@@ -1,4 +1,4 @@
-landSize = 10
+landSize = 4
 
 area_map = []
 
@@ -19,7 +19,7 @@ for _ in range(landSize):
 
 area_map.append(coastline)
 
-dummyMapFile = open("./dummyWorldMap", mode="wb")
+dummyMapFile = open("./dummyMap", mode="wb")
 for line in area_map:
     dummyMapFile.write(bytearray(line))
     dummyMapFile.write(b'\x02')
