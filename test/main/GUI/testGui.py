@@ -51,7 +51,7 @@ class TestGUI(unittest.TestCase):
 
     def test_no_click_or_button_press_triggers_nothing(self):
         game_controller = create_mock(GameController)
-        game_controller.mouse_left_click = lambda: None
+        game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: False
         gui_under_test = gui.GUI(self.__game_window,
                                  game_controller,
@@ -64,7 +64,7 @@ class TestGUI(unittest.TestCase):
 
     def test_button_press_triggers_re_render(self):
         game_controller = create_mock(GameController)
-        game_controller.mouse_left_click = lambda: None
+        game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: True
         gui_under_test = gui.GUI(self.__game_window,
                                  game_controller,

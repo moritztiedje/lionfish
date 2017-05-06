@@ -7,7 +7,6 @@ class GameWindow:
         self.__camera_position = [0, 0]
         self.__width = self.__window.get_width()
         self.__height = self.__window.get_height()
-        self.__camera_zoom = 1
 
     def get_width(self):
         return self.__width
