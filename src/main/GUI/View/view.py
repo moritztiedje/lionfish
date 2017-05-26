@@ -94,7 +94,7 @@ class AreaMapView(View):
                 else:
                     image_code = AreaImageEnum.EMPTY
 
-                if self.__highlighted_field and x == self.__highlighted_field.get_x() and y == self.__highlighted_field.get_y():
+                if current_field == self.__highlighted_field:
                     self.__display_hexagon(self._image_vault.get_highlighted(image_code), Point(x, y))
                 else:
                     self.__display_hexagon(self._image_vault.get(image_code), Point(x, y))
