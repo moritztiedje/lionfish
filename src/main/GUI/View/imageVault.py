@@ -30,6 +30,28 @@ class ImageVault(metaclass=ABCMeta):
                                                         (new_width, new_height))
 
 
+class ImageVaultWithHighlights(ImageVault):
+    def __init__(self):
+        super().__init__()
+        self.__highlighted_images = self._load_highlighted_images()
+
+    def get_highlighted(self, image_code):
+        return self.__highlighted_images[image_code]
+
+    @abstractmethod
+    def _load_highlighted_images(self):
+        """
+        :rtype: dict
+        """
+        pass
+
+    def _scale_images(self, new_width, new_height):
+        super()._scale_images(new_width, new_height)
+        for key in self.__highlighted_images:
+            self.__highlighted_images[key] = pygame.transform.scale(self.__highlighted_images[key],
+                                                                    (new_width, new_height))
+
+
 class MenuImageVault(ImageVault):
     def set_camera_zoom(self, camera_zoom):
         pass
@@ -39,19 +61,22 @@ class MenuImageVault(ImageVault):
 
 
 class AreaImageEnum(Enum):
-    BORDER = 1
+    EMPTY = 1
     WATER = 2
 
 
-class AreaImageVault(ImageVault):
-    def _load_images(self):
+class AreaImageVault(ImageVaultWithHighlights):
+    def _load_highlighted_images(self):
         return {
-            AreaImageEnum.BORDER: pygame.image.load('../../artwork/images/border.png'),
-            AreaImageEnum.WATER: pygame.image.load('../../artwork/images/water.png'),
+            AreaImageEnum.EMPTY: pygame.image.load('../../artwork/images/area tiles/highlighted/empty.png'),
+            AreaImageEnum.WATER: pygame.image.load('../../artwork/images/area tiles/highlighted/water.png'),
         }
 
-    def __init__(self):
-        super().__init__()
+    def _load_images(self):
+        return {
+            AreaImageEnum.EMPTY: pygame.image.load('../../artwork/images/area tiles/empty.png'),
+            AreaImageEnum.WATER: pygame.image.load('../../artwork/images/area tiles/water.png'),
+        }
 
     def set_camera_zoom(self, camera_zoom):
         new_hexagon_width = int(camera_zoom * HEXAGON_FIELD_WIDTH)

@@ -71,6 +71,11 @@ class MenuView(View):
 
 
 class AreaMapView(View):
+    def __init__(self, game_window):
+        super().__init__(game_window)
+        self.__click_box = HexagonClickBox()
+        self.__highlighted_field = None
+
     def _load_image_vault(self):
         return AreaImageVault()
 
@@ -83,10 +88,17 @@ class AreaMapView(View):
         area_map = game_state.get_area_map()
         for x in range(0, len(area_map)):
             for y in range(0, len(area_map[x])):
-                if area_map[x][y] == 1:
-                    self.__display_hexagon(self._image_vault.get(AreaImageEnum.BORDER), Point(x, y))
+                current_field = Point(x, y)
                 if area_map[x][y] == 0:
-                    self.__display_hexagon(self._image_vault.get(AreaImageEnum.WATER), Point(x, y))
+                    image_code = AreaImageEnum.WATER
+                else:
+                    image_code = AreaImageEnum.EMPTY
+
+                if self.__highlighted_field and x == self.__highlighted_field.get_x() and y == self.__highlighted_field.get_y():
+                    self.__display_hexagon(self._image_vault.get_highlighted(image_code), Point(x, y))
+                else:
+                    self.__display_hexagon(self._image_vault.get(image_code), Point(x, y))
+
 
     def __display_hexagon(self, sprite, game_field):
         """
@@ -99,7 +111,16 @@ class AreaMapView(View):
         self._game_window.display(sprite, Point(x_coordinate, y_coordinate))
 
     def handle_relative_click(self, mouse_position):
-        HexagonClickBox.get_hexagon(mouse_position)
+        hexagon_point = self.__click_box.get_hexagon(mouse_position)
+        self.__highlighted_field = hexagon_point
+
+    def zoom_in(self):
+        super().zoom_in()
+        self.__click_box.set_zoom_level(self._camera_zoom)
+
+    def zoom_out(self):
+        super().zoom_out()
+        self.__click_box.set_zoom_level(self._camera_zoom)
 
 
 class WorldMapView(View):
