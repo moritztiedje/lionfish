@@ -1,6 +1,6 @@
 import math
 
-from src.main.GUI.BaseComponents.point import Point
+from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH, HEXAGON_FIELD_CENTER_WIDTH, HEXAGON_FIELD_SIDE_WIDTH, \
     HEXAGON_FIELD_HEIGHT
 

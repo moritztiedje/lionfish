@@ -1,8 +1,8 @@
 import pygame
 
 from src.main.GUI.BaseComponents.button import Button
-from src.main.GUI.BaseComponents.point import Point
 from src.main.GUI.View.view import AreaMapView, MenuView, WorldMapView
+from src.main.Util.point import Point
 
 
 class ViewsHolder:

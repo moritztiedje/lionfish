@@ -1,8 +1,8 @@
 from abc import ABCMeta, abstractmethod
 
-from src.main.GUI.BaseComponents.point import Point
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.imageVault import AreaImageEnum, WorldImageEnum, AreaImageVault, WorldImageVault, MenuImageVault
+from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, \
     SQUARE_FIELD_HEIGHT
 
