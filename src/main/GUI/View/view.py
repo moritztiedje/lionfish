@@ -4,7 +4,7 @@ from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.imageVault import AreaImageEnum, WorldImageEnum, AreaImageVault, WorldImageVault, MenuImageVault
 from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, \
-    SQUARE_FIELD_HEIGHT, HEXAGON_FIELD_WIDTH
+    SQUARE_FIELD_HEIGHT, HEXAGON_FIELD_WIDTH, SPRITE_IN_HEXAGON_WIDTH, SPRITE_IN_HEXAGON_HEIGHT
 
 
 class View(metaclass=ABCMeta):
@@ -117,12 +117,14 @@ class AreaMapView(View):
         :type sprite: pygame.Surface
         :type game_field: src.main.Util.point.Point
         """
-        x_coordinate = (game_field.get_x() * HEXAGON_FIELD_WIDTH_SPACING + HEXAGON_FIELD_WIDTH / 2) * self._camera_zoom
-        y_coordinate = (game_field.get_y() * HEXAGON_FIELD_HEIGHT - HEXAGON_FIELD_HEIGHT / 2) * self._camera_zoom
+        x_coordinate = game_field.get_x() * HEXAGON_FIELD_WIDTH_SPACING
+        x_coordinate += (HEXAGON_FIELD_WIDTH - SPRITE_IN_HEXAGON_WIDTH) / 2
+        x_coordinate *= self._camera_zoom
 
-        #TODO Use sprite width and height here
-        x_coordinate -= 20
-        y_coordinate += 20
+        y_coordinate = game_field.get_y() * HEXAGON_FIELD_HEIGHT
+        y_coordinate += (SPRITE_IN_HEXAGON_HEIGHT - HEXAGON_FIELD_HEIGHT) / 2
+        y_coordinate *= self._camera_zoom
+
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
         self._game_window.display(sprite, Point(x_coordinate, y_coordinate))

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 
-from src.main.GUI.View.image import HexFieldImage, SquareFieldImage, Image
+from src.main.GUI.View.image import HexFieldImage, SquareFieldImage, Image, SpriteInHexFieldImage
 
 
 class ImageVault(metaclass=ABCMeta):
@@ -75,7 +75,7 @@ class AreaImageVault(ImageVaultWithHighlights):
         return {
             AreaImageEnum.EMPTY: HexFieldImage('../../artwork/images/area tiles/empty.png'),
             AreaImageEnum.WATER: HexFieldImage('../../artwork/images/area tiles/water.png'),
-            AreaImageEnum.PLAYER: Image(40, 40, '../../artwork/images/dummyPlayer.png'),
+            AreaImageEnum.PLAYER: SpriteInHexFieldImage('../../artwork/images/dummyPlayer.png'),
         }
 
     def set_camera_zoom(self, camera_zoom):
