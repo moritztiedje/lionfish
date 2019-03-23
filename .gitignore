@@ -1,2 +1,5 @@
 *.png
 *.xcf
+\.idea/
+
+*.pyc
