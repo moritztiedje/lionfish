@@ -19,4 +19,4 @@ class Button:
 
     def display(self, game_window):
         coordinate = Point(self.__bottom_left.get_x(), self.__top_right.get_y())
-        game_window.display_absolute(self.__image, coordinate)
+        game_window.display_absolute(self.__image.sprite, coordinate)

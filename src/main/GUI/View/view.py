@@ -4,7 +4,7 @@ from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.imageVault import AreaImageEnum, WorldImageEnum, AreaImageVault, WorldImageVault, MenuImageVault
 from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, \
-    SQUARE_FIELD_HEIGHT
+    SQUARE_FIELD_HEIGHT, HEXAGON_FIELD_WIDTH
 
 
 class View(metaclass=ABCMeta):
@@ -99,13 +99,30 @@ class AreaMapView(View):
                 else:
                     self.__display_hexagon(self._image_vault.get(image_code), Point(x, y))
 
+        player = game_state.get_player_position_in_area()
+        self.__display_in_hexagon(self._image_vault.get(AreaImageEnum.PLAYER), player)
 
     def __display_hexagon(self, sprite, game_field):
         """
-        :type game_field: main.GUI.point.Point
+        :type game_field: src.main.Util.point.Point
         """
         x_coordinate = game_field.get_x() * HEXAGON_FIELD_WIDTH_SPACING * self._camera_zoom
         y_coordinate = game_field.get_y() * HEXAGON_FIELD_HEIGHT * self._camera_zoom
+        if game_field.get_x() % 2 != 0:
+            y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
+        self._game_window.display(sprite, Point(x_coordinate, y_coordinate))
+
+    def __display_in_hexagon(self, sprite, game_field):
+        """
+        :type sprite: pygame.Surface
+        :type game_field: src.main.Util.point.Point
+        """
+        x_coordinate = (game_field.get_x() * HEXAGON_FIELD_WIDTH_SPACING + HEXAGON_FIELD_WIDTH / 2) * self._camera_zoom
+        y_coordinate = (game_field.get_y() * HEXAGON_FIELD_HEIGHT - HEXAGON_FIELD_HEIGHT / 2) * self._camera_zoom
+
+        #TODO Use sprite width and height here
+        x_coordinate -= 20
+        y_coordinate += 20
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
         self._game_window.display(sprite, Point(x_coordinate, y_coordinate))

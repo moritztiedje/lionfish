@@ -3,7 +3,7 @@ from enum import Enum
 
 import pygame
 
-from src.main.constants import HEXAGON_FIELD_WIDTH, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, SQUARE_FIELD_HEIGHT
+from src.main.GUI.View.image import HexFieldImage, SquareFieldImage, Image
 
 
 class ImageVault(metaclass=ABCMeta):
@@ -15,7 +15,7 @@ class ImageVault(metaclass=ABCMeta):
         pass
 
     def get(self, image_code):
-        return self.__images[image_code]
+        return self.__images[image_code].sprite
 
     @abstractmethod
     def _load_images(self):
@@ -24,10 +24,11 @@ class ImageVault(metaclass=ABCMeta):
         """
         pass
 
-    def _scale_images(self, new_width, new_height):
+    def _scale_images(self, zoom):
         for key in self.__images:
-            self.__images[key] = pygame.transform.scale(self.__images[key],
-                                                        (new_width, new_height))
+            image = self.__images[key]
+            self.__images[key].sprite = pygame.transform.scale(image.sprite,
+                                                               (int(image.width * zoom), int(image.height * zoom)))
 
 
 class ImageVaultWithHighlights(ImageVault):
@@ -36,7 +37,7 @@ class ImageVaultWithHighlights(ImageVault):
         self.__highlighted_images = self._load_highlighted_images()
 
     def get_highlighted(self, image_code):
-        return self.__highlighted_images[image_code]
+        return self.__highlighted_images[image_code].sprite
 
     @abstractmethod
     def _load_highlighted_images(self):
@@ -45,11 +46,13 @@ class ImageVaultWithHighlights(ImageVault):
         """
         pass
 
-    def _scale_images(self, new_width, new_height):
-        super()._scale_images(new_width, new_height)
+    def _scale_images(self, zoom):
+        super()._scale_images(zoom)
         for key in self.__highlighted_images:
-            self.__highlighted_images[key] = pygame.transform.scale(self.__highlighted_images[key],
-                                                                    (new_width, new_height))
+            image = self.__highlighted_images[key]
+            self.__highlighted_images[key].sprite = pygame.transform.scale(image.sprite,
+                                                                           (int(image.width * zoom),
+                                                                            int(image.height * zoom)))
 
 
 class MenuImageVault(ImageVault):
@@ -63,25 +66,27 @@ class MenuImageVault(ImageVault):
 class AreaImageEnum(Enum):
     EMPTY = 1
     WATER = 2
+    PLAYER = 0
 
 
 class AreaImageVault(ImageVaultWithHighlights):
     def _load_highlighted_images(self):
         return {
-            AreaImageEnum.EMPTY: pygame.image.load('../../artwork/images/area tiles/highlighted/empty.png'),
-            AreaImageEnum.WATER: pygame.image.load('../../artwork/images/area tiles/highlighted/water.png'),
+            AreaImageEnum.EMPTY:
+                HexFieldImage(pygame.image.load('../../artwork/images/area tiles/highlighted/empty.png')),
+            AreaImageEnum.WATER:
+                HexFieldImage(pygame.image.load('../../artwork/images/area tiles/highlighted/water.png')),
         }
 
     def _load_images(self):
         return {
-            AreaImageEnum.EMPTY: pygame.image.load('../../artwork/images/area tiles/empty.png'),
-            AreaImageEnum.WATER: pygame.image.load('../../artwork/images/area tiles/water.png'),
+            AreaImageEnum.EMPTY: HexFieldImage(pygame.image.load('../../artwork/images/area tiles/empty.png')),
+            AreaImageEnum.WATER: HexFieldImage(pygame.image.load('../../artwork/images/area tiles/water.png')),
+            AreaImageEnum.PLAYER: Image(40, 40, pygame.image.load('../../artwork/images/dummyPlayer.png')),
         }
 
     def set_camera_zoom(self, camera_zoom):
-        new_hexagon_width = int(camera_zoom * HEXAGON_FIELD_WIDTH)
-        new_hexagon_height = int(camera_zoom * HEXAGON_FIELD_HEIGHT)
-        self._scale_images(new_hexagon_width, new_hexagon_height)
+        self._scale_images(camera_zoom)
 
 
 class WorldImageVault(ImageVault):
@@ -90,14 +95,12 @@ class WorldImageVault(ImageVault):
 
     def _load_images(self):
         return {
-            WorldImageEnum.LAND: pygame.image.load('../../artwork/images/world tiles/land.png'),
-            WorldImageEnum.WATER: pygame.image.load('../../artwork/images/world tiles/water.png')
+            WorldImageEnum.LAND: SquareFieldImage(pygame.image.load('../../artwork/images/world tiles/land.png')),
+            WorldImageEnum.WATER: SquareFieldImage(pygame.image.load('../../artwork/images/world tiles/water.png'))
         }
 
     def set_camera_zoom(self, camera_zoom):
-        new_square_width = int(camera_zoom * SQUARE_FIELD_WIDTH)
-        new_square_height = int(camera_zoom * SQUARE_FIELD_HEIGHT)
-        self._scale_images(new_square_width, new_square_height)
+        self._scale_images(camera_zoom)
 
 
 class WorldImageEnum(Enum):
