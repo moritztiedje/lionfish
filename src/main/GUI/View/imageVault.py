@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 
-import pygame
-
 from src.main.GUI.View.image import HexFieldImage, SquareFieldImage, Image
 
 
@@ -26,9 +24,7 @@ class ImageVault(metaclass=ABCMeta):
 
     def _scale_images(self, zoom):
         for key in self.__images:
-            image = self.__images[key]
-            self.__images[key].sprite = pygame.transform.scale(image.sprite,
-                                                               (int(image.width * zoom), int(image.height * zoom)))
+            self.__images[key].scale_sprite(zoom)
 
 
 class ImageVaultWithHighlights(ImageVault):
@@ -49,10 +45,7 @@ class ImageVaultWithHighlights(ImageVault):
     def _scale_images(self, zoom):
         super()._scale_images(zoom)
         for key in self.__highlighted_images:
-            image = self.__highlighted_images[key]
-            self.__highlighted_images[key].sprite = pygame.transform.scale(image.sprite,
-                                                                           (int(image.width * zoom),
-                                                                            int(image.height * zoom)))
+            self.__highlighted_images[key].scale_sprite(zoom)
 
 
 class MenuImageVault(ImageVault):
@@ -73,16 +66,16 @@ class AreaImageVault(ImageVaultWithHighlights):
     def _load_highlighted_images(self):
         return {
             AreaImageEnum.EMPTY:
-                HexFieldImage(pygame.image.load('../../artwork/images/area tiles/highlighted/empty.png')),
+                HexFieldImage('../../artwork/images/area tiles/highlighted/empty.png'),
             AreaImageEnum.WATER:
-                HexFieldImage(pygame.image.load('../../artwork/images/area tiles/highlighted/water.png')),
+                HexFieldImage('../../artwork/images/area tiles/highlighted/water.png'),
         }
 
     def _load_images(self):
         return {
-            AreaImageEnum.EMPTY: HexFieldImage(pygame.image.load('../../artwork/images/area tiles/empty.png')),
-            AreaImageEnum.WATER: HexFieldImage(pygame.image.load('../../artwork/images/area tiles/water.png')),
-            AreaImageEnum.PLAYER: Image(40, 40, pygame.image.load('../../artwork/images/dummyPlayer.png')),
+            AreaImageEnum.EMPTY: HexFieldImage('../../artwork/images/area tiles/empty.png'),
+            AreaImageEnum.WATER: HexFieldImage('../../artwork/images/area tiles/water.png'),
+            AreaImageEnum.PLAYER: Image(40, 40, '../../artwork/images/dummyPlayer.png'),
         }
 
     def set_camera_zoom(self, camera_zoom):
@@ -95,8 +88,8 @@ class WorldImageVault(ImageVault):
 
     def _load_images(self):
         return {
-            WorldImageEnum.LAND: SquareFieldImage(pygame.image.load('../../artwork/images/world tiles/land.png')),
-            WorldImageEnum.WATER: SquareFieldImage(pygame.image.load('../../artwork/images/world tiles/water.png'))
+            WorldImageEnum.LAND: SquareFieldImage('../../artwork/images/world tiles/land.png'),
+            WorldImageEnum.WATER: SquareFieldImage('../../artwork/images/world tiles/water.png')
         }
 
     def set_camera_zoom(self, camera_zoom):

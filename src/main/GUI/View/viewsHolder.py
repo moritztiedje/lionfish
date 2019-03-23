@@ -26,7 +26,7 @@ class ViewsHolder:
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
                                   Point(game_window.get_width() - 50, game_window.get_height() - 10),
-                                  Image(0, 0, pygame.image.load('../../artwork/images/worldButton.png')),
+                                  Image(0, 0, '../../artwork/images/worldButton.png'),
                                   self.__set_world_map_active)
         area_map_view = AreaMapView(game_window)
         area_map_view.register_button(world_map_button)
@@ -35,15 +35,15 @@ class ViewsHolder:
     def __build_main_menu_view(self, game_window):
         main_menu_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 40),
                                   Point(game_window.get_width() - 10, game_window.get_height() - 10),
-                                  Image(0, 0, pygame.image.load('../../artwork/images/menu/gear.png')),
+                                  Image(0, 0, '../../artwork/images/menu/gear.png'),
                                   self.__quit_game)
         zoom_in_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 80),
                                 Point(game_window.get_width() - 10, game_window.get_height() - 50),
-                                Image(0, 0, pygame.image.load('../../artwork/images/menu/magnify.png')),
+                                Image(0, 0, '../../artwork/images/menu/magnify.png'),
                                 self.__camera_zoom_in)
         zoom_out_button = Button(Point(game_window.get_width() - 40, game_window.get_height() - 120),
                                  Point(game_window.get_width() - 10, game_window.get_height() - 90),
-                                 Image(0, 0, pygame.image.load('../../artwork/images/menu/reduce.png')),
+                                 Image(0, 0, '../../artwork/images/menu/reduce.png'),
                                  self.__camera_zoom_out)
         main_menu_view = MenuView(game_window)
         main_menu_view.register_button(main_menu_button)

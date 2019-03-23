@@ -1,16 +1,21 @@
+import pygame
+
 from src.main.constants import HEXAGON_FIELD_WIDTH, HEXAGON_FIELD_HEIGHT, SQUARE_FIELD_WIDTH, SQUARE_FIELD_HEIGHT
 
 
 class Image:
-    def __init__(self, width, height, sprite):
+    def __init__(self, width, height, path):
         """
         :type width: int
         :type height: int
-        :type sprite: pygame.Surface
+        :type path: string
         """
-        self.width = width
-        self.height = height
-        self.sprite = sprite
+        self.__base_width = width
+        self.__base_height = height
+        self.sprite = pygame.image.load(path)
+
+    def scale_sprite(self, zoom):
+        self.sprite = pygame.transform.scale(self.sprite, (int(self.__base_width * zoom), int(self.__base_height * zoom)))
 
 
 class HexFieldImage(Image):
