@@ -11,11 +11,17 @@ class TextAdventurePanel(Panel):
         return TextAdventureImageVault(self._game_window)
 
     def __init__(self, game_window):
+        """
+        :type game_window: src.main.GUI.View.gameWindow.GameWindow
+        """
         super().__init__(game_window)
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None
 
     def draw(self, game_state):
+        """
+        :type game_state: src.main.Model.gameState.GameState
+        """
         super().draw(game_state)
         font = pygame.font.SysFont("Times New Roman", 20)
         something = font.render("Something", 1, (255, 0, 0))
