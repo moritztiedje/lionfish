@@ -4,6 +4,7 @@ from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.panels.areaMapPanel import AreaMapPanel
 from src.main.GUI.View.panels.menuPanel import MenuPanel
+from src.main.GUI.View.panels.textAdventurePanel import TextAdventurePanel
 from src.main.GUI.View.panels.worldMapPanel import WorldMapPanel
 from src.main.Util.point import Point
 
@@ -14,16 +15,18 @@ class PanelsManager:
         :type game_window: main.gameWindow.GameWindow
         """
 
-        # TODO: The order of these views is equivalent to z-index, that is shit
+        # The order of these views is equivalent to z-index
         self.__views = [
             self.__build_area_map_view(game_window),
             self.__build_world_map_view(game_window),
             self.__build_main_menu_view(game_window),
+            self.__build_text_adventure_panel(game_window),
         ]
 
         # TODO use enum here
         self.__views[0].activate()
         self.__views[2].activate()
+        self.__views[3].activate()
 
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
@@ -87,3 +90,6 @@ class PanelsManager:
             if view.is_active():
                 view.handle_click(mouse_position)
                 view.handle_relative_click(relative_mouse_position)
+
+    def __build_text_adventure_panel(self, game_window):
+        return TextAdventurePanel(game_window)

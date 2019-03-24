@@ -19,6 +19,9 @@ class Image:
         self.sprite = pygame.transform.scale(self.sprite,
                                              (int(self.__base_width * zoom), int(self.__base_height * zoom)))
 
+    def scale_to_width(self, width):
+        self.sprite = pygame.transform.scale(self.sprite, (width, self.__base_height))
+
 
 class HexFieldImage(Image):
     def __init__(self, path):
