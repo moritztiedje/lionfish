@@ -18,7 +18,7 @@ class Game:
 
         self.__game_state = game_state
         self.__gui = gui
-        self.__gui.display(game_state)
+        self.__gui.draw(game_state)
 
     @staticmethod
     def __quit_game():
@@ -35,7 +35,8 @@ class Game:
                     game_over = True
 
             self.__gui.trigger_control_logic()
-            self.__gui.display(self.__game_state)
+            if self.__gui.has_something_changed():
+                self.__gui.draw(self.__game_state)
             pygame.display.update()
             clock.tick(60)
 

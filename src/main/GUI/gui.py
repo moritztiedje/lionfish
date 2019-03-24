@@ -24,11 +24,13 @@ class GUI:
         base_logic_has_changed_display = self.__game_controller.handle_base_logic()
         self.__display_has_changed = mouse_was_clicked or base_logic_has_changed_display
 
-    def display(self, game_state):
+    def has_something_changed(self):
+        return self.__display_has_changed
+
+    def draw(self, game_state):
         """
         :type game_state: src.main.Model.gameState.GameState
         """
-        if self.__display_has_changed:
-            self.__game_window.clear()
-            self.__views_holder.display(game_state)
-            self.__display_has_changed = False
+        self.__game_window.clear()
+        self.__views_holder.display(game_state)
+        self.__display_has_changed = False

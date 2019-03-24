@@ -19,54 +19,44 @@ class TestGUI(unittest.TestCase):
     def tearDown(self):
         gui.ViewsHolder = self.__real_views_holder
 
-    def assertOnlyInitializationRendering(self):
-        self.__game_window.clear.assert_called_once()
-        self.__views_holder.display.assert_called_once()
-
-    def assertRenderingAfterInitialization(self):
-        self.assertEqual(self.__game_window.clear.call_count, 2)
-        self.assertEqual(self.__views_holder.display.call_count, 2)
-
-    def test_game_window_displayed_on_start(self):
+    def test_display_clears_and_refills_window(self):
         game_controller = create_mock(GameController)
-
         gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.display(create_mock(GameState))
 
-        self.assertOnlyInitializationRendering()
+        gui_under_test.draw(create_mock(GameState))
 
-    def test_mouse_click_triggers_re_render(self):
+        self.__game_window.clear.assert_called_once()
+        self.__views_holder.draw.assert_called_once()
+
+    def test_mouse_click_recognized_as_change(self):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (1, 1)
         game_controller.handle_base_logic = lambda: False
         gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.display(create_mock(GameState))
+        gui_under_test.draw(create_mock(GameState))
 
         gui_under_test.trigger_control_logic()
-        gui_under_test.display(create_mock(GameState))
 
-        self.assertRenderingAfterInitialization()
+        self.assertTrue(gui_under_test.has_something_changed())
 
-    def test_no_click_or_button_press_triggers_nothing(self):
+    def test_no_click_or_button_press_recognized_as_no_change(self):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: False
         gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.display(create_mock(GameState))
+        gui_under_test.draw(create_mock(GameState))
 
         gui_under_test.trigger_control_logic()
-        gui_under_test.display(create_mock(GameState))
 
-        self.assertOnlyInitializationRendering()
+        self.assertFalse(gui_under_test.has_something_changed())
 
-    def test_button_press_triggers_re_render(self):
+    def test_button_press_recognized_as_change(self):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: True
         gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.display(GameState)
+        gui_under_test.draw(GameState)
 
         gui_under_test.trigger_control_logic()
-        gui_under_test.display(create_mock(GameState))
 
-        self.assertRenderingAfterInitialization()
+        self.assertTrue(gui_under_test.has_something_changed())
