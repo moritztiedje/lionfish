@@ -30,9 +30,8 @@ class TestGUI(unittest.TestCase):
     def test_game_window_displayed_on_start(self):
         game_controller = create_mock(GameController)
 
-        gui.GUI(self.__game_window,
-                game_controller,
-                create_mock(GameState))
+        gui_under_test = gui.GUI(self.__game_window, game_controller)
+        gui_under_test.display(create_mock(GameState))
 
         self.assertOnlyInitializationRendering()
 
@@ -40,9 +39,8 @@ class TestGUI(unittest.TestCase):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (1, 1)
         game_controller.handle_base_logic = lambda: False
-        gui_under_test = gui.GUI(self.__game_window,
-                                 game_controller,
-                                 create_mock(GameState))
+        gui_under_test = gui.GUI(self.__game_window, game_controller)
+        gui_under_test.display(create_mock(GameState))
 
         gui_under_test.trigger_control_logic()
         gui_under_test.display(create_mock(GameState))
@@ -53,9 +51,8 @@ class TestGUI(unittest.TestCase):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: False
-        gui_under_test = gui.GUI(self.__game_window,
-                                 game_controller,
-                                 create_mock(GameState))
+        gui_under_test = gui.GUI(self.__game_window, game_controller)
+        gui_under_test.display(create_mock(GameState))
 
         gui_under_test.trigger_control_logic()
         gui_under_test.display(create_mock(GameState))
@@ -66,9 +63,8 @@ class TestGUI(unittest.TestCase):
         game_controller = create_mock(GameController)
         game_controller.mouse_left_click = lambda: (None, None)
         game_controller.handle_base_logic = lambda: True
-        gui_under_test = gui.GUI(self.__game_window,
-                                 game_controller,
-                                 create_mock(GameState))
+        gui_under_test = gui.GUI(self.__game_window, game_controller)
+        gui_under_test.display(GameState)
 
         gui_under_test.trigger_control_logic()
         gui_under_test.display(create_mock(GameState))

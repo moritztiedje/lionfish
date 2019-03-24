@@ -14,10 +14,11 @@ class Game:
         game_window = GameWindow()
         game_controller = GameController(game_window)
 
-        gui = GUI(game_window, game_controller, game_state)
+        gui = GUI(game_window, game_controller)
 
         self.__game_state = game_state
         self.__gui = gui
+        self.__gui.display(game_state)
 
     @staticmethod
     def __quit_game():
