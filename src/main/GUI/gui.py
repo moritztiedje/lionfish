@@ -4,8 +4,8 @@ from src.main.GUI.View.viewsHolder import ViewsHolder
 class GUI:
     def __init__(self, game_window, game_controller):
         """
-        :type game_window: main.gameWindow.GameWindow
-        :type game_controller: main.gameController.GameController
+        :type game_window: src.main.GUI.View.gameWindow.GameWindow
+        :type game_controller: src.main.GUI.Controller.gameController.GameController
         """
         self.__game_window = game_window
         self.__game_controller = game_controller

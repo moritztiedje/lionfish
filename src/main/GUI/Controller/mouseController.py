@@ -3,6 +3,9 @@ import pygame
 
 class MouseController:
     def __init__(self, window_height):
+        """
+        :type window_height: int
+        """
         self.__window_height = window_height
         self.__left_was_pressed = False
 
