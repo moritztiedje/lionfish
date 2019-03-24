@@ -40,7 +40,7 @@ class Panel(metaclass=ABCMeta):
 
     def register_button(self, button):
         """
-        :type button: main.GUI.button.Button
+        :type button: src.main.GUI.BaseComponents.button.Button
         """
         self.__buttons.append(button)
 
@@ -51,9 +51,9 @@ class Panel(metaclass=ABCMeta):
     def handle_relative_click(self, relative_mouse_clicked_position):
         pass
 
-    def display(self, game_state):
+    def draw(self, game_state):
         """
         :type game_state: main.gameState.GameState
         """
         for button in self.__buttons:
-            button.display(self._game_window)
+            button.draw(self._game_window)

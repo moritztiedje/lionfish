@@ -17,7 +17,7 @@ class GameWindow:
     def get_camera_position(self):
         return self.__camera_position
 
-    def display(self, image, point):
+    def draw(self, image, point):
         """
         :type image: main.imageVault.ImageEnum
         :type point: main.GUI.point.Point
@@ -26,7 +26,7 @@ class GameWindow:
                                self.__height - point.get_y() + self.__camera_position[1])
         self.__window.blit(image, inverted_coordinate)
 
-    def display_absolute(self, image, point):
+    def draw_absolute(self, image, point):
         inverted_coordinate = (point.get_x(), self.__height - point.get_y())
         self.__window.blit(image, inverted_coordinate)
 

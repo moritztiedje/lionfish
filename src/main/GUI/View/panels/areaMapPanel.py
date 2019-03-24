@@ -8,6 +8,9 @@ from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT
 
 class AreaMapPanel(Panel):
     def __init__(self, game_window):
+        """
+        :type game_window: src.main.GUI.View.gameWindow.GameWindow
+        """
         super().__init__(game_window)
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None
@@ -15,11 +18,11 @@ class AreaMapPanel(Panel):
     def _load_image_vault(self):
         return AreaImageVault()
 
-    def display(self, game_state):
+    def draw(self, game_state):
         """
         :type game_state: src.main.Model.gameState.GameState
         """
-        super().display(game_state)
+        super().draw(game_state)
 
         area_map = game_state.get_area_map()
         for x in range(0, len(area_map)):
@@ -46,7 +49,7 @@ class AreaMapPanel(Panel):
         y_coordinate = game_field.get_y() * HEXAGON_FIELD_HEIGHT * self._camera_zoom
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
-        self._game_window.display(sprite, Point(x_coordinate, y_coordinate))
+        self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
 
     def __display_in_hexagon(self, sprite, game_field):
         """
@@ -63,7 +66,7 @@ class AreaMapPanel(Panel):
 
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
-        self._game_window.display(sprite, Point(x_coordinate, y_coordinate))
+        self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
 
     def handle_relative_click(self, mouse_position):
         hexagon_point = self.__click_box.get_hexagon(mouse_position)

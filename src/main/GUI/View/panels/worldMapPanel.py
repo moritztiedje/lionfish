@@ -11,11 +11,11 @@ class WorldMapPanel(Panel):
     def __init__(self, game_window):
         super().__init__(game_window)
 
-    def display(self, game_state):
+    def draw(self, game_state):
         """
         :type game_state: main.gameState.GameState
         """
-        super().display(game_state)
+        super().draw(game_state)
 
         world_map = game_state.get_world_map()
         for x in range(0, len(world_map)):
@@ -31,4 +31,4 @@ class WorldMapPanel(Panel):
         """
         display_coordinate = Point(coordinate.get_x() * SQUARE_FIELD_WIDTH * self._camera_zoom,
                                    coordinate.get_y() * SQUARE_FIELD_HEIGHT * self._camera_zoom)
-        self._game_window.display(sprite, display_coordinate)
+        self._game_window.draw(sprite, display_coordinate)

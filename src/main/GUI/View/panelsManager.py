@@ -80,7 +80,7 @@ class PanelsManager:
     def draw(self, game_state):
         for view in self.__views:
             if view.is_active():
-                view.display(game_state)
+                view.draw(game_state)
 
     def handle_click(self, mouse_position, relative_mouse_position):
         for view in self.__views:
