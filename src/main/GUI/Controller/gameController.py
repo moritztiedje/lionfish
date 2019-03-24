@@ -34,8 +34,8 @@ class GameController:
 
         return any_key_was_pressed
 
-    def mouse_left_click(self):
-        mouse_position = self.__mouse_controller.mouse_left_click()
+    def get_mouse_left_click(self):
+        mouse_position = self.__mouse_controller.get_mouse_left_click()
         if mouse_position:
             camera_position = self.__game_window.get_camera_position()
             relative_mouse_position = (mouse_position[0] + camera_position[0], mouse_position[1] + camera_position[1])

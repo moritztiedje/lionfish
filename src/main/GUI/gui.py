@@ -14,7 +14,7 @@ class GUI:
         self.__display_has_changed = True
 
     def trigger_control_logic(self):
-        mouse_click, mouse_relative_click = self.__game_controller.mouse_left_click()
+        mouse_click, mouse_relative_click = self.__game_controller.get_mouse_left_click()
         if mouse_click:
             mouse_was_clicked = True
             self.__views_holder.handle_click(mouse_click, mouse_relative_click)

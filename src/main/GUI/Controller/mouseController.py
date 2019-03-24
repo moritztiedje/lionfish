@@ -9,7 +9,7 @@ class MouseController:
         self.__window_height = window_height
         self.__left_was_pressed = False
 
-    def mouse_left_click(self):
+    def get_mouse_left_click(self):
         left_mouse_has_clicked = not self.__left_was_pressed and self.__left_mouse_is_pressed()
         self.__left_was_pressed = self.__left_mouse_is_pressed()
 
