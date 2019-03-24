@@ -1,4 +1,4 @@
-from src.main.GUI.View.viewsHolder import ViewsHolder
+from src.main.GUI.View.panelsManager import PanelsManager
 
 
 class GUI:
@@ -9,7 +9,7 @@ class GUI:
         """
         self.__game_window = game_window
         self.__game_controller = game_controller
-        self.__views_holder = ViewsHolder(game_window)
+        self.__views_holder = PanelsManager(game_window)
 
         self.__display_has_changed = True
 
@@ -32,5 +32,5 @@ class GUI:
         :type game_state: src.main.Model.gameState.GameState
         """
         self.__game_window.clear()
-        self.__views_holder.display(game_state)
+        self.__views_holder.draw(game_state)
         self.__display_has_changed = False

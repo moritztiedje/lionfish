@@ -2,11 +2,13 @@ import pygame
 
 from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.View.image import Image
-from src.main.GUI.View.view import AreaMapView, MenuView, WorldMapView
+from src.main.GUI.View.panels.areaMapPanel import AreaMapPanel
+from src.main.GUI.View.panels.menuPanel import MenuPanel
+from src.main.GUI.View.panels.worldMapPanel import WorldMapPanel
 from src.main.Util.point import Point
 
 
-class ViewsHolder:
+class PanelsManager:
     def __init__(self, game_window):
         """
         :type game_window: main.gameWindow.GameWindow
@@ -28,7 +30,7 @@ class ViewsHolder:
                                   Point(game_window.get_width() - 50, game_window.get_height() - 10),
                                   Image(0, 0, '../../artwork/images/worldButton.png'),
                                   self.__set_world_map_active)
-        area_map_view = AreaMapView(game_window)
+        area_map_view = AreaMapPanel(game_window)
         area_map_view.register_button(world_map_button)
         return area_map_view
 
@@ -45,7 +47,7 @@ class ViewsHolder:
                                  Point(game_window.get_width() - 10, game_window.get_height() - 90),
                                  Image(0, 0, '../../artwork/images/menu/reduce.png'),
                                  self.__camera_zoom_out)
-        main_menu_view = MenuView(game_window)
+        main_menu_view = MenuPanel(game_window)
         main_menu_view.register_button(main_menu_button)
         main_menu_view.register_button(zoom_in_button)
         main_menu_view.register_button(zoom_out_button)
@@ -53,7 +55,7 @@ class ViewsHolder:
 
     @staticmethod
     def __build_world_map_view(game_window):
-        return WorldMapView(game_window)
+        return WorldMapPanel(game_window)
 
     @staticmethod
     def __quit_game():
@@ -75,7 +77,7 @@ class ViewsHolder:
             if view.is_active():
                 view.zoom_out()
 
-    def display(self, game_state):
+    def draw(self, game_state):
         for view in self.__views:
             if view.is_active():
                 view.display(game_state)

@@ -3,21 +3,21 @@ import unittest
 from src.main.GUI import gui
 from src.main.GUI.Controller.gameController import GameController
 from src.main.GUI.View.gameWindow import GameWindow
-from src.main.GUI.View.viewsHolder import ViewsHolder
+from src.main.GUI.View.panelsManager import PanelsManager
 from src.main.Model.gameState import GameState
 from test.util.mockUtil import create_mock
 
 
 class TestGUI(unittest.TestCase):
     def setUp(self):
-        self.__real_views_holder = gui.ViewsHolder
-        self.__views_holder = create_mock(ViewsHolder)
-        gui.ViewsHolder = lambda _: self.__views_holder
+        self.__real_views_holder = gui.PanelsManager
+        self.__panels_manager = create_mock(PanelsManager)
+        gui.PanelsManager = lambda _: self.__panels_manager
 
         self.__game_window = create_mock(GameWindow)
 
     def tearDown(self):
-        gui.ViewsHolder = self.__real_views_holder
+        gui.PanelsManager = self.__real_views_holder
 
     def test_display_clears_and_refills_window(self):
         game_controller = create_mock(GameController)
@@ -26,7 +26,7 @@ class TestGUI(unittest.TestCase):
         gui_under_test.draw(create_mock(GameState))
 
         self.__game_window.clear.assert_called_once()
-        self.__views_holder.draw.assert_called_once()
+        self.__panels_manager.draw.assert_called_once()
 
     def test_mouse_click_recognized_as_change(self):
         game_controller = create_mock(GameController)
