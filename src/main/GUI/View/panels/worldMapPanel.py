@@ -8,9 +8,6 @@ class WorldMapPanel(Panel):
     def _load_image_vault(self):
         return WorldImageVault()
 
-    def __init__(self, game_window):
-        super().__init__(game_window)
-
     def draw(self, game_state):
         """
         :type game_state: main.gameState.GameState
@@ -27,6 +24,7 @@ class WorldMapPanel(Panel):
 
     def __display_square(self, sprite, coordinate):
         """
+        :type sprite: pygame.Surface
         :type coordinate: main.GUI.point.Point
         """
         display_coordinate = Point(coordinate.get_x() * SQUARE_FIELD_WIDTH * self._camera_zoom,
