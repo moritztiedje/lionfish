@@ -1,4 +1,4 @@
-from src.main.GUI.View.imageVault import WorldImageVault, WorldImageEnum
+from src.main.GUI.View.imageVaults.worldImageVault import WorldImageVault, WorldImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Util.point import Point
 from src.main.constants import SQUARE_FIELD_WIDTH, SQUARE_FIELD_HEIGHT

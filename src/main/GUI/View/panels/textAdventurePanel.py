@@ -1,7 +1,7 @@
 import pygame
 
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
-from src.main.GUI.View.imageVault import TextAdventureImageVault, TextAdventureImageEnum
+from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Util.point import Point
 

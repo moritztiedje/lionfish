@@ -1,5 +1,5 @@
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
-from src.main.GUI.View.imageVault import AreaImageVault, AreaImageEnum
+from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SPRITE_IN_HEXAGON_WIDTH, \

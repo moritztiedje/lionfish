@@ -1,4 +1,4 @@
-from src.main.GUI.View.imageVault import MenuImageVault
+from src.main.GUI.View.imageVaults.menuImageVault import MenuImageVault
 from src.main.GUI.View.panels.panel import Panel
 
 
