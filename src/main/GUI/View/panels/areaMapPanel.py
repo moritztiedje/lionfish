@@ -1,5 +1,7 @@
+from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.Controller.mouseEvent import MouseEventEnum
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
+from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
@@ -14,8 +16,21 @@ class AreaMapPanel(Panel):
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
         super().__init__(game_window, 0)
+        world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
+                                  Point(game_window.get_width() - 50, game_window.get_height() - 10),
+                                  Image(0, 0, '../../artwork/images/worldButton.png'),
+                                  self.__set_world_map_active)
+        self.register_button(world_map_button)
+
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None
+
+    @staticmethod
+    def __set_world_map_active():
+        """
+        :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
+        """
+        return GameStateChangeEvent(GameStateChangeEventTypes.GoToWorldMap, None)
 
     def _load_image_vault(self):
         return AreaImageVault()
