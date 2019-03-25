@@ -8,13 +8,13 @@ class MouseEventEnum(Enum):
 
 
 class MouseEvent(metaclass=ABCMeta):
-    def __init__(self, position, type):
+    def __init__(self, position, event_type):
         """
         :type position: (int, int)
-        :type type: MouseEventEnum
+        :type event_type: MouseEventEnum
         """
         self.__position = position
-        self.__type = type
+        self.__type = event_type
         self.__relative_position = (0, 0)
 
     def get_position(self):
