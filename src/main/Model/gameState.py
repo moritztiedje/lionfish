@@ -15,9 +15,6 @@ class GameState:
             Panels.WorldMap: False
         }
 
-    def activateTextAdventureBox(self):
-        self.__activePanels[Panels.TextAdventureBox] = True
-
     def get_area_map(self):
         return self.__area_map
 
@@ -29,3 +26,15 @@ class GameState:
 
     def is_panel_active(self, panel_key):
         return self.__activePanels[panel_key]
+
+    def deactivate_panel(self, panel_key):
+        """
+        :type panel_key: src.main.constants.Panels
+        """
+        self.__activePanels[panel_key] = False
+
+    def activate_panel(self, panel_key):
+        """
+        :type panel_key: src.main.constants.Panels
+        """
+        self.__activePanels[panel_key] = True

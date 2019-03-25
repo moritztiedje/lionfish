@@ -13,7 +13,7 @@ class AreaMapPanel(Panel):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
-        super().__init__(game_window)
+        super().__init__(game_window, 0)
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None
 
@@ -70,11 +70,10 @@ class AreaMapPanel(Panel):
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
         self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
 
-    def handle_mouse_event(self, mouse_event):
+    def _handle_mouse_event(self, mouse_event):
         """
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
-        super().handle_mouse_event(mouse_event)
         hexagon_point = self.__click_box.get_hexagon(mouse_event.get_relative_position())
         self.__highlighted_field = hexagon_point
         if mouse_event.get_type() == MouseEventEnum.DoubleClick:

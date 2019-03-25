@@ -18,7 +18,7 @@ HEXAGON_FIELD_HEIGHT = 104
 
 
 class Panels(Enum):
-    MainMenuBar = 0
-    AreaMap = 1
+    AreaMap = 0
+    TextAdventureBox = 1
     WorldMap = 2
-    TextAdventureBox = 3
+    MainMenuBar = 3

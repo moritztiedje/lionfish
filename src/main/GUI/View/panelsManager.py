@@ -6,6 +6,7 @@ from src.main.GUI.View.panels.areaMapPanel import AreaMapPanel
 from src.main.GUI.View.panels.menuPanel import MenuPanel
 from src.main.GUI.View.panels.textAdventurePanel import TextAdventurePanel
 from src.main.GUI.View.panels.worldMapPanel import WorldMapPanel
+from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 from src.main.Util.point import Point
 from src.main.constants import Panels
 
@@ -15,20 +16,12 @@ class PanelsManager:
         """
         :type game_window: main.gameWindow.GameWindow
         """
-        # The order of these views is equivalent to z-index
-        self.__panels = [
-            self.__build_area_map_view(game_window),
-            self.__build_world_map_view(game_window),
-            self.__build_main_menu_view(game_window),
-        ]
-
-        self.__panels2 = {
+        self.__panels = {
+            Panels.AreaMap: self.__build_area_map_view(game_window),
+            Panels.WorldMap: self.__build_world_map_view(game_window),
+            Panels.MainMenuBar: self.__build_main_menu_view(game_window),
             Panels.TextAdventureBox: self.__build_text_adventure_panel(game_window)
         }
-
-        # TODO use enum here
-        self.__panels[0].activate()
-        self.__panels[2].activate()
 
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
@@ -68,9 +61,10 @@ class PanelsManager:
         quit()
 
     def __set_world_map_active(self):
-        # TODO: Use enums here
-        self.__panels[0].deactivate()
-        self.__panels[1].activate()
+        """
+        :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
+        """
+        return GameStateChangeEvent(GameStateChangeEventTypes.GoToWorldMap, None)
 
     def __camera_zoom_in(self):
         for view in self.__panels:
@@ -86,20 +80,21 @@ class PanelsManager:
         """
         :type game_state: src.main.Model.gameState.GameState
         """
-        for view in self.__panels:
-            if view.is_active():
-                view.draw(game_state)
-
-        for panel_key in self.__panels2.keys():
-            if game_state.is_panel_active(panel_key):
-                self.__panels2[panel_key].activate()
-                self.__panels2[panel_key].draw(game_state)
+        for z_index in range(3):
+            for panel_key in self.__panels.keys():
+                if self.__panels[panel_key].has_z_index(z_index):
+                    if game_state.is_panel_active(panel_key):
+                        self.__panels[panel_key].activate()
+                        self.__panels[panel_key].draw(game_state)
+                    else:
+                        self.__panels[panel_key].deactivate()
 
     def handle_mouse_event(self, mouse_event):
         """
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
-        for panel in self.__panels:
+        for panel_key in self.__panels:
+            panel = self.__panels[panel_key]
             if panel.is_active():
                 change_event = panel.handle_mouse_event(mouse_event)
                 if change_event:

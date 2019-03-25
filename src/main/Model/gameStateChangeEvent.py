@@ -9,3 +9,4 @@ class GameStateChangeEvent:
 
 class GameStateChangeEventTypes(Enum):
     EnterArea = 0
+    GoToWorldMap = 1

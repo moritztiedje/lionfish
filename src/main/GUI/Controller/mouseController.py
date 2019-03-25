@@ -28,7 +28,7 @@ class MouseController:
             return DoubleClick(self.__get_inverted_mouse_position())
 
         if self.__timestamp_of_last_click:
-            if current_timestamp - self.__timestamp_of_last_click > 500:
+            if current_timestamp - self.__timestamp_of_last_click > 200:
                 self.__reset()
                 return LeftClick(self.__get_inverted_mouse_position())
 

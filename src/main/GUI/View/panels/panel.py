@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 
 class Panel(metaclass=ABCMeta):
-    def __init__(self, game_window):
+    def __init__(self, game_window, z_index):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
@@ -11,9 +11,13 @@ class Panel(metaclass=ABCMeta):
         self.__is_active = False
         self._camera_zoom = 1
         self._image_vault = None
+        self.__z_index = z_index
 
     def is_active(self):
         return self.__is_active
+
+    def has_z_index(self, z_index):
+        return self.__z_index == z_index
 
     @abstractmethod
     def _load_image_vault(self):
@@ -31,8 +35,9 @@ class Panel(metaclass=ABCMeta):
         self._image_vault.set_camera_zoom(self._camera_zoom)
 
     def activate(self):
-        self.__is_active = True
-        self._image_vault = self._load_image_vault()
+        if not self.__is_active:
+            self.__is_active = True
+            self._image_vault = self._load_image_vault()
 
     def deactivate(self):
         self.__is_active = False
@@ -49,7 +54,17 @@ class Panel(metaclass=ABCMeta):
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
         for button in self.__buttons:
-            button.handle_mouse_event(mouse_event)
+            game_state_change_event = button.handle_mouse_event(mouse_event)
+            if game_state_change_event:
+                return game_state_change_event
+
+        return self._handle_mouse_event(mouse_event)
+
+    @abstractmethod
+    def _handle_mouse_event(self, mouse_event):
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
 
     def draw(self, game_state):
         """

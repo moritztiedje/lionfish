@@ -7,16 +7,19 @@ from src.main.Util.point import Point
 
 
 class TextAdventurePanel(Panel):
-    def _load_image_vault(self):
-        return TextAdventureImageVault(self._game_window)
-
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
-        super().__init__(game_window)
+        super().__init__(game_window, 1)
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None
+
+    def _handle_mouse_event(self, mouse_event):
+        pass
+
+    def _load_image_vault(self):
+        return TextAdventureImageVault(self._game_window)
 
     def draw(self, game_state):
         """

@@ -17,9 +17,10 @@ class Button:
     def handle_mouse_event(self, mouse_event):
         """
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
         """
         if self.__button_clicked(mouse_event):
-            self.__action()
+            return self.__action()
 
     def __button_clicked(self, mouse_event):
         if mouse_event.get_type() != MouseEventEnum.LeftClick:
