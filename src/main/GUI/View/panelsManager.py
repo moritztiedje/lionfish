@@ -16,7 +16,7 @@ class PanelsManager:
         """
 
         # The order of these views is equivalent to z-index
-        self.__views = [
+        self.__panels = [
             self.__build_area_map_view(game_window),
             self.__build_world_map_view(game_window),
             self.__build_main_menu_view(game_window),
@@ -24,9 +24,9 @@ class PanelsManager:
         ]
 
         # TODO use enum here
-        self.__views[0].activate()
-        self.__views[2].activate()
-        self.__views[3].activate()
+        self.__panels[0].activate()
+        self.__panels[2].activate()
+        self.__panels[3].activate()
 
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
@@ -67,29 +67,31 @@ class PanelsManager:
 
     def __set_world_map_active(self):
         # TODO: Use enums here
-        self.__views[0].deactivate()
-        self.__views[1].activate()
+        self.__panels[0].deactivate()
+        self.__panels[1].activate()
 
     def __camera_zoom_in(self):
-        for view in self.__views:
+        for view in self.__panels:
             if view.is_active():
                 view.zoom_in()
 
     def __camera_zoom_out(self):
-        for view in self.__views:
+        for view in self.__panels:
             if view.is_active():
                 view.zoom_out()
 
     def draw(self, game_state):
-        for view in self.__views:
+        for view in self.__panels:
             if view.is_active():
                 view.draw(game_state)
 
-    def handle_click(self, mouse_position, relative_mouse_position):
-        for view in self.__views:
-            if view.is_active():
-                view.handle_click(mouse_position)
-                view.handle_relative_click(relative_mouse_position)
+    def handle_mouse_event(self, mouse_event):
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
+        for panel in self.__panels:
+            if panel.is_active():
+                panel.handle_mouse_event(mouse_event)
 
     def __build_text_adventure_panel(self, game_window):
         return TextAdventurePanel(game_window)

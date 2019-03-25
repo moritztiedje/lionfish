@@ -44,12 +44,12 @@ class Panel(metaclass=ABCMeta):
         """
         self.__buttons.append(button)
 
-    def handle_click(self, mouse_clicked_position):
+    def handle_mouse_event(self, mouse_event):
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
         for button in self.__buttons:
-            button.handle_click(mouse_clicked_position)
-
-    def handle_relative_click(self, relative_mouse_clicked_position):
-        pass
+            button.handle_mouse_event(mouse_event)
 
     def draw(self, game_state):
         """

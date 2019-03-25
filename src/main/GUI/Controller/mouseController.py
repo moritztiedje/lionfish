@@ -1,34 +1,6 @@
-from abc import ABCMeta
-from enum import Enum
-
 import pygame
 
-
-class Click(metaclass=ABCMeta):
-    def __init__(self, position, type):
-        self.__position = position
-        self.__type = type
-
-    def getPosition(self):
-        return self.__position
-
-    def getType(self):
-        return self.__type
-
-
-class DoubleClick(Click):
-    def __init__(self, position):
-        super().__init__(position, MouseEventEnum.DoubleClick)
-
-
-class LeftClick(Click):
-    def __init__(self, position):
-        super().__init__(position, MouseEventEnum.LeftClick)
-
-
-class MouseEventEnum(Enum):
-    DoubleClick = 2
-    LeftClick = 1
+from src.main.GUI.Controller.mouseEvent import DoubleClick, LeftClick
 
 
 class MouseController:
@@ -56,7 +28,7 @@ class MouseController:
             return DoubleClick(self.__get_inverted_mouse_position())
 
         if self.__timestamp_of_last_click:
-            if current_timestamp - self.__timestamp_of_last_click > 150:
+            if current_timestamp - self.__timestamp_of_last_click > 80:
                 self.__reset()
                 return LeftClick(self.__get_inverted_mouse_position())
 

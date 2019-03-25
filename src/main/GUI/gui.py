@@ -1,3 +1,4 @@
+from src.main.GUI.Controller.mouseEvent import MouseEventEnum
 from src.main.GUI.View.panelsManager import PanelsManager
 
 
@@ -14,10 +15,10 @@ class GUI:
         self.__display_has_changed = True
 
     def trigger_control_logic(self):
-        mouse_click, mouse_relative_click = self.__game_controller.get_mouse_left_click()
-        if mouse_click:
+        mouse_event = self.__game_controller.get_mouse_event()
+        if mouse_event:
             mouse_was_clicked = True
-            self.__views_holder.handle_click(mouse_click, mouse_relative_click)
+            self.__views_holder.handle_mouse_event(mouse_event)
         else:
             mouse_was_clicked = False
 

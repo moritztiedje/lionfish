@@ -68,8 +68,12 @@ class AreaMapPanel(Panel):
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
         self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
 
-    def handle_relative_click(self, mouse_position):
-        hexagon_point = self.__click_box.get_hexagon(mouse_position)
+    def handle_mouse_event(self, mouse_event):
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
+        super().handle_mouse_event(mouse_event)
+        hexagon_point = self.__click_box.get_hexagon(mouse_event.get_relative_position())
         self.__highlighted_field = hexagon_point
 
     def zoom_in(self):

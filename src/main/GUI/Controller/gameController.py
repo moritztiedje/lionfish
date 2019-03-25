@@ -1,7 +1,7 @@
 import pygame
 from pygame.constants import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
-from src.main.GUI.Controller.mouseController import MouseController, MouseEventEnum
+from src.main.GUI.Controller.mouseController import MouseController
 
 
 class GameController:
@@ -34,12 +34,16 @@ class GameController:
 
         return any_key_was_pressed
 
-    def get_mouse_left_click(self):
-        mouse_click = self.__mouse_controller.get_mouse_state()
-        if mouse_click and mouse_click.getType() == MouseEventEnum.LeftClick:
-            mouse_position = mouse_click.getPosition()
+    def get_mouse_event(self):
+        """
+        :rtype: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
+        mouse_event = self.__mouse_controller.get_mouse_state()
+        if mouse_event:
+            mouse_position = mouse_event.get_position()
             camera_position = self.__game_window.get_camera_position()
             relative_mouse_position = (mouse_position[0] + camera_position[0], mouse_position[1] + camera_position[1])
-            return mouse_position, relative_mouse_position
+            mouse_event.set_relative_position(relative_mouse_position)
+            return mouse_event
 
-        return None, None
+        return None

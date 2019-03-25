@@ -23,6 +23,9 @@ class HexagonClickBox:
         self.__hexagon_middle_stub = (HEXAGON_FIELD_HEIGHT - 2 * HEXAGON_FIELD_SIDE_WIDTH) / 2 * zoom_level
     
     def get_hexagon(self, mouse_position):
+        """
+        :type mouse_position: (int, int)
+        """
         approximate_field = self.__get_square(mouse_position)
         if approximate_field[0] % 2 == 1:
             return Point(approximate_field[0], approximate_field[1])
