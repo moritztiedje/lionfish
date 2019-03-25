@@ -15,15 +15,16 @@ class GUI:
         self.__display_has_changed = True
 
     def trigger_control_logic(self):
+        """
+        :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
+        """
         mouse_event = self.__game_controller.get_mouse_event()
-        if mouse_event:
-            mouse_was_clicked = True
-            self.__views_holder.handle_mouse_event(mouse_event)
-        else:
-            mouse_was_clicked = False
-
         base_logic_has_changed_display = self.__game_controller.handle_base_logic()
-        self.__display_has_changed = mouse_was_clicked or base_logic_has_changed_display
+        if mouse_event:
+            self.__display_has_changed = True
+            return self.__views_holder.handle_mouse_event(mouse_event)
+        else:
+            self.__display_has_changed = base_logic_has_changed_display
 
     def has_something_changed(self):
         return self.__display_has_changed

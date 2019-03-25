@@ -7,6 +7,7 @@ from src.main.GUI.View.panels.menuPanel import MenuPanel
 from src.main.GUI.View.panels.textAdventurePanel import TextAdventurePanel
 from src.main.GUI.View.panels.worldMapPanel import WorldMapPanel
 from src.main.Util.point import Point
+from src.main.constants import Panels
 
 
 class PanelsManager:
@@ -14,19 +15,20 @@ class PanelsManager:
         """
         :type game_window: main.gameWindow.GameWindow
         """
-
         # The order of these views is equivalent to z-index
         self.__panels = [
             self.__build_area_map_view(game_window),
             self.__build_world_map_view(game_window),
             self.__build_main_menu_view(game_window),
-            self.__build_text_adventure_panel(game_window),
         ]
+
+        self.__panels2 = {
+            Panels.TextAdventureBox: self.__build_text_adventure_panel(game_window)
+        }
 
         # TODO use enum here
         self.__panels[0].activate()
         self.__panels[2].activate()
-        self.__panels[3].activate()
 
     def __build_area_map_view(self, game_window):
         world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
@@ -81,9 +83,17 @@ class PanelsManager:
                 view.zoom_out()
 
     def draw(self, game_state):
+        """
+        :type game_state: src.main.Model.gameState.GameState
+        """
         for view in self.__panels:
             if view.is_active():
                 view.draw(game_state)
+
+        for panel_key in self.__panels2.keys():
+            if game_state.is_panel_active(panel_key):
+                self.__panels2[panel_key].activate()
+                self.__panels2[panel_key].draw(game_state)
 
     def handle_mouse_event(self, mouse_event):
         """
@@ -91,7 +101,9 @@ class PanelsManager:
         """
         for panel in self.__panels:
             if panel.is_active():
-                panel.handle_mouse_event(mouse_event)
+                change_event = panel.handle_mouse_event(mouse_event)
+                if change_event:
+                    return change_event
 
     def __build_text_adventure_panel(self, game_window):
         return TextAdventurePanel(game_window)

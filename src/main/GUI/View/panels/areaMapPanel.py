@@ -1,6 +1,8 @@
+from src.main.GUI.Controller.mouseEvent import MouseEventEnum
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
 from src.main.GUI.View.panels.panel import Panel
+from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SPRITE_IN_HEXAGON_WIDTH, \
     HEXAGON_FIELD_WIDTH, SPRITE_IN_HEXAGON_HEIGHT
@@ -75,6 +77,8 @@ class AreaMapPanel(Panel):
         super().handle_mouse_event(mouse_event)
         hexagon_point = self.__click_box.get_hexagon(mouse_event.get_relative_position())
         self.__highlighted_field = hexagon_point
+        if mouse_event.get_type() == MouseEventEnum.DoubleClick:
+            return GameStateChangeEvent(GameStateChangeEventTypes.EnterArea, hexagon_point)
 
     def zoom_in(self):
         super().zoom_in()

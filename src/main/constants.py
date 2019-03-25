@@ -1,3 +1,5 @@
+from enum import Enum
+
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
@@ -13,3 +15,10 @@ SPRITE_IN_HEXAGON_WIDTH = 40
 SPRITE_IN_HEXAGON_HEIGHT = 40
 
 HEXAGON_FIELD_HEIGHT = 104
+
+
+class Panels(Enum):
+    MainMenuBar = 0
+    AreaMap = 1
+    WorldMap = 2
+    TextAdventureBox = 3

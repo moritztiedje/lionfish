@@ -3,6 +3,7 @@ import pygame
 from src.main.GUI.Controller.gameController import GameController
 from src.main.GUI.View.gameWindow import GameWindow
 from src.main.GUI.gui import GUI
+from src.main.Logic.changeEventHandler import ChangeEventHandler
 from src.main.Model.gameState import GameState
 
 
@@ -34,7 +35,9 @@ class Game:
                 if event.type == pygame.QUIT:
                     game_over = True
 
-            self.__gui.trigger_control_logic()
+            game_state_change_event = self.__gui.trigger_control_logic()
+            if game_state_change_event:
+                ChangeEventHandler.process(self.__game_state, game_state_change_event)
             if self.__gui.has_something_changed():
                 self.__gui.draw(self.__game_state)
             pygame.display.update()
