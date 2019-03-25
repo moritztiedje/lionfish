@@ -20,7 +20,7 @@ class AreaMapPanel(Panel):
                                   Point(game_window.get_width() - 50, game_window.get_height() - 10),
                                   Image(0, 0, '../../artwork/images/worldButton.png'),
                                   self.__set_world_map_active)
-        self.register_button(world_map_button)
+        self._register_button(world_map_button)
 
         self.__click_box = HexagonClickBox()
         self.__highlighted_field = None

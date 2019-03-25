@@ -25,9 +25,9 @@ class MenuPanel(Panel):
                                  Point(game_window.get_width() - 10, game_window.get_height() - 90),
                                  Image(0, 0, '../../artwork/images/menu/reduce.png'),
                                  zoom_out)
-        self.register_button(main_menu_button)
-        self.register_button(zoom_in_button)
-        self.register_button(zoom_out_button)
+        self._register_button(main_menu_button)
+        self._register_button(zoom_in_button)
+        self._register_button(zoom_out_button)
 
     @staticmethod
     def __quit_game():

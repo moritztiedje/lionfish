@@ -43,7 +43,7 @@ class Panel(metaclass=ABCMeta):
         self.__is_active = False
         self._image_vault = None
 
-    def register_button(self, button):
+    def _register_button(self, button):
         """
         :type button: src.main.GUI.BaseComponents.button.Button
         """
