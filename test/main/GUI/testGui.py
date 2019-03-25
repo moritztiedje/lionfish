@@ -2,6 +2,7 @@ import unittest
 
 from src.main.GUI import gui
 from src.main.GUI.Controller.gameController import GameController
+from src.main.GUI.Controller.mouseEvent import MouseEvent
 from src.main.GUI.View.gameWindow import GameWindow
 from src.main.GUI.View.panelsManager import PanelsManager
 from src.main.Model.gameState import GameState
@@ -30,7 +31,7 @@ class TestGUI(unittest.TestCase):
 
     def test_mouse_click_recognized_as_change(self):
         game_controller = create_mock(GameController)
-        game_controller.get_mouse_event = lambda: (1, 1)
+        game_controller.get_mouse_event = lambda: create_mock(MouseEvent)
         game_controller.handle_base_logic = lambda: False
         gui_under_test = gui.GUI(self.__game_window, game_controller)
         gui_under_test.draw(create_mock(GameState))
@@ -41,7 +42,7 @@ class TestGUI(unittest.TestCase):
 
     def test_no_click_or_button_press_recognized_as_no_change(self):
         game_controller = create_mock(GameController)
-        game_controller.get_mouse_event = lambda: (None, None)
+        game_controller.get_mouse_event = lambda: None
         game_controller.handle_base_logic = lambda: False
         gui_under_test = gui.GUI(self.__game_window, game_controller)
         gui_under_test.draw(create_mock(GameState))
@@ -52,7 +53,7 @@ class TestGUI(unittest.TestCase):
 
     def test_button_press_recognized_as_change(self):
         game_controller = create_mock(GameController)
-        game_controller.get_mouse_event = lambda: (None, None)
+        game_controller.get_mouse_event = lambda: None
         game_controller.handle_base_logic = lambda: True
         gui_under_test = gui.GUI(self.__game_window, game_controller)
         gui_under_test.draw(GameState)
