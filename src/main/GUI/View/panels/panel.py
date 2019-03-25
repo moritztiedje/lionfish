@@ -8,13 +8,12 @@ class Panel(metaclass=ABCMeta):
         """
         self._game_window = game_window
         self.__buttons = []
-        self.__is_active = False
         self._camera_zoom = 1
         self._image_vault = None
         self.__z_index = z_index
 
     def is_active(self):
-        return self.__is_active
+        return self._image_vault is not None
 
     def has_z_index(self, z_index):
         return self.__z_index == z_index
@@ -35,12 +34,10 @@ class Panel(metaclass=ABCMeta):
         self._image_vault.set_camera_zoom(self._camera_zoom)
 
     def activate(self):
-        if not self.__is_active:
-            self.__is_active = True
+        if not self._image_vault:
             self._image_vault = self._load_image_vault()
 
     def deactivate(self):
-        self.__is_active = False
         self._image_vault = None
 
     def _register_button(self, button):
