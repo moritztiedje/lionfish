@@ -1,6 +1,6 @@
 class TextAdventureState:
     def __init__(self):
-        self.__text = "You entered this area. It is a nice area. There is a comfy chair"
+        self.__text = "You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair. You entered this area. It is a nice area. There is a comfy chair"
         self.__options = [
             "leave",
             "keep going",
