@@ -11,9 +11,23 @@ class Panel(metaclass=ABCMeta):
         self._camera_zoom = 1
         self._image_vault = None
         self.__z_index = z_index
+        self.__is_active = False
 
     def is_active(self):
-        return self._image_vault is not None
+        return self.__is_active
+
+    def activate(self):
+        self.__is_active = True
+
+    def deactivate(self):
+        self.__is_active = False
+
+    def load_images(self):
+        if not self._image_vault:
+            self._image_vault = self._load_image_vault()
+
+    def discard_images(self):
+        self._image_vault = None
 
     def has_z_index(self, z_index):
         return self.__z_index == z_index
@@ -32,13 +46,6 @@ class Panel(metaclass=ABCMeta):
     def zoom_out(self):
         self._camera_zoom /= 2
         self._image_vault.set_camera_zoom(self._camera_zoom)
-
-    def activate(self):
-        if not self._image_vault:
-            self._image_vault = self._load_image_vault()
-
-    def deactivate(self):
-        self._image_vault = None
 
     def _register_button(self, button):
         """

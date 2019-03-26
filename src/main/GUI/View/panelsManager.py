@@ -37,11 +37,18 @@ class PanelsManager:
             for panel_key in self.__panels:
                 panel = self.__panels[panel_key]
                 if panel.has_z_index(z_index):
-                    if game_state.is_panel_active(panel_key):
-                        panel.activate()
+                    if game_state.get_panel_state(panel_key).is_visible():
+                        panel.load_images()
                         panel.draw(game_state)
                     else:
-                        panel.deactivate()
+                        panel.discard_images()
+
+        for panel_key in self.__panels:
+            panel = self.__panels[panel_key]
+            if game_state.get_panel_state(panel_key).is_active():
+                panel.activate()
+            else:
+                panel.deactivate()
 
     def handle_mouse_event(self, mouse_event):
         """

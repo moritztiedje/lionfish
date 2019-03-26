@@ -24,6 +24,7 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         super().draw(game_state)
+        self.__y_offset = 0
 
         self._game_window.draw_absolute(self._image_vault.get(TextAdventureImageEnum.BACKGROUND), Point(0, 200))
         self._game_window.draw_absolute(self._image_vault.get(TextAdventureImageEnum.TOP_BORDER), Point(0, 220))

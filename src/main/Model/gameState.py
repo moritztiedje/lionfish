@@ -1,3 +1,4 @@
+from src.main.Model.panelState import PanelState
 from src.main.Model.player import Player
 from src.main.Model.textAdventureState import TextAdventureState
 from src.main.constants import Panels
@@ -10,11 +11,11 @@ class GameState:
         self.__area_map = array_from_file('./dummyMap')
         self.__world_map = array_from_file('./dummyWorldMap')
         self.__player = Player()
-        self.__activePanels = {
-            Panels.AreaMap: True,
-            Panels.MainMenuBar: True,
-            Panels.TextAdventureBox: False,
-            Panels.WorldMap: False
+        self.__panelStates = {
+            Panels.AreaMap: PanelState(True, True),
+            Panels.MainMenuBar: PanelState(True, True),
+            Panels.TextAdventureBox: PanelState(False, False),
+            Panels.WorldMap: PanelState(False, False)
         }
 
     def get_area_map(self):
@@ -26,20 +27,8 @@ class GameState:
     def get_player_position_in_area(self):
         return self.__player.get_position_in_area()
 
-    def is_panel_active(self, panel_key):
-        return self.__activePanels[panel_key]
-
-    def deactivate_panel(self, panel_key):
-        """
-        :type panel_key: src.main.constants.Panels
-        """
-        self.__activePanels[panel_key] = False
-
-    def activate_panel(self, panel_key):
-        """
-        :type panel_key: src.main.constants.Panels
-        """
-        self.__activePanels[panel_key] = True
+    def get_panel_state(self, panel_key):
+        return self.__panelStates[panel_key]
 
     def get_text_adventure_state(self):
         """
