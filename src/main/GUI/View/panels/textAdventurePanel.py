@@ -1,6 +1,5 @@
 import pygame
 
-from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Util.point import Point
@@ -12,8 +11,7 @@ class TextAdventurePanel(Panel):
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
         """
         super().__init__(game_window, 1)
-        self.__click_box = HexagonClickBox()
-        self.__highlighted_field = None
+        self.__current_offset = 0
 
     def _handle_mouse_event(self, mouse_event):
         pass
@@ -26,8 +24,22 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         super().draw(game_state)
-        font = pygame.font.SysFont("Times New Roman", 20)
-        something = font.render("Something", 1, (255, 0, 0))
+
         self._game_window.draw_absolute(self._image_vault.get(TextAdventureImageEnum.BACKGROUND), Point(0, 200))
         self._game_window.draw_absolute(self._image_vault.get(TextAdventureImageEnum.TOP_BORDER), Point(0, 220))
-        self._game_window.draw_absolute(something, Point(20, 195))
+
+        self.__draw_text(game_state.get_text_adventure_state().get_text())
+        for option in game_state.get_text_adventure_state().get_options():
+            self.__draw_option(option)
+
+    def __draw_text(self, text):
+        font = pygame.font.SysFont("Times New Roman", 20)
+        rendered_text = font.render(text, 1, (255, 0, 0))
+        self._game_window.draw_absolute(rendered_text, Point(20, 195 - self.__current_offset))
+        self.__current_offset += 20
+
+    def __draw_option(self, option):
+        font = pygame.font.SysFont("Times New Roman", 20)
+        rendered_text = font.render(option, 1, (0, 0, 0))
+        self._game_window.draw_absolute(rendered_text, Point(30, 195 - self.__current_offset))
+        self.__current_offset += 20

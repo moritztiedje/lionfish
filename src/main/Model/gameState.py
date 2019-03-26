@@ -1,10 +1,12 @@
 from src.main.Model.player import Player
+from src.main.Model.textAdventureState import TextAdventureState
 from src.main.constants import Panels
 from src.mapGeneration.tileMap import array_from_file
 
 
 class GameState:
     def __init__(self):
+        self.__text_adventure_state = TextAdventureState()
         self.__area_map = array_from_file('./dummyMap')
         self.__world_map = array_from_file('./dummyWorldMap')
         self.__player = Player()
@@ -38,3 +40,9 @@ class GameState:
         :type panel_key: src.main.constants.Panels
         """
         self.__activePanels[panel_key] = True
+
+    def get_text_adventure_state(self):
+        """
+        :rtype: src.main.Model.textAdventureState.TextAdventureState
+        """
+        return self.__text_adventure_state
