@@ -47,6 +47,12 @@ class Rectangle:
         self.__lower_left = lower_left
         self.__upper_right = upper_right
 
+    @staticmethod
+    def from_upper_left_and_lower_right(upper_left, lower_right):
+        lower_left = Point(upper_left.get_x(), lower_right.get_y())
+        upper_right = Point(lower_right.get_x(), upper_left.get_y())
+        return Rectangle(lower_left, upper_right)
+
     def is_inside(self, point):
         """
         :type point: Point
