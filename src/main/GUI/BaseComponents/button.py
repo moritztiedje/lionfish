@@ -1,4 +1,4 @@
-from src.main.GUI.Controller.mouseEvent import MouseEventEnum
+from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.Util.point import Point
 
 
@@ -23,7 +23,7 @@ class Button:
             return self.__action()
 
     def __button_clicked(self, mouse_event):
-        if mouse_event.get_type() != MouseEventEnum.LeftClick:
+        if mouse_event.get_type() != MouseEventTypes.LeftClick:
             return False
         mouse_position = mouse_event.get_position()
         return self.__bottom_left.get_x() <= mouse_position[0] <= self.__top_right.get_x() and \

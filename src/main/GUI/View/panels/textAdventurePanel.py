@@ -1,7 +1,9 @@
 import pygame
 
+from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
+from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 from src.main.Util.point import Point
 
 BOTTOM_BORDER = 10
@@ -12,7 +14,6 @@ HEIGHT_OF_LINE = 20
 
 
 class TextAdventurePanel(Panel):
-
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
@@ -22,7 +23,11 @@ class TextAdventurePanel(Panel):
         self.__height = 200
 
     def _handle_mouse_event(self, mouse_event):
-        pass
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
+        if mouse_event.get_type() is MouseEventTypes.LeftClick:
+            return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, 0)
 
     def _load_image_vault(self):
         """
@@ -59,11 +64,21 @@ class TextAdventurePanel(Panel):
         )
 
     def __draw_content(self, game_state):
-        self.__draw_string(game_state.get_text_adventure_state().get_text())
-        for option in game_state.get_text_adventure_state().get_options():
+        """
+        :type game_state: src.main.Model.gameState.GameState
+        """
+        for selection in game_state.get_text_adventure_state().get_old_selections():
+            self.__draw_string(selection.text, color=pygame.Color('darkgray'))
+            for option in selection.options:
+                self.__draw_string(option, line_offset=10, color=pygame.Color('darkgray'))
+            self.__draw_string("")
+
+        current_selection = game_state.get_text_adventure_state().get_current_selection()
+        self.__draw_string(current_selection.text)
+        for option in current_selection.options:
             self.__draw_string(option, line_offset=10)
 
-    def __draw_string(self, text, line_offset=0):
+    def __draw_string(self, text, line_offset=0, color=pygame.Color('black')):
         font = pygame.font.SysFont("Times New Roman", HEIGHT_OF_LINE)
         width_of_space = font.size(' ')[0]
         max_width = self._game_window.get_width() - RIGHT_BORDER - LEFT_BORDER - line_offset
@@ -71,7 +86,7 @@ class TextAdventurePanel(Panel):
         length_of_current_line = 0
         words = text.split(' ')
         for word in words:
-            rendered_word = font.render(word, 0, pygame.Color('black'))
+            rendered_word = font.render(word, 0, color)
             word_width = rendered_word.get_width()
             if length_of_current_line + word_width >= max_width:
                 length_of_current_line = 0

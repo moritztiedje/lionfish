@@ -2,7 +2,7 @@ from abc import ABCMeta
 from enum import Enum
 
 
-class MouseEventEnum(Enum):
+class MouseEventTypes(Enum):
     DoubleClick = 2
     LeftClick = 1
 
@@ -11,7 +11,7 @@ class MouseEvent(metaclass=ABCMeta):
     def __init__(self, position, event_type):
         """
         :type position: (int, int)
-        :type event_type: MouseEventEnum
+        :type event_type: MouseEventTypes
         """
         self.__position = position
         self.__type = event_type
@@ -37,7 +37,7 @@ class MouseEvent(metaclass=ABCMeta):
 
     def get_type(self):
         """
-        :rtype: MouseEventEnum
+        :rtype: MouseEventTypes
         """
         return self.__type
 
@@ -47,7 +47,7 @@ class DoubleClick(MouseEvent):
         """
         :type position: (int, int)
         """
-        super().__init__(position, MouseEventEnum.DoubleClick)
+        super().__init__(position, MouseEventTypes.DoubleClick)
 
 
 class LeftClick(MouseEvent):
@@ -55,4 +55,4 @@ class LeftClick(MouseEvent):
         """
         :type position: (int, int)
         """
-        super().__init__(position, MouseEventEnum.LeftClick)
+        super().__init__(position, MouseEventTypes.LeftClick)

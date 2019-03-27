@@ -1,5 +1,5 @@
 from src.main.GUI.BaseComponents.button import Button
-from src.main.GUI.Controller.mouseEvent import MouseEventEnum
+from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
@@ -91,7 +91,7 @@ class AreaMapPanel(Panel):
         """
         hexagon_point = self.__click_box.get_hexagon(mouse_event.get_relative_position())
         self.__highlighted_field = hexagon_point
-        if mouse_event.get_type() == MouseEventEnum.DoubleClick:
+        if mouse_event.get_type() == MouseEventTypes.DoubleClick:
             return GameStateChangeEvent(GameStateChangeEventTypes.EnterArea, hexagon_point)
 
     def zoom_in(self):
