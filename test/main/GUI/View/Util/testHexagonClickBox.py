@@ -9,10 +9,38 @@ from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 class TestHexagonClickBox(unittest.TestCase):
     def testEveryHexagonHasCorrectClickBox(self):
         hexagons_with_points_in_them = [
-            (Point(0, 0), [[1, -52], [49, -1], [103, -1], [151, -52], [103, -103], [49, -103]]),
-            (Point(0, 1), [[1, 52], [49, 103], [103, 103], [151, 52], [103, 1], [49, 1]]),
-            (Point(1, 0), [[105, 0], [153, 51], [207, 51], [255, 0], [207, -51], [153, -51]]),
-            (Point(1, 1), [[105, 104], [153, 155], [207, 155], [255, 104], [207, 53], [153, 53]]),
+            (Point(0, 0), [
+                Point(1, -52),
+                Point(49, -1),
+                Point(103, -1),
+                Point(151, -52),
+                Point(103, -103),
+                Point(49, -103)
+            ]),
+            (Point(0, 1), [
+                Point(1, 52),
+                Point(49, 103),
+                Point(103, 103),
+                Point(151, 52),
+                Point(103, 1),
+                Point(49, 1)
+            ]),
+            (Point(1, 0), [
+                Point(105, 0),
+                Point(153, 51),
+                Point(207, 51),
+                Point(255, 0),
+                Point(207, -51),
+                Point(153, -51)
+            ]),
+            (Point(1, 1), [
+                Point(105, 104),
+                Point(153, 155),
+                Point(207, 155),
+                Point(255, 104),
+                Point(207, 53),
+                Point(153, 53)
+            ]),
         ]
 
         click_box = HexagonClickBox()
@@ -24,7 +52,13 @@ class TestHexagonClickBox(unittest.TestCase):
                                  "Point: " + str(point) + " is not in hexagon: " + str(hexagon))
 
     def testClicksOutsideOfGame(self):
-        points_outside_of_game = [[153, -53], [105, -105], [47, -105], [-1, -52], [47, 0]]
+        points_outside_of_game = [
+            Point(153, -53),
+            Point(105, -105),
+            Point(47, -105),
+            Point(-1, -52),
+            Point(47, 0)
+        ]
 
         click_box = HexagonClickBox()
 
@@ -35,10 +69,34 @@ class TestHexagonClickBox(unittest.TestCase):
 
     def testEveryHexagonHasCorrectClickBoxAfter1ZoomIn(self):
         hexagons_with_points_in_them = [
-            (Point(0, 0), [[1, -104], [97, -1], [207, -1], [303, -104], [207, -207], [97, -207]]),
-            (Point(0, 1), [[1, 104], [97, 207], [207, 207], [303, 104], [207, 1], [97, 1]]),
-            (Point(1, 0), [[209, 0], [305, 103], [415, 103], [511, 0], [415, -103], [305, -103]]),
-            (Point(1, 1), [[209, 208], [305, 307], [415, 307], [511, 208], [415, 105], [305, 105]]),
+            (Point(0, 0), [
+                Point(1, -104),
+                Point(97, -1),
+                Point(207, -1),
+                Point(303, -104),
+                Point(207, -207),
+                Point(97, -207)]),
+            (Point(0, 1), [
+                Point(1, 104),
+                Point(97, 207),
+                Point(207, 207),
+                Point(303, 104),
+                Point(207, 1),
+                Point(97, 1)]),
+            (Point(1, 0), [
+                Point(209, 0),
+                Point(305, 103),
+                Point(415, 103),
+                Point(511, 0),
+                Point(415, -103),
+                Point(305, -103)]),
+            (Point(1, 1), [
+                Point(209, 208),
+                Point(305, 307),
+                Point(415, 307),
+                Point(511, 208),
+                Point(415, 105),
+                Point(305, 105)]),
         ]
 
         click_box = HexagonClickBox()
