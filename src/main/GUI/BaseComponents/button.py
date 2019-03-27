@@ -1,16 +1,15 @@
+from src.main.GUI.BaseComponents.geometry import Point, Rectangle
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
-from src.main.Util.point import Point
 
 
 class Button:
     def __init__(self, bottom_left, top_right, image, action):
         """
-        :type bottom_left: main.GUI.point.Point
-        :type top_right: main.GUI.point.Point
+        :type bottom_left: src.main.GUI.BaseComponents.geometry.Point
+        :type top_right: src.main.GUI.BaseComponents.geometry.Point
         :type action: function
         """
-        self.__bottom_left = bottom_left
-        self.__top_right = top_right
+        self.__button_area = Rectangle(bottom_left, top_right)
         self.__image = image
         self.__action = action
 
@@ -23,12 +22,12 @@ class Button:
             return self.__action()
 
     def __button_clicked(self, mouse_event):
+        """
+        :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
+        """
         if mouse_event.get_type() != MouseEventTypes.LeftClick:
             return False
-        mouse_position = mouse_event.get_position()
-        return self.__bottom_left.get_x() <= mouse_position[0] <= self.__top_right.get_x() and \
-               self.__bottom_left.get_y() <= mouse_position[1] <= self.__top_right.get_y()
+        return self.__button_area.is_inside(mouse_event.get_position())
 
     def draw(self, game_window):
-        coordinate = Point(self.__bottom_left.get_x(), self.__top_right.get_y())
-        game_window.draw_absolute(self.__image.sprite, coordinate)
+        game_window.draw_absolute(self.__image.sprite, self.__button_area.get_draw_coordinate())

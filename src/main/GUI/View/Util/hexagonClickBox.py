@@ -1,6 +1,6 @@
 import math
 
-from src.main.Util.point import Point
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH, HEXAGON_FIELD_CENTER_WIDTH, HEXAGON_FIELD_SIDE_WIDTH, \
     HEXAGON_FIELD_HEIGHT
 
@@ -21,10 +21,10 @@ class HexagonClickBox:
         self.__width_of_hexagon_center = HEXAGON_FIELD_CENTER_WIDTH * zoom_level
         self.__height_of_hexagon = HEXAGON_FIELD_HEIGHT * zoom_level
         self.__hexagon_middle_stub = (HEXAGON_FIELD_HEIGHT - 2 * HEXAGON_FIELD_SIDE_WIDTH) / 2 * zoom_level
-    
+
     def get_hexagon(self, mouse_position):
         """
-        :type mouse_position: (int, int)
+        :type mouse_position: src.main.GUI.BaseComponents.geometry.Point
         """
         approximate_field = self.__get_square(mouse_position)
         if approximate_field[0] % 2 == 1:
@@ -34,19 +34,27 @@ class HexagonClickBox:
             return Point(exact_field[0], exact_field[1])
 
     def __get_square(self, mouse_clicked_position):
-        is_even_square = mouse_clicked_position[0] % self.__width_of_two_adjacent_hexagons < self.__width_of_hexagon
-        x_position = 2 * math.floor(mouse_clicked_position[0] / self.__width_of_two_adjacent_hexagons)
+        """
+        :type mouse_clicked_position: src.main.GUI.BaseComponents.geometry.Point
+        """
+        is_even_square = mouse_clicked_position.get_x() % self.__width_of_two_adjacent_hexagons < self.__width_of_hexagon
+        x_position = 2 * math.floor(mouse_clicked_position.get_x() / self.__width_of_two_adjacent_hexagons)
 
         if is_even_square:
-            y_position = math.floor(mouse_clicked_position[1] / self.__height_of_hexagon) + 1
+            y_position = math.floor(mouse_clicked_position.get_y() / self.__height_of_hexagon) + 1
             return x_position, y_position
         else:
-            y_position = math.floor(mouse_clicked_position[1] / self.__height_of_hexagon + 0.5)
+            y_position = math.floor(mouse_clicked_position.get_y() / self.__height_of_hexagon + 0.5)
             return x_position + 1, y_position
-    
+
     def __correct_approximate(self, mouse_position, approximate_field):
-        mouse_position_in_field_x = mouse_position[0] - int((approximate_field[0] * self.__width_of_two_adjacent_hexagons) / 2)
-        mouse_position_in_field_y = mouse_position[1] - (approximate_field[1] - 1) * self.__height_of_hexagon
+        """
+        :type mouse_position: src.main.GUI.BaseComponents.geometry.Point
+        :type approximate_field: (int, int)
+        """
+        mouse_position_in_field_x = mouse_position.get_x() - int(
+            (approximate_field[0] * self.__width_of_two_adjacent_hexagons) / 2)
+        mouse_position_in_field_y = mouse_position.get_y() - (approximate_field[1] - 1) * self.__height_of_hexagon
 
         mouse_position_in_field = mouse_position_in_field_x, mouse_position_in_field_y
         if not self.__is_above_bottom_left_diagonal(mouse_position_in_field):
@@ -58,15 +66,18 @@ class HexagonClickBox:
         if not self.__is_below_top_left_diagonal(mouse_position_in_field):
             return approximate_field[0] - 1, approximate_field[1] + 1
         return approximate_field
-    
+
     def __is_above_bottom_left_diagonal(self, mouse_clicked_position):
         return mouse_clicked_position[0] + mouse_clicked_position[1] > self.__width_of_hexagon_side
-    
+
     def __is_below_top_right_diagonal(self, mouse_clicked_position):
-        return mouse_clicked_position[0] + mouse_clicked_position[1] < self.__height_of_hexagon + self.__width_of_hexagon + self.__hexagon_middle_stub
-    
+        return mouse_clicked_position[0] + mouse_clicked_position[
+            1] < self.__height_of_hexagon + self.__width_of_hexagon + self.__hexagon_middle_stub
+
     def __is_above_bottom_right_diagonal(self, mouse_clicked_position):
-        return mouse_clicked_position[0] - mouse_clicked_position[1] < self.__width_of_hexagon_side + self.__width_of_hexagon_center
-    
+        return mouse_clicked_position[0] - mouse_clicked_position[
+            1] < self.__width_of_hexagon_side + self.__width_of_hexagon_center
+
     def __is_below_top_left_diagonal(self, mouse_clicked_position):
-        return mouse_clicked_position[0] - mouse_clicked_position[1] > -self.__height_of_hexagon / 2 - self.__hexagon_middle_stub
+        return mouse_clicked_position[0] - mouse_clicked_position[
+            1] > -self.__height_of_hexagon / 2 - self.__hexagon_middle_stub

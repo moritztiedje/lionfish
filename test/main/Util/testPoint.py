@@ -1,9 +1,6 @@
 import unittest
 
-from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
-from hamcrest import assert_that
-
-from src.main.Util.point import Point
+from src.main.GUI.BaseComponents.geometry import Point
 
 
 class TestPoint(unittest.TestCase):

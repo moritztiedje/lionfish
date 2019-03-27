@@ -1,6 +1,7 @@
 import pygame
 from pygame.constants import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.Controller.mouseController import MouseController
 
 
@@ -42,7 +43,7 @@ class GameController:
         if mouse_event:
             mouse_position = mouse_event.get_position()
             camera_position = self.__game_window.get_camera_position()
-            relative_mouse_position = (mouse_position[0] + camera_position[0], mouse_position[1] + camera_position[1])
+            relative_mouse_position = mouse_position + camera_position
             mouse_event.set_relative_position(relative_mouse_position)
             return mouse_event
 

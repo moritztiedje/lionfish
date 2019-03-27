@@ -1,5 +1,6 @@
 import pygame
 
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.Controller.mouseEvent import DoubleClick, LeftClick
 
 
@@ -46,5 +47,5 @@ class MouseController:
 
     def __get_inverted_mouse_position(self):
         mouse_position = pygame.mouse.get_pos()
-        inverted_mouse = mouse_position[0], self.__window_height - mouse_position[1]
+        inverted_mouse = Point(mouse_position[0], self.__window_height - mouse_position[1])
         return inverted_mouse

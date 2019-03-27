@@ -1,10 +1,10 @@
 import pygame
 
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
-from src.main.Util.point import Point
 
 BOTTOM_BORDER = 10
 TOP_BORDER = 10

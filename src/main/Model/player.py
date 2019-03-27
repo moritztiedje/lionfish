@@ -1,4 +1,4 @@
-from src.main.Util.point import Point
+from src.main.GUI.BaseComponents.geometry import Point
 
 
 class Player:

@@ -1,10 +1,10 @@
 import pygame
 
 from src.main.GUI.BaseComponents.button import Button
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.menuImageVault import MenuImageVault
 from src.main.GUI.View.panels.panel import Panel
-from src.main.Util.point import Point
 
 
 class MenuPanel(Panel):

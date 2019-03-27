@@ -1,11 +1,11 @@
 from src.main.GUI.BaseComponents.button import Button
+from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
-from src.main.Util.point import Point
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SPRITE_IN_HEXAGON_WIDTH, \
     HEXAGON_FIELD_WIDTH, SPRITE_IN_HEXAGON_HEIGHT
 

@@ -1,6 +1,8 @@
 from abc import ABCMeta
 from enum import Enum
 
+from src.main.GUI.BaseComponents.geometry import Point
+
 
 class MouseEventTypes(Enum):
     DoubleClick = 2
@@ -10,16 +12,16 @@ class MouseEventTypes(Enum):
 class MouseEvent(metaclass=ABCMeta):
     def __init__(self, position, event_type):
         """
-        :type position: (int, int)
+        :type position: src.main.GUI.BaseComponents.geometry.Point
         :type event_type: MouseEventTypes
         """
         self.__position = position
         self.__type = event_type
-        self.__relative_position = (0, 0)
+        self.__relative_position = Point(0, 0)
 
     def get_position(self):
         """
-        :rtype: (int, int)
+        :rtype: src.main.GUI.BaseComponents.geometry.Point
         """
         return self.__position
 
@@ -31,7 +33,7 @@ class MouseEvent(metaclass=ABCMeta):
 
     def set_relative_position(self, position):
         """
-        :type position: (int, int)
+        :type position: src.main.GUI.BaseComponents.geometry.Point
         """
         self.__relative_position = position
 
@@ -45,7 +47,7 @@ class MouseEvent(metaclass=ABCMeta):
 class DoubleClick(MouseEvent):
     def __init__(self, position):
         """
-        :type position: (int, int)
+        :type position: src.main.GUI.BaseComponents.geometry.Point
         """
         super().__init__(position, MouseEventTypes.DoubleClick)
 
@@ -53,6 +55,6 @@ class DoubleClick(MouseEvent):
 class LeftClick(MouseEvent):
     def __init__(self, position):
         """
-        :type position: (int, int)
+        :type position: src.main.GUI.BaseComponents.geometry.Point
         """
         super().__init__(position, MouseEventTypes.LeftClick)
