@@ -13,14 +13,33 @@ class Image:
         """
         self.__base_width = width
         self.__base_height = height
+        self.__width = width
+        self.__height = height
         self.sprite = pygame.image.load(path)
 
-    def scale_sprite(self, zoom):
+    def zoom(self, zoom_level):
         self.sprite = pygame.transform.scale(self.sprite,
-                                             (int(self.__base_width * zoom), int(self.__base_height * zoom)))
+                                             (int(self.__base_width * zoom_level), int(self.__base_height * zoom_level)))
 
     def scale_to_width(self, width):
-        self.sprite = pygame.transform.scale(self.sprite, (width, self.__base_height))
+        self.__width = width
+        self.sprite = pygame.transform.scale(self.sprite, (width, self.__height))
+
+    def scale_to_height(self, height):
+        self.__height = height
+        self.sprite = pygame.transform.scale(self.sprite, (self.__width, height))
+
+    def get_height(self):
+        """
+        :rtype: int
+        """
+        return self.__height
+
+    def get_width(self):
+        """
+        :rtype: int
+        """
+        return self.__width
 
 
 class HexFieldImage(Image):

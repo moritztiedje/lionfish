@@ -21,4 +21,4 @@ class ImageVaultWithHighlights(ImageVault):
     def _scale_images(self, zoom):
         super()._scale_images(zoom)
         for key in self.__highlighted_images:
-            self.__highlighted_images[key].scale_sprite(zoom)
+            self.__highlighted_images[key].zoom(zoom)

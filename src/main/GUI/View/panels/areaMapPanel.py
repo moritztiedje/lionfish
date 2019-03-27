@@ -53,10 +53,10 @@ class AreaMapPanel(Panel):
                 if current_field == self.__highlighted_field:
                     self.__display_hexagon(self._image_vault.get_highlighted(image_code), Point(x, y))
                 else:
-                    self.__display_hexagon(self._image_vault.get(image_code), Point(x, y))
+                    self.__display_hexagon(self._image_vault.get_sprite(image_code), Point(x, y))
 
         player = game_state.get_player_position_in_area()
-        self.__display_in_hexagon(self._image_vault.get(AreaImageEnum.PLAYER), player)
+        self.__display_in_hexagon(self._image_vault.get_sprite(AreaImageEnum.PLAYER), player)
 
     def __display_hexagon(self, sprite, game_field):
         """

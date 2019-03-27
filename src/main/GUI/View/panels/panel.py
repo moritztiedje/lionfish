@@ -35,7 +35,7 @@ class Panel(metaclass=ABCMeta):
     @abstractmethod
     def _load_image_vault(self):
         """
-        :rtype: src.main.GUI.View.imageVault.ImageVault
+        :rtype: src.main.GUI.View.imageVaults.imageVault.ImageVault
         """
         return None
 
