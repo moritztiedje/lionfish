@@ -22,6 +22,7 @@ class TextAdventurePanel(Panel):
         self.__y_offset = 0
         self.__selection_hitboxes = []
         self.__height = 200
+        self.__max_height = game_window.get_height() - TOP_BORDER - 60
 
     def _handle_mouse_event(self, mouse_event):
         """
@@ -43,16 +44,21 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         super().draw(game_state)
+        self.__draw_once(game_state)
+
+        if self.__y_offset > self.__max_height:
+            self.__height = self.__max_height
+            self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
+            self.__draw_once(game_state)
+        elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
+            self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
+            self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
+            self.__draw_once(game_state)
+
+    def __draw_once(self, game_state):
         self.__reset()
         self.__draw_background()
         self.__draw_content(game_state)
-
-        if self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
-            self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
-            self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            self.__reset()
-            self.__draw_background()
-            self.__draw_content(game_state)
 
     def __reset(self):
         self.__y_offset = 0
