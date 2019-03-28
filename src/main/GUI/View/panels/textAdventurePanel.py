@@ -1,6 +1,7 @@
 import pygame
 
 from src.main.GUI.BaseComponents.geometry import Point, Rectangle
+from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
@@ -14,9 +15,6 @@ HEIGHT_OF_LINE = 20
 
 
 class TextAdventurePanel(Panel):
-    def handle_key_event(self, key_event):
-        pass
-
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
@@ -25,7 +23,19 @@ class TextAdventurePanel(Panel):
         self.__y_offset = 0
         self.__selection_hitboxes = []
         self.__height = 200
-        self.__max_height = game_window.get_height() - TOP_BORDER - 60
+        border_height = 20
+        self.__max_height = game_window.get_height() - border_height - 50
+
+    def handle_key_event(self, key_event):
+        """
+        :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
+        """
+        if self.__height == self.__max_height:
+            top_of_displayed_text = self.__max_height - self.__y_offset - BOTTOM_BORDER
+            if key_event == KeyEventTypes.DOWN_PRESS and self._camera_position.get_y() >= top_of_displayed_text:
+                self._camera_position -= Point(0, 10)
+            elif key_event == KeyEventTypes.UP_PRESS and self._camera_position.get_y() <= -10:
+                self._camera_position += Point(0, 10)
 
     def _handle_mouse_event(self, mouse_event):
         """
@@ -33,7 +43,8 @@ class TextAdventurePanel(Panel):
         """
         if mouse_event.get_type() is MouseEventTypes.LeftClick:
             for index in range(len(self.__selection_hitboxes)):
-                if self.__selection_hitboxes[index].is_inside(mouse_event.get_position()):
+                relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
+                if self.__selection_hitboxes[index].is_inside(relative_mouse_position):
                     return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, index)
 
     def _load_image_vault(self):
@@ -62,6 +73,7 @@ class TextAdventurePanel(Panel):
         self.__reset()
         self.__draw_background()
         self.__draw_content(game_state)
+        self.__draw_border()
 
     def __reset(self):
         self.__y_offset = 0
@@ -72,6 +84,8 @@ class TextAdventurePanel(Panel):
                 self._image_vault.get_sprite(TextAdventureImageEnum.BACKGROUND),
                 Point(0, self.__height)
         )
+
+    def __draw_border(self):
         border_height = self._image_vault.get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
         self._game_window.draw(
                 self._image_vault.get_sprite(TextAdventureImageEnum.TOP_BORDER),
@@ -120,8 +134,13 @@ class TextAdventurePanel(Panel):
             if not top_left_of_first_word:
                 top_left_of_first_word = draw_coordinate
             bottom_right_of_last_word = draw_coordinate + Point(rendered_word.get_width(), -HEIGHT_OF_LINE)
-            self._game_window.draw(rendered_word, draw_coordinate)
+            if self.__is_inside_panel(draw_coordinate):
+                self._draw_relative_to_camera(rendered_word, draw_coordinate)
             length_of_current_line += word_width + width_of_space
         self.__y_offset += HEIGHT_OF_LINE
 
         return Rectangle.from_upper_left_and_lower_right(top_left_of_first_word, bottom_right_of_last_word)
+
+    def __is_inside_panel(self, draw_coordinate):
+        border_height = self._image_vault.get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
+        return (draw_coordinate - self._camera_position).get_y() < self.__max_height + border_height

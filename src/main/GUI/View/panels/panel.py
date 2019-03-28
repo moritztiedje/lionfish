@@ -19,12 +19,16 @@ class Panel(metaclass=ABCMeta):
     def _draw_relative_to_camera(self, sprite, point):
         """
         :type sprite: pygame.Surface
-        :type point: main.GUI.point.Point
+        :type point: src.main.GUI.BaseComponents.geometry.Point
         """
         self._game_window.draw(sprite, point - self._camera_position)
 
-    def _calculate_relative_mouse_position(self, absolute_mouse_position):
-        return absolute_mouse_position + self._camera_position
+    def _calculate_relative_position_of(self, absolute_position):
+        """
+        :type absolute_position: src.main.GUI.BaseComponents.geometry.Point
+        :rtype: src.main.GUI.BaseComponents.geometry.Point
+        """
+        return absolute_position + self._camera_position
 
     def is_active(self):
         return self.__is_active

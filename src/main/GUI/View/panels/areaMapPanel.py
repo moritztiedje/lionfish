@@ -107,7 +107,7 @@ class AreaMapPanel(Panel):
         """
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
-        relative_mouse_position = self._calculate_relative_mouse_position(mouse_event.get_position())
+        relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
         hexagon_point = self.__click_box.get_hexagon(relative_mouse_position)
         self.__highlighted_field = hexagon_point
         if mouse_event.get_type() == MouseEventTypes.DoubleClick:
