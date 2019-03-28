@@ -59,3 +59,13 @@ class PanelsManager:
                 change_event = panel.handle_mouse_event(mouse_event)
                 if change_event:
                     return change_event
+
+    def handle_key_event(self, key_event):
+        """
+        :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
+        """
+        for panel in self.__panels.values():
+            if panel.is_active():
+                change_event = panel.handle_key_event(key_event)
+                if change_event:
+                    return change_event

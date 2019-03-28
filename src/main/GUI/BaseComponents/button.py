@@ -30,4 +30,4 @@ class Button:
         return self.__button_area.is_inside(mouse_event.get_position())
 
     def draw(self, game_window):
-        game_window.draw_absolute(self.__image.sprite, self.__button_area.get_draw_coordinate())
+        game_window.draw(self.__image.sprite, self.__button_area.get_draw_coordinate())

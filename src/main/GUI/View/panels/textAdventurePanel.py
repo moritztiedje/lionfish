@@ -14,6 +14,9 @@ HEIGHT_OF_LINE = 20
 
 
 class TextAdventurePanel(Panel):
+    def handle_key_event(self, key_event):
+        pass
+
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
@@ -65,12 +68,12 @@ class TextAdventurePanel(Panel):
         self.__selection_hitboxes = []
 
     def __draw_background(self):
-        self._game_window.draw_absolute(
+        self._game_window.draw(
                 self._image_vault.get_sprite(TextAdventureImageEnum.BACKGROUND),
                 Point(0, self.__height)
         )
         border_height = self._image_vault.get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
-        self._game_window.draw_absolute(
+        self._game_window.draw(
                 self._image_vault.get_sprite(TextAdventureImageEnum.TOP_BORDER),
                 Point(0, self.__height + border_height)
         )
@@ -117,7 +120,7 @@ class TextAdventurePanel(Panel):
             if not top_left_of_first_word:
                 top_left_of_first_word = draw_coordinate
             bottom_right_of_last_word = draw_coordinate + Point(rendered_word.get_width(), -HEIGHT_OF_LINE)
-            self._game_window.draw_absolute(rendered_word, draw_coordinate)
+            self._game_window.draw(rendered_word, draw_coordinate)
             length_of_current_line += word_width + width_of_space
         self.__y_offset += HEIGHT_OF_LINE
 

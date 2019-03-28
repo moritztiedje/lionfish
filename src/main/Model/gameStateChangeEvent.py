@@ -8,6 +8,7 @@ class GameStateChangeEvent:
 
 
 class GameStateChangeEventTypes(Enum):
+    InternalGUIChange = -1
     EnterArea = 0
     GoToWorldMap = 1
     SelectTextAdventureOption = 2

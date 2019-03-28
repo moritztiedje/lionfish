@@ -1,5 +1,6 @@
 from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.BaseComponents.geometry import Point
+from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.image import Image
@@ -11,6 +12,23 @@ from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT
 
 
 class AreaMapPanel(Panel):
+    def handle_key_event(self, key_event):
+        """
+        :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
+        """
+        if key_event == KeyEventTypes.UP_PRESS:
+            self._camera_position += Point(0, 2)
+            return GameStateChangeEvent(GameStateChangeEventTypes.InternalGUIChange, None)
+        elif key_event == KeyEventTypes.DOWN_PRESS:
+            self._camera_position -= Point(0, 2)
+            return GameStateChangeEvent(GameStateChangeEventTypes.InternalGUIChange, None)
+        elif key_event == KeyEventTypes.RIGHT_PRESS:
+            self._camera_position += Point(2, 0)
+            return GameStateChangeEvent(GameStateChangeEventTypes.InternalGUIChange, None)
+        elif key_event == KeyEventTypes.LEFT_PRESS:
+            self._camera_position -= Point(2, 0)
+            return GameStateChangeEvent(GameStateChangeEventTypes.InternalGUIChange, None)
+
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
@@ -66,7 +84,7 @@ class AreaMapPanel(Panel):
         y_coordinate = game_field.get_y() * HEXAGON_FIELD_HEIGHT * self._camera_zoom
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
-        self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
+        self._draw_relative_to_camera(sprite, Point(x_coordinate, y_coordinate))
 
     def __display_in_hexagon(self, sprite, game_field):
         """
@@ -83,13 +101,14 @@ class AreaMapPanel(Panel):
 
         if game_field.get_x() % 2 != 0:
             y_coordinate += HEXAGON_FIELD_HEIGHT / 2 * self._camera_zoom
-        self._game_window.draw(sprite, Point(x_coordinate, y_coordinate))
+        self._draw_relative_to_camera(sprite, Point(x_coordinate, y_coordinate))
 
     def _handle_mouse_event(self, mouse_event):
         """
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
-        hexagon_point = self.__click_box.get_hexagon(mouse_event.get_relative_position())
+        relative_mouse_position = self._calculate_relative_mouse_position(mouse_event.get_position())
+        hexagon_point = self.__click_box.get_hexagon(relative_mouse_position)
         self.__highlighted_field = hexagon_point
         if mouse_event.get_type() == MouseEventTypes.DoubleClick:
             return GameStateChangeEvent(GameStateChangeEventTypes.EnterArea, hexagon_point)

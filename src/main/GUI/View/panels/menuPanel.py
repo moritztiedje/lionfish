@@ -8,6 +8,9 @@ from src.main.GUI.View.panels.panel import Panel
 
 
 class MenuPanel(Panel):
+    def handle_key_event(self, key_event):
+        pass
+
     def __init__(self, game_window, zoom_in, zoom_out):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow

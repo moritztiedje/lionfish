@@ -5,6 +5,9 @@ from src.main.constants import SQUARE_FIELD_WIDTH, SQUARE_FIELD_HEIGHT
 
 
 class WorldMapPanel(Panel):
+    def handle_key_event(self, key_event):
+        pass
+
     def __init__(self, game_window):
         """
         :type game_window: src.main.GUI.View.gameWindow.GameWindow
@@ -34,8 +37,8 @@ class WorldMapPanel(Panel):
     def __display_square(self, sprite, coordinate):
         """
         :type sprite: pygame.Surface
-        :type coordinate: main.GUI.point.Point
+        :type coordinate: src.main.GUI.BaseComponents.geometry.Point
         """
         display_coordinate = Point(coordinate.get_x() * SQUARE_FIELD_WIDTH * self._camera_zoom,
                                    coordinate.get_y() * SQUARE_FIELD_HEIGHT * self._camera_zoom)
-        self._game_window.draw(sprite, display_coordinate)
+        self._draw_relative_to_camera(sprite, display_coordinate)

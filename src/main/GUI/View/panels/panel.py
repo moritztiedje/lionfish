@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
+from src.main.GUI.BaseComponents.geometry import Point
+
 
 class Panel(metaclass=ABCMeta):
     def __init__(self, game_window, z_index):
@@ -9,9 +11,20 @@ class Panel(metaclass=ABCMeta):
         self._game_window = game_window
         self.__buttons = []
         self._camera_zoom = 1
+        self._camera_position = Point(0, 0)
         self._image_vault = None
         self.__z_index = z_index
         self.__is_active = False
+
+    def _draw_relative_to_camera(self, sprite, point):
+        """
+        :type sprite: pygame.Surface
+        :type point: main.GUI.point.Point
+        """
+        self._game_window.draw(sprite, point - self._camera_position)
+
+    def _calculate_relative_mouse_position(self, absolute_mouse_position):
+        return absolute_mouse_position + self._camera_position
 
     def is_active(self):
         return self.__is_active
@@ -63,6 +76,12 @@ class Panel(metaclass=ABCMeta):
                 return game_state_change_event
 
         return self._handle_mouse_event(mouse_event)
+
+    @abstractmethod
+    def handle_key_event(self, key_event):
+        """
+        :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
+        """
 
     @abstractmethod
     def _handle_mouse_event(self, mouse_event):

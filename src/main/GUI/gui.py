@@ -10,7 +10,7 @@ class GUI:
         """
         self.__game_window = game_window
         self.__game_controller = game_controller
-        self.__views_holder = PanelsManager(game_window)
+        self.__panels_manager = PanelsManager(game_window)
 
         self.__display_has_changed = True
 
@@ -19,12 +19,13 @@ class GUI:
         :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
         """
         mouse_event = self.__game_controller.get_mouse_event()
-        base_logic_has_changed_display = self.__game_controller.handle_base_logic()
+        key_event = self.__game_controller.get_key_event()
         if mouse_event:
             self.__display_has_changed = True
-            return self.__views_holder.handle_mouse_event(mouse_event)
-        else:
-            self.__display_has_changed = base_logic_has_changed_display
+            return self.__panels_manager.handle_mouse_event(mouse_event)
+        elif key_event:
+            self.__display_has_changed = True
+            return self.__panels_manager.handle_key_event(key_event)
 
     def has_something_changed(self):
         return self.__display_has_changed
@@ -34,5 +35,5 @@ class GUI:
         :type game_state: src.main.Model.gameState.GameState
         """
         self.__game_window.clear()
-        self.__views_holder.draw(game_state)
+        self.__panels_manager.draw(game_state)
         self.__display_has_changed = False

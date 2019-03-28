@@ -1,7 +1,7 @@
 import pygame
 from pygame.constants import K_UP, K_DOWN, K_LEFT, K_RIGHT
 
-from src.main.GUI.BaseComponents.geometry import Point
+from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseController import MouseController
 
 
@@ -13,38 +13,23 @@ class GameController:
         self.__game_window = game_window
         self.__mouse_controller = MouseController(self.__game_window.get_height())
 
-    def handle_base_logic(self):
-        return self.__handle_camera_movement()
-
-    def __handle_camera_movement(self):
-        keys = pygame.key.get_pressed()
-
-        key_action_map = {
-            K_UP: self.__game_window.camera_up,
-            K_DOWN: self.__game_window.camera_down,
-            K_LEFT: self.__game_window.camera_left,
-            K_RIGHT: self.__game_window.camera_right,
-        }
-
-        any_key_was_pressed = False
-        for key in key_action_map.keys():
-            if keys[key]:
-                action = key_action_map.get(key)
-                action()
-                any_key_was_pressed = True
-
-        return any_key_was_pressed
-
     def get_mouse_event(self):
         """
         :rtype: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
-        mouse_event = self.__mouse_controller.get_mouse_state()
-        if mouse_event:
-            mouse_position = mouse_event.get_position()
-            camera_position = self.__game_window.get_camera_position()
-            relative_mouse_position = mouse_position + camera_position
-            mouse_event.set_relative_position(relative_mouse_position)
-            return mouse_event
+        return self.__mouse_controller.get_mouse_state()
 
-        return None
+    @staticmethod
+    def get_key_event():
+        """
+        :rtype: src.main.GUI.Controller.keyEvent.KeyEventTypes
+        """
+        keys = pygame.key.get_pressed()
+        if keys[K_UP]:
+            return KeyEventTypes.UP_PRESS
+        elif keys[K_DOWN]:
+            return KeyEventTypes.DOWN_PRESS
+        elif keys[K_LEFT]:
+            return KeyEventTypes.LEFT_PRESS
+        elif keys[K_RIGHT]:
+            return KeyEventTypes.RIGHT_PRESS
