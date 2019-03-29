@@ -21,6 +21,6 @@ class ChangeEventHandler:
             game_state.get_panel_state(Panels.WorldMap).show()
         elif game_state_change_event.event_type == GameStateChangeEventTypes.SelectTextAdventureOption:
             TextAdventureChangeEventHandler.select_option(
-                    game_state.get_text_adventure_state(),
+                    game_state,
                     game_state_change_event.payload
             )

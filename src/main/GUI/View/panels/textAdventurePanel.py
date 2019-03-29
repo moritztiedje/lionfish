@@ -7,6 +7,7 @@ from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureI
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 
+MINIMUM_HEIGHT = 200
 BOTTOM_BORDER = 10
 TOP_BORDER = 10
 RIGHT_BORDER = 20
@@ -22,7 +23,7 @@ class TextAdventurePanel(Panel):
         super().__init__(game_window, 1)
         self.__y_offset = 0
         self.__selection_hitboxes = []
-        self.__height = 200
+        self.__height = MINIMUM_HEIGHT
         border_height = 20
         self.__max_height = game_window.get_height() - border_height - 50
 
@@ -58,6 +59,7 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         super().draw(game_state)
+        self.__height = MINIMUM_HEIGHT
         self.__draw_once(game_state)
 
         if self.__y_offset > self.__max_height:
