@@ -28,9 +28,6 @@ class GameState:
     def get_world_map(self):
         return self.__world_map
 
-    def get_player_position_in_area(self):
-        return self.__player.get_position_in_area()
-
     def get_panel_state(self, panel_key):
         return self.__panelStates[panel_key]
 
@@ -39,3 +36,9 @@ class GameState:
         :rtype: src.main.Model.textAdventureState.TextAdventureState
         """
         return self.__text_adventure_state
+
+    def get_player(self):
+        """
+        :rtype: src.main.Model.player.Player
+        """
+        return self.__player

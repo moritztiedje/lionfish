@@ -68,7 +68,7 @@ class AreaMapPanel(Panel):
                 sprite = self._image_vault.get_sprite(area_map.get_tile(coordinate))
                 self.__display_hexagon(sprite, coordinate)
 
-        player = game_state.get_player_position_in_area()
+        player = game_state.get_player().get_position_in_area()
         self.__display_in_hexagon(self._image_vault.get_sprite(AreaImageEnum.PLAYER), player)
 
     def __display_hexagon(self, sprite, game_field):
