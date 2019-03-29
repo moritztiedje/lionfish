@@ -7,13 +7,16 @@ class AreaMap:
         """
         :type path_to_file: str
         """
-        area_map = open(path_to_file, mode="rb")
-        content = area_map.readline()
-        content_lines = content.split(b'\x02')
+        self.__area_map = self.__init_area_map(path_to_file)
 
-        self.__area_map = []
+    def __init_area_map(self, path_to_file):
+        file = open(path_to_file, mode="rb")
+        content = file.readline()
+        content_lines = content.split(b'\x02')
+        area_map = []
         for line in content_lines:
-            self.__area_map.append(list(map(self.__convert_string_to_area_element, line)))
+            area_map.append(list(map(self.__convert_string_to_area_element, line)))
+        return area_map
 
     @staticmethod
     def __convert_string_to_area_element(bytecode):
