@@ -48,7 +48,7 @@ class AreaMap:
                 coordinates.append(Point(x, y))
         return coordinates
 
-    def fields_are_connected(self, destination, origin):
+    def destination_accessible_from_origin(self, destination, origin):
         """
         :type destination: src.main.GUI.BaseComponents.geometry.Point
         :type origin: src.main.GUI.BaseComponents.geometry.Point
@@ -56,4 +56,17 @@ class AreaMap:
         """
         if self.get_tile(destination) == AreaImageEnum.WATER:
             return False
-        return True
+
+        return self.__coordinates_are_adjacent(destination, origin)
+
+    @staticmethod
+    def __coordinates_are_adjacent(destination, origin):
+        distance = origin - destination
+        if distance.get_x() == 0:
+            return distance.get_y() in (-1, 0, 1)
+        elif distance.get_x() in (1, -1):
+            if origin.get_x() % 2 == 0:
+                return distance.get_y() in (0, 1)
+            else:
+                return distance.get_y() in (0, -1)
+        return False
