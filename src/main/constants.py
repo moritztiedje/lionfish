@@ -22,3 +22,9 @@ class Panels(Enum):
     TextAdventureBox = 1
     WorldMap = 2
     MainMenuBar = 3
+
+
+class AreaImageEnum(Enum):
+    EMPTY = 1
+    WATER = 2
+    PLAYER = 90

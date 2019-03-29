@@ -2,6 +2,7 @@ from enum import Enum
 
 from src.main.GUI.View.image import HexFieldImage, SpriteInHexFieldImage
 from src.main.GUI.View.imageVaults.imageVaultWithHighlightings import ImageVaultWithHighlights
+from src.main.constants import AreaImageEnum
 
 
 class AreaImageVault(ImageVaultWithHighlights):
@@ -22,9 +23,3 @@ class AreaImageVault(ImageVaultWithHighlights):
 
     def set_camera_zoom(self, camera_zoom):
         self._scale_images(camera_zoom)
-
-
-class AreaImageEnum(Enum):
-    EMPTY = 1
-    WATER = 2
-    PLAYER = 0

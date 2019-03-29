@@ -4,11 +4,11 @@ from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.Util.hexagonClickBox import HexagonClickBox
 from src.main.GUI.View.image import Image
-from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault, AreaImageEnum
+from src.main.GUI.View.imageVaults.areaImageVault import AreaImageVault
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT, SPRITE_IN_HEXAGON_WIDTH, \
-    HEXAGON_FIELD_WIDTH, SPRITE_IN_HEXAGON_HEIGHT
+    HEXAGON_FIELD_WIDTH, SPRITE_IN_HEXAGON_HEIGHT, AreaImageEnum
 
 
 class AreaMapPanel(Panel):
@@ -60,18 +60,13 @@ class AreaMapPanel(Panel):
         super().draw(game_state)
 
         area_map = game_state.get_area_map()
-        for x in range(0, len(area_map)):
-            for y in range(0, len(area_map[x])):
-                current_field = Point(x, y)
-                if area_map[x][y] == 0:
-                    image_code = AreaImageEnum.WATER
-                else:
-                    image_code = AreaImageEnum.EMPTY
-
-                if current_field == self.__highlighted_field:
-                    self.__display_hexagon(self._image_vault.get_highlighted(image_code), Point(x, y))
-                else:
-                    self.__display_hexagon(self._image_vault.get_sprite(image_code), Point(x, y))
+        for coordinate in area_map.get_all_coordinates():
+            if self.__highlighted_field == coordinate:
+                highlighted_sprite = self._image_vault.get_highlighted(area_map.get_tile(coordinate))
+                self.__display_hexagon(highlighted_sprite, coordinate)
+            else:
+                sprite = self._image_vault.get_sprite(area_map.get_tile(coordinate))
+                self.__display_hexagon(sprite, coordinate)
 
         player = game_state.get_player_position_in_area()
         self.__display_in_hexagon(self._image_vault.get_sprite(AreaImageEnum.PLAYER), player)
