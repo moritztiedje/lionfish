@@ -3,9 +3,9 @@ class TextAdventureState:
         self.__old_selections = []
         self.__initial_selection = TextAdventureSelection(
                 "You entered this area.",
-                "finish it",
-                "look for stuff",
-                "run like a rabbit"
+                ["finish it",
+                 "look for stuff",
+                 "run like a rabbit"]
         )
         self.__current_selection = self.__initial_selection
 
@@ -34,10 +34,10 @@ class TextAdventureState:
 
 
 class TextAdventureSelection:
-    def __init__(self, text, *options):
+    def __init__(self, text, options):
         """
         :type text: str
-        :type options: bytearray of str
+        :type options: list of str
         """
         self.text = text
         self.options = options
