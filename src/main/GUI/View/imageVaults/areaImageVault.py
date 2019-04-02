@@ -1,5 +1,3 @@
-from enum import Enum
-
 from src.main.GUI.View.image import HexFieldImage, SpriteInHexFieldImage
 from src.main.GUI.View.imageVaults.imageVaultWithHighlightings import ImageVaultWithHighlights
 from src.main.constants import AreaImageEnum

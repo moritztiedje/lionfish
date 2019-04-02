@@ -1,11 +1,6 @@
 from unittest import TestCase
 
-from src.main.GUI.BaseComponents.geometry import Point
-from src.main.Logic.areaMapChangeEventHandler import AreaMapChangeEventHandler
 from src.main.Logic.stateMachine import StateMachine, SuccessState, ResultTypes
-from src.main.Model.areaMap import AreaMap
-from src.main.Model.gameState import GameState
-from test.util.mockUtil import create_mock
 
 
 class TestStateMachine(TestCase):

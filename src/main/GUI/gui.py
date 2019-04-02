@@ -1,4 +1,3 @@
-from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.panelsManager import PanelsManager
 
 

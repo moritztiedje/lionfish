@@ -53,7 +53,7 @@ class HexagonClickBox:
         :type approximate_field: (int, int)
         """
         mouse_position_in_field_x = mouse_position.get_x() - int(
-            (approximate_field[0] * self.__width_of_two_adjacent_hexagons) / 2)
+                (approximate_field[0] * self.__width_of_two_adjacent_hexagons) / 2)
         mouse_position_in_field_y = mouse_position.get_y() - (approximate_field[1] - 1) * self.__height_of_hexagon
 
         mouse_position_in_field = mouse_position_in_field_x, mouse_position_in_field_y

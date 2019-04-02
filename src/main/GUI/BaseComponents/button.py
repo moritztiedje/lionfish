@@ -1,4 +1,4 @@
-from src.main.GUI.BaseComponents.geometry import Point, Rectangle
+from src.main.GUI.BaseComponents.geometry import Rectangle
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 
 

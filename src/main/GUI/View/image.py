@@ -19,7 +19,8 @@ class Image:
 
     def zoom(self, zoom_level):
         self.sprite = pygame.transform.scale(self.sprite,
-                                             (int(self.__base_width * zoom_level), int(self.__base_height * zoom_level)))
+                                             (
+                                             int(self.__base_width * zoom_level), int(self.__base_height * zoom_level)))
 
     def scale_to_width(self, width):
         self.__width = width
