@@ -17,7 +17,7 @@ class State:
         self.text = text
 
 
-class ProceedState(State):
+class SuccessState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.SUCCESS

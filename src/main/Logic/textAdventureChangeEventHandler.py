@@ -1,4 +1,4 @@
-from src.main.Logic.stateMachine import StateMachine, State, ChoiceState, ProceedState, FailState, ResultTypes
+from src.main.Logic.stateMachine import StateMachine, State, ChoiceState, SuccessState, FailState, ResultTypes
 from src.main.Model.textAdventureState import TextAdventureSelection, TextAdventureState
 from src.main.constants import Panels
 
