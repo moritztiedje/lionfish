@@ -6,26 +6,26 @@ from src.main.constants import Panels
 
 
 class ChangeEventHandler:
-    @staticmethod
-    def process(game_state, game_state_change_event):
+    def __init__(self):
+        self.__text_adventure_handler = TextAdventureChangeEventHandler()
+
+    def process(self, game_state, game_state_change_event):
         """
         :type game_state: src.main.Model.gameState.GameState
         :type game_state_change_event: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
         """
-        text_adventure_handler = TextAdventureChangeEventHandler()
-
         if game_state_change_event.event_type == GameStateChangeEventTypes.EnterArea:
             if AreaMapChangeEventHandler.enter_area(
                     game_state,
                     game_state_change_event.payload
             ):
                 initial_state = TextAdventureRandomizer().choose_adventure()
-                text_adventure_handler.set_initial_adventure_state(initial_state, game_state)
+                self.__text_adventure_handler.set_initial_adventure_state(initial_state, game_state)
         elif game_state_change_event.event_type == GameStateChangeEventTypes.GoToWorldMap:
             game_state.get_panel_state(Panels.AreaMap).hide()
             game_state.get_panel_state(Panels.WorldMap).show()
         elif game_state_change_event.event_type == GameStateChangeEventTypes.SelectTextAdventureOption:
-            text_adventure_handler.select_option(
+            self.__text_adventure_handler.select_option(
                     game_state,
                     game_state_change_event.payload
             )

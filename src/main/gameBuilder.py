@@ -29,6 +29,7 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
         game_over = False
+        change_event_handler = ChangeEventHandler()
 
         while not game_over:
             for event in pygame.event.get():
@@ -37,7 +38,7 @@ class Game:
 
             game_state_change_event = self.__gui.trigger_control_logic()
             if game_state_change_event:
-                ChangeEventHandler.process(self.__game_state, game_state_change_event)
+                change_event_handler.process(self.__game_state, game_state_change_event)
             if self.__gui.has_something_changed():
                 self.__gui.draw(self.__game_state)
             pygame.display.update()
