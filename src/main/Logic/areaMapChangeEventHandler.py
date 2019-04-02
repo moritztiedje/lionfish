@@ -14,3 +14,4 @@ class AreaMapChangeEventHandler:
             player.set_destination(coordinate)
             game_state.get_panel_state(Panels.TextAdventureBox).show()
             game_state.get_panel_state(Panels.AreaMap).deactivate()
+            return True

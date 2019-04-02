@@ -64,17 +64,20 @@ class StateMachineResult:
 class StateMachine:
     def __init__(self, initial_state):
         self.__current_state = initial_state
+        self.__text = ""
 
-    def advance(self, selection):
+    def pick(self, selection):
         """
         :type selection: int
         :rtype: StateMachineResult
         """
-        text = ""
+        self.__current_state = self.__current_state.get_next_state(selection)
+        self.__text = ""
+        return self.advance()
 
-        next_state = self.__current_state.get_next_state(selection)
-        text += next_state.text
-        if next_state.type == StateTypes.FINAL_STATE:
-            return StateMachineResult(text, None, next_state.result)
-        elif next_state.type == StateTypes.CHOICE_STATE:
-            return StateMachineResult(text, next_state.get_selections(), None)
+    def advance(self):
+        self.__text += self.__current_state.text
+        if self.__current_state.type == StateTypes.FINAL_STATE:
+            return StateMachineResult(self.__text, None, self.__current_state.result)
+        elif self.__current_state.type == StateTypes.CHOICE_STATE:
+            return StateMachineResult(self.__text, self.__current_state.get_selections(), None)

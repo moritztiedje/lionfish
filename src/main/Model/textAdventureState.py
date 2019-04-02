@@ -1,13 +1,10 @@
 class TextAdventureState:
-    def __init__(self):
+    def __init__(self, first_result):
+        """
+        :type first_result: src.main.Logic.stateMachine.StateMachineResult
+        """
         self.__old_selections = []
-        self.__initial_selection = TextAdventureSelection(
-                "You entered this area.",
-                ["finish it",
-                 "look for stuff",
-                 "run like a rabbit"]
-        )
-        self.__current_selection = self.__initial_selection
+        self.__current_selection = TextAdventureSelection(first_result.text, first_result.selection)
 
     def get_current_selection(self):
         """
@@ -27,10 +24,6 @@ class TextAdventureState:
         """
         self.__old_selections.append(self.__current_selection)
         self.__current_selection = selection
-
-    def adventure_completed(self):
-        self.__current_selection = self.__initial_selection
-        self.__old_selections = []
 
 
 class TextAdventureSelection:
