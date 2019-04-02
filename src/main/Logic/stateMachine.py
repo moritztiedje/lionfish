@@ -4,6 +4,7 @@ from enum import Enum
 class StateTypes(Enum):
     FINAL_STATE = 0
     CHOICE_STATE = 1
+    AUTO_PROCEED_STATE = 2
 
 
 class ResultTypes(Enum):
@@ -54,6 +55,18 @@ class ChoiceState(State):
         return self.__selections
 
 
+class ForwardingState(State):
+    def __init__(self, text):
+        super().__init__(StateTypes.AUTO_PROCEED_STATE, text)
+        self.__next_state = None
+
+    def set_next_state(self, state):
+        self.__next_state = state
+
+    def get_next_state(self):
+        return self.__next_state
+
+
 class StateMachineResult:
     def __init__(self, text, selection, result):
         self.text = text
@@ -81,3 +94,6 @@ class StateMachine:
             return StateMachineResult(self.__text, None, self.__current_state.result)
         elif self.__current_state.type == StateTypes.CHOICE_STATE:
             return StateMachineResult(self.__text, self.__current_state.get_selections(), None)
+        elif self.__current_state.type == StateTypes.AUTO_PROCEED_STATE:
+            self.__current_state = self.__current_state.get_next_state()
+            return self.advance()
