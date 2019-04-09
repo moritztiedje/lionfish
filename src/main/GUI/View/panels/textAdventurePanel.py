@@ -99,17 +99,21 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         for selection in game_state.get_text_adventure_state().get_old_selections():
-            self.__draw_string(selection.text, color=pygame.Color('darkgray'))
+            self.__print_paragraphs(selection.text, color=pygame.Color('darkgray'))
             for option in selection.options:
-                self.__draw_string(option, line_offset=10, color=pygame.Color('darkgray'))
-            self.__draw_string("")
+                self.__print_new_line(option, line_offset=10, color=pygame.Color('darkgray'))
+            self.__print_new_line("")
 
         current_selection = game_state.get_text_adventure_state().get_current_selection()
-        self.__draw_string(current_selection.text)
+        self.__print_paragraphs(current_selection.text)
         for option in current_selection.options:
-            self.__selection_hitboxes.append(self.__draw_string(option, line_offset=10))
+            self.__selection_hitboxes.append(self.__print_new_line(option, line_offset=10))
 
-    def __draw_string(self, text, line_offset=0, color=pygame.Color('black')):
+    def __print_paragraphs(self, text, line_offset=0, color=pygame.Color('black')):
+        for paragraph in text.split('\n'):
+            self.__print_new_line(paragraph, line_offset, color)
+
+    def __print_new_line(self, text, line_offset=0, color=pygame.Color('black')):
         """
         :type text: str
         :type line_offset: int
