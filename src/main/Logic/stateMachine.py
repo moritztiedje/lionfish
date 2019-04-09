@@ -61,6 +61,9 @@ class ForwardingState(State):
         self.__next_state = None
 
     def set_next_state(self, state):
+        """
+        :type state: State
+        """
         self.__next_state = state
 
     def get_next_state(self):

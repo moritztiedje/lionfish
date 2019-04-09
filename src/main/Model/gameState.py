@@ -12,9 +12,9 @@ class GameState:
         self.__world_map = array_from_file('./dummyWorldMap')
         self.__player = Player()
         self.__panelStates = {
-            Panels.AreaMap: PanelState(True, True),
+            Panels.AreaMap: PanelState(False, False),
             Panels.MainMenuBar: PanelState(True, True),
-            Panels.TextAdventureBox: PanelState(False, False),
+            Panels.TextAdventureBox: PanelState(True, True),
             Panels.WorldMap: PanelState(False, False)
         }
 
