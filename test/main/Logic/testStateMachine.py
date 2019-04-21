@@ -36,7 +36,7 @@ class TestStateMachine(TestCase):
 
         self.assertEqual(state_machine_result.text, "Pick One:")
         self.assertIsNone(state_machine_result.result)
-        self.assertEqual(state_machine_result.selection[0], "Some Option")
+        self.assertEqual(state_machine_result.selection[0].text, "Some Option")
 
     def test_proceeds_to_next_state_when_option_is_picked(self):
         final_state = AdvanceState("You made it to the end of the test.")
@@ -58,6 +58,17 @@ class TestStateMachine(TestCase):
         state_machine_result = state_machine.run_until_next_result()
 
         self.assertEqual(state_machine_result.text, "Do Something First. You made it to the end of the test.")
+
+    def test_adds_probabilities_to_choice_state_results(self):
+        choice_state = ChoiceState("")
+        choice_state.add_next_state("", AttemptState("", 0.7))
+        choice_state.add_next_state("", AttemptState("", 0.3))
+        state_machine = StateMachine(choice_state)
+
+        state_machine_result = state_machine.run_until_next_result()
+
+        self.assertEqual(state_machine_result.selection[0].success_chance, 0.7)
+        self.assertEqual(state_machine_result.selection[1].success_chance, 0.3)
 
 
 class TestAttemptState(TestCase):

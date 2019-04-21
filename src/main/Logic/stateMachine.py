@@ -89,6 +89,9 @@ class AttemptState(State):
         else:
             return self.__fail_state
 
+    def get_success_chance(self):
+        return self.__success_chance
+
 
 class ForwardingState(State):
     def __init__(self, text):
@@ -134,7 +137,23 @@ class StateMachine:
         if self.__current_state.type == StateTypes.FINAL_STATE:
             return StateMachineResult(self.__text, [], self.__current_state.result)
         elif self.__current_state.type == StateTypes.CHOICE_STATE:
-            return StateMachineResult(self.__text, self.__current_state.get_selections(), None)
+            selections = []
+            selection_texts = self.__current_state.get_selections()
+            for selection_index in range(len(selection_texts)):
+                selected_state = self.__current_state.get_next_state(selection_index)
+                text = selection_texts[selection_index]
+                if isinstance(selected_state, AttemptState):
+                    success_chance = selected_state.get_success_chance()
+                    selections.append(Selection(text, success_chance))
+                else:
+                    selections.append(Selection(text, None))
+            return StateMachineResult(self.__text, selections, None)
         elif self.__current_state.type == StateTypes.AUTO_PROCEED_STATE:
             self.__current_state = self.__current_state.get_next_state()
             return self.run_until_next_result()
+
+
+class Selection:
+    def __init__(self, text, success_chance):
+        self.text = text
+        self.success_chance = success_chance

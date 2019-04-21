@@ -1,6 +1,5 @@
 import pygame
 
-from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.BaseComponents.geometry import Point, Rectangle
 from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
@@ -53,7 +52,6 @@ class TextAdventurePanel(Panel):
                 if self.__selection_hitboxes[index].is_inside(relative_mouse_position):
                     return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, index)
 
-
     def _load_image_vault(self):
         """
         :rtype: src.main.GUI.View.imageVaults.textAdventureImageVault.TextAdventureImageVault
@@ -81,8 +79,8 @@ class TextAdventurePanel(Panel):
             self._game_window.draw(Image(30, 30, '../../artwork/images/menu/close.png').sprite,
                                    Point(self._game_window.get_width() - 40, self.__height - 10))
             self.__close_button_hitbox = Rectangle(
-                Point(self._game_window.get_width() - 40, self.__height - 40),
-                Point(self._game_window.get_width() - 10, self.__height - 10)
+                    Point(self._game_window.get_width() - 40, self.__height - 40),
+                    Point(self._game_window.get_width() - 10, self.__height - 10)
             )
 
     def __draw_once(self, game_state):
@@ -115,13 +113,14 @@ class TextAdventurePanel(Panel):
         for selection in game_state.get_text_adventure_state().get_old_selections():
             self.__print_paragraphs(selection.text, color=pygame.Color('darkgray'))
             for option in selection.options:
-                self.__print_new_line(option, line_offset=10, color=pygame.Color('darkgray'))
+                self.__print_new_line(option.text, line_offset=10, color=pygame.Color('darkgray'))
             self.__print_new_line("")
 
         current_selection = game_state.get_text_adventure_state().get_current_selection()
         self.__print_paragraphs(current_selection.text)
         for option in current_selection.options:
-            self.__selection_hitboxes.append(self.__print_new_line(option, line_offset=10))
+            text_color = self.__determine_color_of(option.success_chance)
+            self.__selection_hitboxes.append(self.__print_new_line(option.text, line_offset=10, color=text_color))
 
     def __print_paragraphs(self, text, line_offset=0, color=pygame.Color('black')):
         for paragraph in text.split('\n'):
@@ -141,6 +140,19 @@ class TextAdventurePanel(Panel):
         self.__y_offset += rendered_text.get_hitbox().get_height()
         rendered_text.draw(self._draw_relative_to_camera)
         return rendered_text.get_hitbox()
+
+    @staticmethod
+    def __determine_color_of(success_chance):
+        """
+        :type success_chance: float
+        """
+        if not success_chance:
+            return pygame.Color('black')
+        elif success_chance > 0.75:
+            return pygame.Color('green')
+        elif success_chance > 0.25:
+            return pygame.Color('yellow')
+        return pygame.Color('red')
 
 
 class RenderedText:
