@@ -1,4 +1,4 @@
-from src.main.Logic.stateMachine import ChoiceState, ForwardingState, FailState, SuccessState
+from src.main.Logic.stateMachine import ChoiceState, ForwardingState, FailState, SuccessState, AttemptState
 
 
 class IntroTextAdventureState(ChoiceState):
@@ -36,8 +36,7 @@ class IntroTextAdventureState(ChoiceState):
                 "own or someone elses."
         )
         go_on.add_next_state("Keep singing", self.__build_keep_singing_state())
-        go_on.add_next_state("Stop singing (Fail)", self.__build_fail_stop_singing())
-        go_on.add_next_state("Stop singing (Success)", self.__build_success_stop_singing())
+        go_on.add_next_state("Stop singing", self.__build_attempt_stop_singing_state())
         return go_on
 
     def __build_keep_singing_state(self):
@@ -48,10 +47,15 @@ class IntroTextAdventureState(ChoiceState):
                 "and not floating in the air along with the remainder of his body. An unnatural wind is gushing "
                 "through the clearing, ripping and tearing at the book in your hand."
         )
-        keep_singing.add_next_state("Hold on to the book. (Success)", self.__build_hold_on_success_state())
-        keep_singing.add_next_state("Hold on to the book. (Fail)", self.__build_hold_on_fail_state())
+        keep_singing.add_next_state("Hold on to the book.", self.__build_attempt_hold_on_state())
         keep_singing.add_next_state("Let go of the book.", self.__build_let_go_state())
         return keep_singing
+
+    def __build_attempt_stop_singing_state(self):
+        state = AttemptState("", 0.5)
+        state.set_fail_state(self.__build_fail_stop_singing())
+        state.set_success_state(self.__build_success_stop_singing())
+        return state
 
     def __build_fail_stop_singing(self):
         fail_stop_singing = ForwardingState(
@@ -68,7 +72,7 @@ class IntroTextAdventureState(ChoiceState):
                 "would help anyone. If you are completeley honest with yourself, you knew that before you got started, "
                 "but nobody is as easily blinded by greed as a reject and a loser such as yourself. Whatever your next "
                 "steps will be, you decide to burn the book there and then, before your next bout of an identity "
-                "crisis starts a new apocalypse.")
+                "crisis starts a new apocalypse. \n")
         success_stop_singing.set_next_state(self.__build_old_age_state())
         return success_stop_singing
 
@@ -82,6 +86,12 @@ class IntroTextAdventureState(ChoiceState):
         )
         stop.set_next_state(self.__build_old_age_state())
         return stop
+
+    def __build_attempt_hold_on_state(self):
+        state = AttemptState("", 0.25)
+        state.set_fail_state(self.__build_hold_on_fail_state())
+        state.set_success_state(self.__build_hold_on_success_state())
+        return state
 
     @staticmethod
     def __build_hold_on_success_state():

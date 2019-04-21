@@ -13,16 +13,22 @@ class TextAdventureChangeEventHandler:
         self.__game_state = game_state
         self.set_initial_adventure_state(IntroTextAdventureState())
 
+    def __get_state_machine(self):
+        """
+        :rtype: src.main.Logic.stateMachine.StateMachine
+        """
+        return self.__state_machine
+
     def select_option(self, option):
         """
         :type option: int
         """
-        result = self.__state_machine.pick(option)
+        result = self.__get_state_machine().pick(option)
         self.__game_state.get_text_adventure_state().define_next_selection(
-                    TextAdventureSelection(
-                            result.text,
-                            result.selection
-                    ))
+                TextAdventureSelection(
+                        result.text,
+                        result.selection
+                ))
         if not result.selection:
             self.__game_state.get_text_adventure_state().complete()
             if result.result == ResultTypes.SUCCESS:

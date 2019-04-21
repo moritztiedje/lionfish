@@ -1,7 +1,8 @@
 from unittest import TestCase
 
+from src.main.Logic import stateMachine
 from src.main.Logic.stateMachine import StateMachine, SuccessState, ResultTypes, FailState, ChoiceState, State, \
-    ForwardingState
+    ForwardingState, AttemptState
 from test.util.mockUtil import create_mock
 
 
@@ -14,7 +15,7 @@ class TestStateMachine(TestCase):
 
         self.assertEqual(state_machine_result.text, "You did it!")
         self.assertEqual(state_machine_result.result, ResultTypes.SUCCESS)
-        self.assertIsNone(state_machine_result.selection)
+        self.assertEqual(len(state_machine_result.selection), 0)
 
     def test_returns_fail_when_fail_state_is_reached(self):
         proceed_state = FailState("You messed it up!")
@@ -24,7 +25,7 @@ class TestStateMachine(TestCase):
 
         self.assertEqual(state_machine_result.text, "You messed it up!")
         self.assertEqual(state_machine_result.result, ResultTypes.FAIL)
-        self.assertIsNone(state_machine_result.selection)
+        self.assertEqual(len(state_machine_result.selection), 0)
 
     def test_returns_selections_when_choice_state_is_reached(self):
         proceed_state = ChoiceState("Pick One:")
@@ -57,3 +58,28 @@ class TestStateMachine(TestCase):
         state_machine_result = state_machine.advance()
 
         self.assertEqual(state_machine_result.text, "Do Something First. You made it to the end of the test.")
+
+
+class TestAttemptState(TestCase):
+    def setUp(self):
+        self.real_random = stateMachine.random
+        stateMachine.random = lambda: 0.5
+
+    def tearDown(self):
+        stateMachine.random = self.real_random
+
+    def test_get_next_state_can_return_success(self):
+        dummy_state = State(None, "dummy")
+
+        attempt_state = AttemptState("", 0.9)
+        attempt_state.set_success_state(dummy_state)
+
+        self.assertEqual(attempt_state.get_next_state(), dummy_state)
+
+    def test_get_next_state_can_return_fail(self):
+        dummy_state = State(None, "dummy")
+
+        attempt_state = AttemptState("", 0.1)
+        attempt_state.set_fail_state(dummy_state)
+
+        self.assertEqual(attempt_state.get_next_state(), dummy_state)

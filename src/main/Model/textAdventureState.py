@@ -40,7 +40,7 @@ class TextAdventureSelection:
     def __init__(self, text, options):
         """
         :type text: str
-        :type options: list of str
+        :type options: list of TextAdventureOption
         """
         self.text = text
         self.options = options

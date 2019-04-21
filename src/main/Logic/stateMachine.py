@@ -1,4 +1,5 @@
 from enum import Enum
+from random import random
 
 
 class StateTypes(Enum):
@@ -22,6 +23,7 @@ class SuccessState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.SUCCESS
+
 
 class FailState(State):
     def __init__(self, text):
@@ -52,6 +54,40 @@ class ChoiceState(State):
 
     def get_selections(self):
         return self.__selections
+
+
+class AttemptState(State):
+    def __init__(self, text, success_chance):
+        """
+        :type text: str
+        :type success_chance: float
+        """
+        super().__init__(StateTypes.AUTO_PROCEED_STATE, text)
+        self.__success_chance = success_chance
+        self.__success_state = None
+        self.__fail_state = None
+
+    def set_success_state(self, state):
+        """
+        :type state: State
+        """
+        self.__success_state = state
+
+    def set_fail_state(self, state):
+        """
+        :type state: State
+        """
+        self.__fail_state = state
+
+    def get_next_state(self):
+        """
+        :rtype: State
+        """
+        random_number = random()
+        if random_number <= self.__success_chance:
+            return self.__success_state
+        else:
+            return self.__fail_state
 
 
 class ForwardingState(State):
