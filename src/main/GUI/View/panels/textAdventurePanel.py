@@ -152,15 +152,21 @@ class RenderedText:
             rendered_word = sys_font.render(word, 0, color)
             word_width = rendered_word.get_width()
             if draw_coordinate_of_word.get_x() + word_width >= right_border:
-                draw_coordinate_of_word = Point(draw_coordinate.get_x(), draw_coordinate_of_word.get_y() - HEIGHT_OF_LINE)
+                draw_coordinate_of_word = Point(draw_coordinate.get_x(),
+                                                draw_coordinate_of_word.get_y() - HEIGHT_OF_LINE)
             draw_coordinate_of_next_word = draw_coordinate_of_word + Point(word_width + space_width, 0)
             self.__words.append(RenderedWord(rendered_word, draw_coordinate_of_word))
 
             draw_coordinate_of_word = draw_coordinate_of_next_word
 
-        self.__hitbox = Rectangle.from_upper_left_and_lower_right(
-                draw_coordinate,
-                draw_coordinate_of_next_word - Point(0, HEIGHT_OF_LINE))
+        if draw_coordinate_of_word.get_y() == draw_coordinate.get_y():
+            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
+                    draw_coordinate,
+                    draw_coordinate_of_next_word - Point(space_width, HEIGHT_OF_LINE))
+        else:
+            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
+                    draw_coordinate,
+                    Point(right_border, draw_coordinate_of_next_word.get_y() - HEIGHT_OF_LINE))
 
     def draw(self, _draw_relative_to_camera):
         for word in self.__words:

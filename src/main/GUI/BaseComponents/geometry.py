@@ -77,3 +77,6 @@ class Rectangle:
         :rtype: int
         """
         return self.__upper_right.get_y() - self.__lower_left.get_y()
+
+    def get_width(self):
+        return self.__upper_right.get_x() - self.__lower_left.get_x()
