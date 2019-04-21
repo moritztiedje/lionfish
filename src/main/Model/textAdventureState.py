@@ -5,6 +5,7 @@ class TextAdventureState:
         """
         self.__old_selections = []
         self.__current_selection = TextAdventureSelection(first_result.text, first_result.selection)
+        self.__completed = False
 
     def get_current_selection(self):
         """
@@ -24,6 +25,15 @@ class TextAdventureState:
         """
         self.__old_selections.append(self.__current_selection)
         self.__current_selection = selection
+
+    def is_completed(self):
+        """
+        :rtype: bool
+        """
+        return self.__completed
+
+    def complete(self):
+        self.__completed = True
 
 
 class TextAdventureSelection:

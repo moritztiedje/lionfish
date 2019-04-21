@@ -30,3 +30,5 @@ class ChangeEventHandler:
             self.__game_state.get_panel_state(Panels.WorldMap).show()
         elif game_state_change_event.event_type == GameStateChangeEventTypes.SelectTextAdventureOption:
             self.__text_adventure_handler.select_option(game_state_change_event.payload)
+        elif game_state_change_event.event_type == GameStateChangeEventTypes.CloseTextAdventure:
+            self.__text_adventure_handler.close()

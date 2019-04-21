@@ -23,7 +23,6 @@ class SuccessState(State):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.SUCCESS
 
-
 class FailState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
@@ -92,9 +91,12 @@ class StateMachine:
         return self.advance()
 
     def advance(self):
+        """
+        :rtype: src.main.Logic.stateMachine.StateMachineResult
+        """
         self.__text += self.__current_state.text
         if self.__current_state.type == StateTypes.FINAL_STATE:
-            return StateMachineResult(self.__text, None, self.__current_state.result)
+            return StateMachineResult(self.__text, [], self.__current_state.result)
         elif self.__current_state.type == StateTypes.CHOICE_STATE:
             return StateMachineResult(self.__text, self.__current_state.get_selections(), None)
         elif self.__current_state.type == StateTypes.AUTO_PROCEED_STATE:

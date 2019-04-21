@@ -1,8 +1,10 @@
 import pygame
 
+from src.main.GUI.BaseComponents.button import Button
 from src.main.GUI.BaseComponents.geometry import Point, Rectangle
 from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
+from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
@@ -26,6 +28,7 @@ class TextAdventurePanel(Panel):
         self.__height = MINIMUM_HEIGHT
         border_height = 20
         self.__max_height = game_window.get_height() - border_height - 50
+        self.__close_button_hitbox = None
 
     def handle_key_event(self, key_event):
         """
@@ -43,10 +46,13 @@ class TextAdventurePanel(Panel):
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
         if mouse_event.get_type() is MouseEventTypes.LeftClick:
+            if self.__close_button_hitbox and self.__close_button_hitbox.is_inside(mouse_event.get_position()):
+                return GameStateChangeEvent(GameStateChangeEventTypes.CloseTextAdventure, None)
             for index in range(len(self.__selection_hitboxes)):
                 relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
                 if self.__selection_hitboxes[index].is_inside(relative_mouse_position):
                     return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, index)
+
 
     def _load_image_vault(self):
         """
@@ -70,6 +76,14 @@ class TextAdventurePanel(Panel):
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
             self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
             self.__draw_once(game_state)
+
+        if game_state.get_text_adventure_state().is_completed():
+            self._game_window.draw(Image(30, 30, '../../artwork/images/menu/close.png').sprite,
+                                   Point(self._game_window.get_width() - 40, self.__height - 10))
+            self.__close_button_hitbox = Rectangle(
+                Point(self._game_window.get_width() - 40, self.__height - 40),
+                Point(self._game_window.get_width() - 10, self.__height - 10)
+            )
 
     def __draw_once(self, game_state):
         self.__reset()
