@@ -120,33 +120,67 @@ class TextAdventurePanel(Panel):
         :type color: pygame.Color
         :rtype: src.main.GUI.BaseComponents.geometry.Rectangle
         """
-        font = pygame.font.SysFont("Times New Roman", HEIGHT_OF_LINE)
-        width_of_space = font.size(' ')[0]
-        max_width = self._game_window.get_width() - RIGHT_BORDER - LEFT_BORDER - line_offset
+        rendered_text = RenderedText(text,
+                                     Point(LEFT_BORDER + line_offset, self.__height - TOP_BORDER - self.__y_offset),
+                                     self._game_window.get_width() - RIGHT_BORDER,
+                                     color=color)
+        self.__y_offset += rendered_text.get_hitbox().get_height()
+        rendered_text.draw(self._draw_relative_to_camera)
+        return rendered_text.get_hitbox()
 
-        top_left_of_first_word = None
-        bottom_right_of_last_word = None
 
-        length_of_current_line = 0
+class RenderedText:
+    def __init__(self, text, draw_coordinate, right_border,
+                 font="Times New Roman",
+                 color=pygame.Color('black')):
+        """
+        :type text: str
+        :type draw_coordinate: src.main.GUI.BaseComponents.geometry.Point
+        :type right_border: int
+        :type color: pygame.color.Color
+        :type font: str
+        """
+        self.__draw_coordinate = draw_coordinate
+        self.__words = []
+
+        sys_font = pygame.font.SysFont(font, HEIGHT_OF_LINE)
         words = text.split(' ')
+        draw_coordinate_of_word = draw_coordinate
+        draw_coordinate_of_next_word = draw_coordinate
+        space_width = sys_font.render(" ", 0, color).get_width()
         for word in words:
-            rendered_word = font.render(word, 0, color)
+            rendered_word = sys_font.render(word, 0, color)
             word_width = rendered_word.get_width()
-            if length_of_current_line + word_width >= max_width:
-                length_of_current_line = 0
-                self.__y_offset += HEIGHT_OF_LINE
-            draw_coordinate = Point(LEFT_BORDER + line_offset + length_of_current_line,
-                                    self.__height - TOP_BORDER - self.__y_offset)
-            if not top_left_of_first_word:
-                top_left_of_first_word = draw_coordinate
-            bottom_right_of_last_word = draw_coordinate + Point(rendered_word.get_width(), -HEIGHT_OF_LINE)
-            if self.__is_inside_panel(draw_coordinate):
-                self._draw_relative_to_camera(rendered_word, draw_coordinate)
-            length_of_current_line += word_width + width_of_space
-        self.__y_offset += HEIGHT_OF_LINE
+            if draw_coordinate_of_word.get_x() + word_width >= right_border:
+                draw_coordinate_of_word = Point(draw_coordinate.get_x(), draw_coordinate_of_word.get_y() - HEIGHT_OF_LINE)
+            draw_coordinate_of_next_word = draw_coordinate_of_word + Point(word_width + space_width, 0)
+            self.__words.append(RenderedWord(rendered_word, draw_coordinate_of_word))
 
-        return Rectangle.from_upper_left_and_lower_right(top_left_of_first_word, bottom_right_of_last_word)
+            draw_coordinate_of_word = draw_coordinate_of_next_word
 
-    def __is_inside_panel(self, draw_coordinate):
-        border_height = self._image_vault.get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
-        return (draw_coordinate - self._camera_position).get_y() < self.__max_height + border_height
+        self.__hitbox = Rectangle.from_upper_left_and_lower_right(
+                draw_coordinate,
+                draw_coordinate_of_next_word - Point(0, HEIGHT_OF_LINE))
+
+    def draw(self, _draw_relative_to_camera):
+        for word in self.__words:
+            word.draw(_draw_relative_to_camera)
+
+    def get_hitbox(self):
+        """
+        :rtype: src.main.GUI.BaseComponents.geometry.Rectangle
+        """
+        return self.__hitbox
+
+
+class RenderedWord:
+    def __init__(self, word, draw_coordinate):
+        """
+        :type word: pygame.ftfont.Font
+        :type draw_coordinate: src.main.GUI.BaseComponents.geometry.Point
+        """
+        self.__rendered_word = word
+        self.__draw_coordinate = draw_coordinate
+
+    def draw(self, _draw_relative_to_camera):
+        _draw_relative_to_camera(self.__rendered_word, self.__draw_coordinate)

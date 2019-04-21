@@ -49,6 +49,11 @@ class Rectangle:
 
     @staticmethod
     def from_upper_left_and_lower_right(upper_left, lower_right):
+        """
+        :type upper_left: Point
+        :type lower_right: Point
+        :rtype: Rectangle
+        """
         lower_left = Point(upper_left.get_x(), lower_right.get_y())
         upper_right = Point(lower_right.get_x(), upper_left.get_y())
         return Rectangle(lower_left, upper_right)
@@ -66,3 +71,9 @@ class Rectangle:
         :rtype: Point
         """
         return Point(self.__lower_left.get_x(), self.__upper_right.get_y())
+
+    def get_height(self):
+        """
+        :rtype: int
+        """
+        return self.__upper_right.get_y() - self.__lower_left.get_y()
