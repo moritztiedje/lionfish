@@ -19,13 +19,13 @@ class State:
         self.text = text
 
 
-class SuccessState(State):
+class AdvanceState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.SUCCESS
 
 
-class FailState(State):
+class GoBackState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.FAIL
@@ -124,9 +124,9 @@ class StateMachine:
         """
         self.__current_state = self.__current_state.get_next_state(selection)
         self.__text = ""
-        return self.advance()
+        return self.run_until_next_result()
 
-    def advance(self):
+    def run_until_next_result(self):
         """
         :rtype: src.main.Logic.stateMachine.StateMachineResult
         """
@@ -137,4 +137,4 @@ class StateMachine:
             return StateMachineResult(self.__text, self.__current_state.get_selections(), None)
         elif self.__current_state.type == StateTypes.AUTO_PROCEED_STATE:
             self.__current_state = self.__current_state.get_next_state()
-            return self.advance()
+            return self.run_until_next_result()

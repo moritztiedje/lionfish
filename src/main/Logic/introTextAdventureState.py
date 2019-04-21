@@ -1,4 +1,4 @@
-from src.main.Logic.stateMachine import ChoiceState, ForwardingState, FailState, SuccessState, AttemptState
+from src.main.Logic.stateMachine import ChoiceState, ForwardingState, GoBackState, AdvanceState, AttemptState
 
 
 class IntroTextAdventureState(ChoiceState):
@@ -96,7 +96,7 @@ class IntroTextAdventureState(ChoiceState):
     @staticmethod
     def __build_hold_on_success_state():
         # TODO: FailState is incorrect here, this is a Game Over
-        return FailState(
+        return GoBackState(
                 "Despite the violent tugging and tearing of the winds, you manage to hold on to the book. It drags you up "
                 "into the air and towards the center of the clearing, towards the eye of the storm. You feel it now, the "
                 "fire and the way it burns. It is like the time you burned yourself on a hot stove, multiplied a "
@@ -117,7 +117,7 @@ class IntroTextAdventureState(ChoiceState):
         return hold_on_fail
 
     def __build_let_go_state(self):
-        return SuccessState(
+        return AdvanceState(
                 "The book shoots out of your grasp into the center of the clearing, while the winds swirl and rise around "
                 "you. It does not matter in which direction you try to run or hide, not even an ox would be a match for "
                 "the winds that swoop you up and blow you around. You try grasp at the branches and the trees as you are "
@@ -148,7 +148,7 @@ class IntroTextAdventureState(ChoiceState):
 
     def __build_old_age_state(self):
         #TODO This a game Over state not a fail state
-        return FailState(
+        return GoBackState(
                 "You continue to live your life, as good as you can, but at an old age you have to admit that it has "
                 "been a rather pointless life of mediocrity. Maybe you did the right thing all those years ago but "
                 "also maybe even the end of the world would have been preferrable to this insignificant blob of "

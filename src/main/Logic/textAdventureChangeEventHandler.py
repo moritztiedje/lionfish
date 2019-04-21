@@ -39,7 +39,7 @@ class TextAdventureChangeEventHandler:
         :type initial_state:
         """
         self.__state_machine = StateMachine(initial_state)
-        initial_result = self.__state_machine.advance()
+        initial_result = self.__state_machine.run_until_next_result()
         self.__game_state.set_text_adventure_state(TextAdventureState(initial_result))
 
     def close(self):
