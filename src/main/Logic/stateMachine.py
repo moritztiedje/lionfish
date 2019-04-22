@@ -11,6 +11,7 @@ class StateTypes(Enum):
 class ResultTypes(Enum):
     SUCCESS = 0
     FAIL = 1
+    GAME_OVER = 2
 
 
 class State:
@@ -29,6 +30,12 @@ class GoBackState(State):
     def __init__(self, text):
         super().__init__(StateTypes.FINAL_STATE, text)
         self.result = ResultTypes.FAIL
+
+
+class GameOverState(State):
+    def __init__(self, text):
+        super().__init__(StateTypes.FINAL_STATE, text)
+        self.result = ResultTypes.GAME_OVER
 
 
 class ChoiceState(State):

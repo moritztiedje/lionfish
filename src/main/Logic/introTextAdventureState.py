@@ -1,4 +1,5 @@
-from src.main.Logic.stateMachine import ChoiceState, ForwardingState, GoBackState, AdvanceState, AttemptState
+from src.main.Logic.stateMachine import ChoiceState, ForwardingState, GoBackState, AdvanceState, AttemptState, \
+    GameOverState
 
 
 class IntroTextAdventureState(ChoiceState):
@@ -95,8 +96,7 @@ class IntroTextAdventureState(ChoiceState):
 
     @staticmethod
     def __build_hold_on_success_state():
-        # TODO: FailState is incorrect here, this is a Game Over
-        return GoBackState(
+        return GameOverState(
                 "Despite the violent tugging and tearing of the winds, you manage to hold on to the book. It drags you up "
                 "into the air and towards the center of the clearing, towards the eye of the storm. You feel it now, the "
                 "fire and the way it burns. It is like the time you burned yourself on a hot stove, multiplied a "
@@ -147,8 +147,7 @@ class IntroTextAdventureState(ChoiceState):
         )
 
     def __build_old_age_state(self):
-        #TODO This a game Over state not a fail state
-        return GoBackState(
+        return GameOverState(
                 "You continue to live your life, as good as you can, but at an old age you have to admit that it has "
                 "been a rather pointless life of mediocrity. Maybe you did the right thing all those years ago but "
                 "also maybe even the end of the world would have been preferrable to this insignificant blob of "

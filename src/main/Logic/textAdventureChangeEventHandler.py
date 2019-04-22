@@ -29,10 +29,14 @@ class TextAdventureChangeEventHandler:
                         result.text,
                         result.selection
                 ))
-        if not result.selection:
+        if result.result is ResultTypes.FAIL:
             self.__game_state.get_text_adventure_state().complete()
-            if result.result == ResultTypes.SUCCESS:
-                self.__game_state.get_player().move_to_destination()
+        elif result.result == ResultTypes.SUCCESS:
+            self.__game_state.get_text_adventure_state().complete()
+            self.__game_state.get_player().move_to_destination()
+        elif result.result == ResultTypes.GAME_OVER:
+            self.__game_state.get_panel_state(Panels.GameOverPanel).show()
+            self.__game_state.get_panel_state(Panels.TextAdventureBox).deactivate()
 
     def set_initial_adventure_state(self, initial_state):
         """
