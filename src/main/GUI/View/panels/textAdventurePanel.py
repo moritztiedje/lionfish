@@ -68,11 +68,11 @@ class TextAdventurePanel(Panel):
 
         if self.__y_offset > self.__max_height:
             self.__height = self.__max_height
-            self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
+            self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
             self.__draw_once(game_state)
         elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
-            self._image_vault.get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
+            self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
             self.__draw_once(game_state)
 
         if game_state.get_text_adventure_state().is_completed():
@@ -95,14 +95,14 @@ class TextAdventurePanel(Panel):
 
     def __draw_background(self):
         self._game_window.draw(
-                self._image_vault.get_sprite(TextAdventureImageEnum.BACKGROUND),
+                self._get_image_vault().get_sprite(TextAdventureImageEnum.BACKGROUND),
                 Point(0, self.__height)
         )
 
     def __draw_border(self):
-        border_height = self._image_vault.get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
+        border_height = self._get_image_vault().get_image(TextAdventureImageEnum.TOP_BORDER).get_height()
         self._game_window.draw(
-                self._image_vault.get_sprite(TextAdventureImageEnum.TOP_BORDER),
+                self._get_image_vault().get_sprite(TextAdventureImageEnum.TOP_BORDER),
                 Point(0, self.__height + border_height)
         )
 

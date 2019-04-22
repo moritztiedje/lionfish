@@ -1,4 +1,5 @@
 from src.main.GUI.View.panels.areaMapPanel import AreaMapPanel
+from src.main.GUI.View.panels.gameOverPanel import GameOverPanel
 from src.main.GUI.View.panels.menuPanel import MenuPanel
 from src.main.GUI.View.panels.textAdventurePanel import TextAdventurePanel
 from src.main.GUI.View.panels.worldMapPanel import WorldMapPanel
@@ -14,7 +15,8 @@ class PanelsManager:
             Panels.AreaMap: AreaMapPanel(game_window),
             Panels.WorldMap: WorldMapPanel(game_window),
             Panels.MainMenuBar: MenuPanel(game_window, self.__camera_zoom_in, self.__camera_zoom_out),
-            Panels.TextAdventureBox: TextAdventurePanel(game_window)
+            Panels.TextAdventureBox: TextAdventurePanel(game_window),
+            Panels.GameOverPanel: GameOverPanel(game_window)
         }
 
     def __camera_zoom_in(self):

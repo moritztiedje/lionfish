@@ -20,7 +20,8 @@ class Image:
     def zoom(self, zoom_level):
         self.sprite = pygame.transform.scale(self.sprite,
                                              (
-                                             int(self.__base_width * zoom_level), int(self.__base_height * zoom_level)))
+                                                 int(self.__base_width * zoom_level),
+                                                 int(self.__base_height * zoom_level)))
 
     def scale_to_width(self, width):
         self.__width = width
@@ -41,6 +42,12 @@ class Image:
         :rtype: int
         """
         return self.__width
+
+    def set_alpha(self, alpha):
+        """
+        :type alpha: int
+        """
+        self.sprite.set_alpha(alpha)
 
 
 class HexFieldImage(Image):

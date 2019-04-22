@@ -12,7 +12,7 @@ class Panel(metaclass=ABCMeta):
         self.__buttons = []
         self._camera_zoom = 1
         self._camera_position = Point(0, 0)
-        self._image_vault = None
+        self.__image_vault = None
         self.__z_index = z_index
         self.__is_active = False
 
@@ -30,6 +30,12 @@ class Panel(metaclass=ABCMeta):
         """
         return absolute_position + self._camera_position
 
+    def _get_image_vault(self):
+        """
+        :rtype: src.main.GUI.View.imageVaults.imageVault.ImageVault
+        """
+        return self.__image_vault
+
     def is_active(self):
         return self.__is_active
 
@@ -40,11 +46,11 @@ class Panel(metaclass=ABCMeta):
         self.__is_active = False
 
     def load_images(self):
-        if not self._image_vault:
-            self._image_vault = self._load_image_vault()
+        if not self.__image_vault:
+            self.__image_vault = self._load_image_vault()
 
     def discard_images(self):
-        self._image_vault = None
+        self.__image_vault = None
 
     def has_z_index(self, z_index):
         return self.__z_index == z_index
@@ -58,11 +64,11 @@ class Panel(metaclass=ABCMeta):
 
     def zoom_in(self):
         self._camera_zoom *= 2
-        self._image_vault.set_camera_zoom(self._camera_zoom)
+        self.__image_vault.set_camera_zoom(self._camera_zoom)
 
     def zoom_out(self):
         self._camera_zoom /= 2
-        self._image_vault.set_camera_zoom(self._camera_zoom)
+        self.__image_vault.set_camera_zoom(self._camera_zoom)
 
     def _register_button(self, button):
         """

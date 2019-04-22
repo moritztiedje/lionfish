@@ -12,6 +12,20 @@ from src.main.constants import HEXAGON_FIELD_WIDTH_SPACING, HEXAGON_FIELD_HEIGHT
 
 
 class AreaMapPanel(Panel):
+    def __init__(self, game_window):
+        """
+        :type game_window: src.main.GUI.View.gameWindow.GameWindow
+        """
+        super().__init__(game_window, 0)
+        world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
+                                  Point(game_window.get_width() - 50, game_window.get_height() - 10),
+                                  Image(0, 0, '../../artwork/images/worldButton.png'),
+                                  self.__set_world_map_active)
+        self._register_button(world_map_button)
+
+        self.__click_box = HexagonClickBox()
+        self.__highlighted_field = None
+
     def handle_key_event(self, key_event):
         """
         :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
@@ -28,20 +42,6 @@ class AreaMapPanel(Panel):
         elif key_event == KeyEventTypes.LEFT_PRESS:
             self._camera_position -= Point(2, 0)
             return GameStateChangeEvent(GameStateChangeEventTypes.InternalGUIChange, None)
-
-    def __init__(self, game_window):
-        """
-        :type game_window: src.main.GUI.View.gameWindow.GameWindow
-        """
-        super().__init__(game_window, 0)
-        world_map_button = Button(Point(game_window.get_width() - 130, game_window.get_height() - 40),
-                                  Point(game_window.get_width() - 50, game_window.get_height() - 10),
-                                  Image(0, 0, '../../artwork/images/worldButton.png'),
-                                  self.__set_world_map_active)
-        self._register_button(world_map_button)
-
-        self.__click_box = HexagonClickBox()
-        self.__highlighted_field = None
 
     @staticmethod
     def __set_world_map_active():
@@ -62,14 +62,14 @@ class AreaMapPanel(Panel):
         area_map = game_state.get_area_map()
         for coordinate in area_map.get_all_coordinates():
             if self.__highlighted_field == coordinate:
-                highlighted_sprite = self._image_vault.get_highlighted(area_map.get_tile(coordinate))
+                highlighted_sprite = self._get_image_vault().get_highlighted(area_map.get_tile(coordinate))
                 self.__display_hexagon(highlighted_sprite, coordinate)
             else:
-                sprite = self._image_vault.get_sprite(area_map.get_tile(coordinate))
+                sprite = self._get_image_vault().get_sprite(area_map.get_tile(coordinate))
                 self.__display_hexagon(sprite, coordinate)
 
         player = game_state.get_player().get_position_in_area()
-        self.__display_in_hexagon(self._image_vault.get_sprite(AreaImageEnum.PLAYER), player)
+        self.__display_in_hexagon(self._get_image_vault().get_sprite(AreaImageEnum.PLAYER), player)
 
     def __display_hexagon(self, sprite, game_field):
         """

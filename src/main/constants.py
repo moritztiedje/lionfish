@@ -22,9 +22,14 @@ class Panels(Enum):
     TextAdventureBox = 1
     WorldMap = 2
     MainMenuBar = 3
+    GameOverPanel = 4
 
 
 class AreaImageEnum(Enum):
     EMPTY = 1
     WATER = 2
     PLAYER = 90
+
+
+class GameOverImageEnum(Enum):
+    BACKGROUND = 0

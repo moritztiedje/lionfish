@@ -30,9 +30,9 @@ class WorldMapPanel(Panel):
         for x in range(0, len(world_map)):
             for y in range(0, len(world_map[x])):
                 if world_map[x][y] == 1:
-                    self.__display_square(self._image_vault.get_sprite(WorldImageEnum.LAND), Point(x, y))
+                    self.__display_square(self._get_image_vault().get_sprite(WorldImageEnum.LAND), Point(x, y))
                 if world_map[x][y] == 0:
-                    self.__display_square(self._image_vault.get_sprite(WorldImageEnum.WATER), Point(x, y))
+                    self.__display_square(self._get_image_vault().get_sprite(WorldImageEnum.WATER), Point(x, y))
 
     def __display_square(self, sprite, coordinate):
         """

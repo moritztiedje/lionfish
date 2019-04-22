@@ -15,7 +15,8 @@ class GameState:
             Panels.AreaMap: PanelState(False, False),
             Panels.MainMenuBar: PanelState(True, True),
             Panels.TextAdventureBox: PanelState(True, True),
-            Panels.WorldMap: PanelState(False, False)
+            Panels.WorldMap: PanelState(False, False),
+            Panels.GameOverPanel: PanelState(False, False)
         }
 
     def get_area_map(self):
