@@ -11,8 +11,6 @@ class GUI:
         self.__game_controller = game_controller
         self.__panels_manager = PanelsManager(game_window)
 
-        self.__display_has_changed = True
-
     def trigger_control_logic(self):
         """
         :rtype: src.main.Model.gameStateChangeEvent.GameStateChangeEvent
@@ -20,14 +18,11 @@ class GUI:
         mouse_event = self.__game_controller.get_mouse_event()
         key_event = self.__game_controller.get_key_event()
         if mouse_event:
-            self.__display_has_changed = True
-            return self.__panels_manager.handle_mouse_event(mouse_event)
-        elif key_event:
-            self.__display_has_changed = True
+            game_state_change_event = self.__panels_manager.handle_mouse_event(mouse_event)
+            if game_state_change_event:
+                return game_state_change_event
+        if key_event:
             return self.__panels_manager.handle_key_event(key_event)
-
-    def has_something_changed(self):
-        return self.__display_has_changed
 
     def draw(self, game_state):
         """
@@ -35,4 +30,3 @@ class GUI:
         """
         self.__game_window.clear()
         self.__panels_manager.draw(game_state)
-        self.__display_has_changed = False

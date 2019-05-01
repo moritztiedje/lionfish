@@ -38,7 +38,6 @@ class Game:
             game_state_change_event = self.__gui.trigger_control_logic()
             if game_state_change_event:
                 self.__change_event_handler.process(game_state_change_event)
-            if self.__gui.has_something_changed():
                 self.__gui.draw(self.__game_state)
             pygame.display.update()
             clock.tick(60)

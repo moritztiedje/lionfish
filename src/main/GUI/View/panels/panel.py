@@ -23,6 +23,14 @@ class Panel(metaclass=ABCMeta):
         """
         self._game_window.draw(sprite, point - self._camera_position)
 
+    def _draw_rectangle_relative_to_camera(self, area, color):
+        """
+        :type area: src.main.GUI.BaseComponents.geometry.Rectangle
+        :type coordinate: src.main.GUI.BaseComponents.geometry.Point
+        :type color: str
+        """
+        self._game_window.draw_rectangle(area - self._camera_position, color)
+
     def _calculate_relative_position_of(self, absolute_position):
         """
         :type absolute_position: src.main.GUI.BaseComponents.geometry.Point

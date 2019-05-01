@@ -1,7 +1,7 @@
 import pygame
 
 from src.main.GUI.BaseComponents.geometry import Point
-from src.main.GUI.Controller.mouseEvent import DoubleClick, LeftClick
+from src.main.GUI.Controller.mouseEvent import DoubleClick, LeftClick, Hover
 
 
 class MouseController:
@@ -36,6 +36,7 @@ class MouseController:
         if left_mouse_has_clicked:
             self.__timestamp_of_last_click = current_timestamp
         self.__left_was_pressed = self.__left_mouse_is_pressed()
+        return Hover(self.__get_inverted_mouse_position())
 
     def __reset(self):
         self.__timestamp_of_last_click = 0

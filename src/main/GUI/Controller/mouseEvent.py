@@ -5,8 +5,9 @@ from src.main.GUI.BaseComponents.geometry import Point
 
 
 class MouseEventTypes(Enum):
-    DoubleClick = 2
     LeftClick = 1
+    DoubleClick = 2
+    Hover = 3
 
 
 class MouseEvent(metaclass=ABCMeta):
@@ -58,3 +59,11 @@ class LeftClick(MouseEvent):
         :type position: src.main.GUI.BaseComponents.geometry.Point
         """
         super().__init__(position, MouseEventTypes.LeftClick)
+
+
+class Hover(MouseEvent):
+    def __init__(self, position):
+        """
+        :type position: src.main.GUI.BaseComponents.geometry.Point
+        """
+        super().__init__(position, MouseEventTypes.Hover)
