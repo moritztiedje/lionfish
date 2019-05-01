@@ -147,6 +147,11 @@ class TextAdventurePanel(Panel):
         self.__draw_border()
         self.__close_button.draw(self._game_window.draw)
 
+    def _draw_relative_to_camera(self, sprite, point):
+        is_inside_text_adventure_panel = (point - self._camera_position).get_y() < self.__height
+        if is_inside_text_adventure_panel:
+            super()._draw_relative_to_camera(sprite, point)
+
     def __draw_background(self):
         self._game_window.draw(
                 self._get_image_vault().get_sprite(TextAdventureImageEnum.BACKGROUND),
