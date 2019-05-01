@@ -48,26 +48,37 @@ class TextAdventurePanel(Panel):
         :type mouse_event: src.main.GUI.Controller.mouseEvent.MouseEvent
         """
         if mouse_event.get_type() is MouseEventTypes.LeftClick:
-            if self.__close_button.hitbox_contains(mouse_event.get_position()):
-                self.__close_button.reset()
-                return GameStateChangeEvent(GameStateChangeEventTypes.CloseTextAdventure, None)
-            for index in range(len(self.__options)):
-                relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
-                if self.__options[index].get_hitbox().is_inside(relative_mouse_position):
-                    return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, index)
+            close_panel_change_event = self.__close_button.handle_mouse_click(mouse_event.get_position())
+            if close_panel_change_event:
+                return close_panel_change_event
+            option_selected_change_event = self.__handle_mouse_click(mouse_event.get_position())
+            if option_selected_change_event:
+                return option_selected_change_event
         elif mouse_event.get_type() is MouseEventTypes.Hover:
-            highlighting_has_changed = False
-            for index in range(len(self.__options)):
-                relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
-                if self.__options[index].get_hitbox().is_inside(relative_mouse_position):
-                    if not self.__options[index].is_highlighted():
-                        self.__options[index].highlight()
-                        highlighting_has_changed = True
-                elif self.__options[index].is_highlighted():
-                    self.__options[index].un_highlight()
+            relative_mouse_position = self._calculate_relative_position_of(mouse_event.get_position())
+            self.__highlight_hovered_option(relative_mouse_position)
+
+    def __handle_mouse_click(self, mouse_position):
+        for index in range(len(self.__options)):
+            relative_mouse_position = self._calculate_relative_position_of(mouse_position)
+            if self.__options[index].get_hitbox().contains(relative_mouse_position):
+                return GameStateChangeEvent(GameStateChangeEventTypes.SelectTextAdventureOption, index)
+
+    def __highlight_hovered_option(self, mouse_position):
+        """
+        :type mouse_position: src.main.GUI.BaseComponents.geometry.Point
+        """
+        highlighting_has_changed = False
+        for index in range(len(self.__options)):
+            if self.__options[index].get_hitbox().contains(mouse_position):
+                if not self.__options[index].is_highlighted():
+                    self.__options[index].highlight()
                     highlighting_has_changed = True
-            if highlighting_has_changed:
-                self.__draw_rendered_content()
+            elif self.__options[index].is_highlighted():
+                self.__options[index].un_highlight()
+                highlighting_has_changed = True
+        if highlighting_has_changed:
+            self.__draw_rendered_content()
 
     def _load_image_vault(self):
         """
@@ -83,33 +94,29 @@ class TextAdventurePanel(Panel):
         self.__render(game_state)
         self.__draw_rendered_content()
 
-    def __draw_rendered_content(self):
-        self.__draw_background()
-        for line in self.__lines:
-            line.draw(self._draw_relative_to_camera, self._draw_rectangle_relative_to_camera)
-        for option in self.__options:
-            option.draw(self._draw_relative_to_camera, self._draw_rectangle_relative_to_camera)
-        self.__draw_border()
-        self.__close_button.draw(self._game_window.draw)
-
     def __render(self, game_state):
         self.__height = MINIMUM_HEIGHT
-        self.__reset()
+        self.__reset_rendered_content()
         self.__render_content(game_state)
 
         if self.__y_offset > self.__max_height:
             self.__height = self.__max_height
             self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            self.__reset()
+            self.__reset_rendered_content()
             self.__render_content(game_state)
         elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
             self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            self.__reset()
+            self.__reset_rendered_content()
             self.__render_content(game_state)
 
         if game_state.get_text_adventure_state().is_completed():
             self.__close_button.render(self._game_window.get_width(), self.__height)
+
+    def __reset_rendered_content(self):
+        self.__y_offset = 0
+        self.__options = []
+        self.__lines = []
 
     def __render_content(self, game_state):
         """
@@ -127,10 +134,14 @@ class TextAdventurePanel(Panel):
             text_color = self.__determine_color_of(option.success_chance)
             self.__options.append(self.__render_new_line(option.text, line_offset=10, color=text_color))
 
-    def __reset(self):
-        self.__y_offset = 0
-        self.__options = []
-        self.__lines = []
+    def __draw_rendered_content(self):
+        self.__draw_background()
+        for line in self.__lines:
+            line.draw(self._draw_relative_to_camera, self._draw_rectangle_relative_to_camera)
+        for option in self.__options:
+            option.draw(self._draw_relative_to_camera, self._draw_rectangle_relative_to_camera)
+        self.__draw_border()
+        self.__close_button.draw(self._game_window.draw)
 
     def __draw_background(self):
         self._game_window.draw(
@@ -276,17 +287,16 @@ class CloseButton:
                           Point(self.__get_close_button_hitbox().get_left(),
                                 self.__get_close_button_hitbox().get_top()))
 
-    def hitbox_contains(self, point):
+    def handle_mouse_click(self, mouse_coordinate):
         """
         :type point:
         """
-        return self.__get_close_button_hitbox() and self.__get_close_button_hitbox().is_inside(point)
+        if self.__get_close_button_hitbox() and self.__get_close_button_hitbox().contains(mouse_coordinate):
+            self.__close_button_hitbox = None
+            return GameStateChangeEvent(GameStateChangeEventTypes.CloseTextAdventure, None)
 
     def __get_close_button_hitbox(self):
         """
         :rtype: src.main.GUI.BaseComponents.geometry.Rectangle
         """
         return self.__close_button_hitbox
-
-    def reset(self):
-        self.__close_button_hitbox = None

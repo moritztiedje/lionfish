@@ -27,7 +27,7 @@ class Button:
         """
         if mouse_event.get_type() != MouseEventTypes.LeftClick:
             return False
-        return self.__button_area.is_inside(mouse_event.get_position())
+        return self.__button_area.contains(mouse_event.get_position())
 
     def draw(self, game_window):
         game_window.draw(self.__image.sprite, self.__button_area.get_draw_coordinate())

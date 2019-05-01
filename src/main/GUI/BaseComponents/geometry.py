@@ -64,7 +64,7 @@ class Rectangle:
         upper_right = Point(lower_right.get_x(), upper_left.get_y())
         return Rectangle(lower_left, upper_right)
 
-    def is_inside(self, point):
+    def contains(self, point):
         """
         :type point: Point
         :rtype: bool
