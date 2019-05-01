@@ -136,7 +136,26 @@ class TextAdventurePanel(Panel):
         self.__render_paragraphs(current_selection.text)
         for option in current_selection.options:
             text_color = self.__determine_color_of(option.success_chance)
-            self.__options.append(self.__render_new_line(option.text, line_offset=10, color=text_color))
+            self.__options.append(self.__render_new_line(option.text, top_offset=5, line_offset=10, color=text_color))
+
+    def __render_paragraphs(self, text, line_offset=0, color=pygame.Color('black')):
+        for paragraph in text.split('\n'):
+            self.__lines.append(self.__render_new_line(paragraph, line_offset=line_offset, color=color))
+
+    def __render_new_line(self, text, top_offset=0, line_offset=0, color=pygame.Color('black')):
+        """
+        :type text: str
+        :type top_offset: int
+        :type line_offset: int
+        :type color: pygame.Color
+        :rtype: src.main.GUI.View.panels.textAdventurePanel.RenderedText
+        """
+        rendered_text = RenderedText(text,
+                                     Point(LEFT_BORDER + line_offset, self.__height - TOP_BORDER - self.__y_offset - top_offset),
+                                     self._game_window.get_width() - RIGHT_BORDER,
+                                     color=color)
+        self.__y_offset += rendered_text.get_hitbox().get_height() + top_offset
+        return rendered_text
 
     def __draw_rendered_content(self):
         self.__draw_background()
@@ -165,24 +184,6 @@ class TextAdventurePanel(Panel):
                 Point(0, self.__height + border_height)
         )
 
-    def __render_paragraphs(self, text, line_offset=0, color=pygame.Color('black')):
-        for paragraph in text.split('\n'):
-            self.__lines.append(self.__render_new_line(paragraph, line_offset, color))
-
-    def __render_new_line(self, text, line_offset=0, color=pygame.Color('black')):
-        """
-        :type text: str
-        :type line_offset: int
-        :type color: pygame.Color
-        :rtype: src.main.GUI.View.panels.textAdventurePanel.RenderedText
-        """
-        rendered_text = RenderedText(text,
-                                     Point(LEFT_BORDER + line_offset, self.__height - TOP_BORDER - self.__y_offset),
-                                     self._game_window.get_width() - RIGHT_BORDER,
-                                     color=color)
-        self.__y_offset += rendered_text.get_hitbox().get_height()
-        return rendered_text
-
     @staticmethod
     def __determine_color_of(success_chance):
         """
@@ -199,7 +200,7 @@ class TextAdventurePanel(Panel):
 
 class RenderedText:
     def __init__(self, text, draw_coordinate, right_border,
-                 font="Times New Roman",
+                 font="Berlin Sans FB",
                  color=pygame.Color('black')):
         """
         :type text: str
