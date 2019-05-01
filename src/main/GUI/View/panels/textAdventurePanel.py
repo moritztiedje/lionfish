@@ -102,6 +102,7 @@ class TextAdventurePanel(Panel):
         if self.__y_offset > self.__max_height:
             self.__height = self.__max_height
             self.__resize_panel()
+            self._camera_position = Point(0, self.__max_height - self.__y_offset - HEIGHT_OF_LINE)
         elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
             self.__resize_panel()
