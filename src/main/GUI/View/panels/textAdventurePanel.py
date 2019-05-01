@@ -101,25 +101,20 @@ class TextAdventurePanel(Panel):
 
         if self.__y_offset > self.__max_height:
             self.__height = self.__max_height
-            self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            for line in self.__lines:
-                line.shift_upwards(self.__height - MINIMUM_HEIGHT)
-            for option in self.__options:
-                option.shift_upwards(self.__height - MINIMUM_HEIGHT)
-                # self.__reset_rendered_content()
-                # self.__render_content(game_state)
+            self.__resize_panel()
         elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
-            self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            for line in self.__lines:
-                line.shift_upwards(self.__height - MINIMUM_HEIGHT)
-            for option in self.__options:
-                option.shift_upwards(self.__height - MINIMUM_HEIGHT)
-                # self.__reset_rendered_content()
-                # self.__render_content(game_state)
+            self.__resize_panel()
 
         if game_state.get_text_adventure_state().is_completed():
             self.__close_button.render(self._game_window.get_width(), self.__height)
+
+    def __resize_panel(self):
+        self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
+        for line in self.__lines:
+            line.shift_upwards(self.__height - MINIMUM_HEIGHT)
+        for option in self.__options:
+            option.shift_upwards(self.__height - MINIMUM_HEIGHT)
 
     def __reset_rendered_content(self):
         self.__y_offset = 0
