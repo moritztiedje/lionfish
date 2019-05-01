@@ -102,13 +102,21 @@ class TextAdventurePanel(Panel):
         if self.__y_offset > self.__max_height:
             self.__height = self.__max_height
             self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            self.__reset_rendered_content()
-            self.__render_content(game_state)
+            for line in self.__lines:
+                line.shift_upwards(self.__height - MINIMUM_HEIGHT)
+            for option in self.__options:
+                option.shift_upwards(self.__height - MINIMUM_HEIGHT)
+                # self.__reset_rendered_content()
+                # self.__render_content(game_state)
         elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
             self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
             self._get_image_vault().get_image(TextAdventureImageEnum.BACKGROUND).scale_to_height(self.__height)
-            self.__reset_rendered_content()
-            self.__render_content(game_state)
+            for line in self.__lines:
+                line.shift_upwards(self.__height - MINIMUM_HEIGHT)
+            for option in self.__options:
+                option.shift_upwards(self.__height - MINIMUM_HEIGHT)
+                # self.__reset_rendered_content()
+                # self.__render_content(game_state)
 
         if game_state.get_text_adventure_state().is_completed():
             self.__close_button.render(self._game_window.get_width(), self.__height)
@@ -200,7 +208,6 @@ class RenderedText:
         :type font: str
         """
         self.__is_highlighted = False
-        self.__draw_coordinate = draw_coordinate
         self.__words = []
 
         sys_font = pygame.font.SysFont(font, HEIGHT_OF_LINE)
@@ -234,6 +241,14 @@ class RenderedText:
         for word in self.__words:
             word.draw(_draw_relative_to_camera)
 
+    def shift_upwards(self, shift_by):
+        """
+        :type shift_by: int
+        """
+        self.__hitbox += Point(0, shift_by)
+        for word in self.__words:
+            word.shift_upwards(shift_by)
+
     def highlight(self):
         self.__is_highlighted = True
 
@@ -264,6 +279,12 @@ class RenderedWord:
 
     def draw(self, _draw_relative_to_camera):
         _draw_relative_to_camera(self.__rendered_word, self.__draw_coordinate)
+
+    def shift_upwards(self, shift_by):
+        """
+        :type shift_by: int
+        """
+        self.__draw_coordinate += Point(0, shift_by)
 
 
 class CloseButton:

@@ -53,6 +53,12 @@ class Rectangle:
         """
         return Rectangle(self.__lower_left - point, self.__upper_right - point)
 
+    def __add__(self, point):
+        """
+        :type point: Point
+        """
+        return Rectangle(self.__lower_left + point, self.__upper_right + point)
+
     @staticmethod
     def from_upper_left_and_lower_right(upper_left, lower_right):
         """
