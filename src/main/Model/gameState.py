@@ -7,6 +7,7 @@ from src.mapGeneration.tileMap import array_from_file
 
 class GameState:
     def __init__(self):
+        self.__game_over_text = None
         self.__text_adventure_state = None
         self.__area_map = AreaMap('./dummyMap')
         self.__world_map = array_from_file('./dummyWorldMap')
@@ -48,3 +49,15 @@ class GameState:
         :rtype: src.main.Model.player.Player
         """
         return self.__player
+
+    def set_game_over_text(self, text):
+        """
+        :type text: str
+        """
+        self.__game_over_text = text
+
+    def get_game_over_text(self):
+        """
+        :rtype: str
+        """
+        return self.__game_over_text
