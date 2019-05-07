@@ -38,7 +38,6 @@ class GameOverPanel(Panel):
 
         available_text_width = self._game_window.get_width() - SIDE_MARGIN * 2
         text = RenderedText(game_state.get_game_over_text(), available_text_width)
-        text.shift_right(SIDE_MARGIN)
         text.shift_upwards((self._game_window.get_height() + text.get_height()) / 2)
         text.draw(self._game_window.draw)
 
@@ -88,19 +87,19 @@ class RenderedParagraph:
         font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
         text_color = pygame.Color(TEXT_COLOR)
 
-        current_line_number = 0
-        current_line = RenderedLine(current_line_number)
+        render_coordinate = Point(SIDE_MARGIN, 0)
+        current_line = RenderedLine(render_coordinate)
         words = text.split(' ')
         for word_str in words:
             word = font.render(word_str, 0, text_color)
             if current_line.word_makes_line_too_long(word, available_width):
                 current_line.center(available_width)
                 self.__lines.append(current_line)
-                current_line_number += 1
-                current_line = RenderedLine(current_line_number)
+                render_coordinate -= Point(0, HEIGHT_OF_LINE)
+                current_line = RenderedLine(render_coordinate)
             current_line.add(word)
 
-        self.__height = HEIGHT_OF_LINE * (current_line_number + 1)
+        self.__height = -render_coordinate.get_y() + HEIGHT_OF_LINE
         current_line.center(available_width)
         self.__lines.append(current_line)
 
@@ -121,15 +120,15 @@ class RenderedParagraph:
 
 
 class RenderedLine:
-    def __init__(self, line_number):
+    def __init__(self, draw_coordinate):
         self.__words = []
         self.__current_word_x_position = 0
-        self.__y_coordinate = - line_number * HEIGHT_OF_LINE
+        self.__coordinate = draw_coordinate
         font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
         self.__space_width = font.render(" ", 0, pygame.Color('black')).get_width()
 
     def add(self, word_surface):
-        word_draw_coordinate = Point(self.__current_word_x_position, self.__y_coordinate)
+        word_draw_coordinate = Point(self.__current_word_x_position, 0) + self.__coordinate
         word = RenderedWord(word_surface, word_draw_coordinate)
         self.__words.append(word)
 
