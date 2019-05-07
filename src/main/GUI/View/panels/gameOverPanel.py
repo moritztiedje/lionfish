@@ -3,7 +3,7 @@ import pygame
 from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.View.imageVaults.gameOverImageVault import GameOverImageVault
 from src.main.GUI.View.panels.panel import Panel
-from src.main.GUI.View.panels.renderedText import RenderedWord
+from src.main.GUI.View.panels.renderedText import RenderedWord, LineRenderer
 from src.main.constants import GameOverImageEnum
 
 HEIGHT_OF_LINE = 50
@@ -86,9 +86,10 @@ class RenderedParagraph:
 
         font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
         text_color = pygame.Color(TEXT_COLOR)
+        line_renderer = LineRenderer(FONT, font_size=HEIGHT_OF_LINE)
 
         render_coordinate = Point(SIDE_MARGIN, 0)
-        current_line = RenderedLine(render_coordinate)
+        current_line = line_renderer.render_line(render_coordinate)
         words = text.split(' ')
         for word_str in words:
             word = font.render(word_str, 0, text_color)
@@ -96,7 +97,7 @@ class RenderedParagraph:
                 current_line.center(available_width)
                 self.__lines.append(current_line)
                 render_coordinate -= Point(0, HEIGHT_OF_LINE)
-                current_line = RenderedLine(render_coordinate)
+                current_line = line_renderer.render_line(render_coordinate)
             current_line.add(word)
 
         self.__height = -render_coordinate.get_y() + HEIGHT_OF_LINE
@@ -117,46 +118,3 @@ class RenderedParagraph:
     def shift_upwards(self, shift_by):
         for rendered_line in self.__lines:
             rendered_line.shift_upwards(shift_by)
-
-
-class RenderedLine:
-    def __init__(self, draw_coordinate):
-        self.__words = []
-        self.__current_word_x_position = 0
-        self.__coordinate = draw_coordinate
-        font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
-        self.__space_width = font.render(" ", 0, pygame.Color('black')).get_width()
-
-    def add(self, word_surface):
-        word_draw_coordinate = Point(self.__current_word_x_position, 0) + self.__coordinate
-        word = RenderedWord(word_surface, word_draw_coordinate)
-        self.__words.append(word)
-
-        self.__current_word_x_position += word_surface.get_width() + self.__space_width
-
-    def draw(self, _draw_method):
-        for word in self.__words:
-            word.draw(_draw_method)
-
-    def center(self, available_width):
-        for word in self.__words:
-            word.shift_right((available_width - self.get_width()) / 2)
-
-    def word_makes_line_too_long(self, rendered_word, available_width):
-        word_width = rendered_word.get_width()
-        return self.__current_word_x_position + word_width >= available_width
-
-    def get_width(self):
-        width = 0
-        for word in self.__words:
-            width += word.get_width() + self.__space_width
-        width -= self.__space_width
-        return width
-
-    def shift_right(self, shift_by):
-        for rendered_word in self.__words:
-            rendered_word.shift_right(shift_by)
-
-    def shift_upwards(self, shift_by):
-        for rendered_word in self.__words:
-            rendered_word.shift_upwards(shift_by)
