@@ -125,29 +125,34 @@ class RenderedLine:
         self.__words = []
         self.__current_word_x_position = 0
         self.__y_coordinate = - line_number * HEIGHT_OF_LINE
+        font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
+        self.__space_width = font.render(" ", 0, pygame.Color('black')).get_width()
 
     def add(self, word_surface):
         word_draw_coordinate = Point(self.__current_word_x_position, self.__y_coordinate)
         word = RenderedWord(word_surface, word_draw_coordinate)
         self.__words.append(word)
 
-        font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
-        space_width = font.render(" ", 0, pygame.Color('black')).get_width()
-        self.__current_word_x_position += word_surface.get_width() + space_width
+        self.__current_word_x_position += word_surface.get_width() + self.__space_width
 
     def draw(self, _draw_method):
         for word in self.__words:
             word.draw(_draw_method)
 
     def center(self, available_width):
-        last_word = self.__words[len(self.__words) - 1]
-        line_width = last_word.get_right_side()
         for word in self.__words:
-            word.shift_right((available_width - line_width) / 2)
+            word.shift_right((available_width - self.get_width()) / 2)
 
     def word_makes_line_too_long(self, rendered_word, available_width):
         word_width = rendered_word.get_width()
         return self.__current_word_x_position + word_width >= available_width
+
+    def get_width(self):
+        width = 0
+        for word in self.__words:
+            width += word.get_width() + self.__space_width
+        width -= self.__space_width
+        return width
 
     def shift_right(self, shift_by):
         for rendered_word in self.__words:

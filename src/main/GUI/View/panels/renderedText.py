@@ -18,8 +18,5 @@ class RenderedWord:
         """
         self.__draw_coordinate += Point(0, shift_by)
 
-    def get_right_side(self):
-        return self.__draw_coordinate.get_x() + self.__rendered_word.get_width()
-
     def get_width(self):
         return self.__rendered_word.get_width()
