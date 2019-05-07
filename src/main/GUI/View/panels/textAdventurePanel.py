@@ -6,6 +6,7 @@ from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
+from src.main.GUI.View.panels.renderedText import RenderedWord
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 
 MINIMUM_HEIGHT = 200
@@ -268,25 +269,6 @@ class RenderedText:
         :rtype: src.main.GUI.BaseComponents.geometry.Rectangle
         """
         return self.__hitbox
-
-
-class RenderedWord:
-    def __init__(self, word, draw_coordinate):
-        """
-        :type word: pygame.ftfont.Font
-        :type draw_coordinate: src.main.GUI.BaseComponents.geometry.Point
-        """
-        self.__rendered_word = word
-        self.__draw_coordinate = draw_coordinate
-
-    def draw(self, _draw_relative_to_camera):
-        _draw_relative_to_camera(self.__rendered_word, self.__draw_coordinate)
-
-    def shift_upwards(self, shift_by):
-        """
-        :type shift_by: int
-        """
-        self.__draw_coordinate += Point(0, shift_by)
 
 
 class CloseButton:

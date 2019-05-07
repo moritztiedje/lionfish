@@ -3,6 +3,7 @@ import pygame
 from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.View.imageVaults.gameOverImageVault import GameOverImageVault
 from src.main.GUI.View.panels.panel import Panel
+from src.main.GUI.View.panels.renderedText import RenderedWord
 from src.main.constants import GameOverImageEnum
 
 HEIGHT_OF_LINE = 50
@@ -37,10 +38,9 @@ class GameOverPanel(Panel):
 
         available_text_width = self._game_window.get_width() - SIDE_MARGIN * 2
         text = RenderedText(game_state.get_game_over_text(), available_text_width)
-        draw_coordinate_of_word = Point(
-                SIDE_MARGIN,
-                (self._game_window.get_height() + text.get_height()) / 2)
-        text.draw(draw_coordinate_of_word, self._game_window.draw)
+        text.shift_right(SIDE_MARGIN)
+        text.shift_upwards((self._game_window.get_height() + text.get_height()) / 2)
+        text.draw(self._game_window.draw)
 
 
 class RenderedText:
@@ -51,11 +51,10 @@ class RenderedText:
         self.__rendered_paragraphs = []
 
         paragraphs = text.split('\n')
-        draw_coordinate = Point(0, 0)
 
         for paragraph in paragraphs:
-            rendered_paragraph = RenderedParagraph(paragraph, draw_coordinate, available_width)
-            draw_coordinate += Point(0, rendered_paragraph.get_height())
+            rendered_paragraph = RenderedParagraph(paragraph, available_width)
+            rendered_paragraph.shift_upwards(-self.get_height())
             self.__rendered_paragraphs.append(rendered_paragraph)
 
     def get_height(self):
@@ -64,15 +63,21 @@ class RenderedText:
             height += rendered_paragraph.get_height()
         return height
 
-    def draw(self, draw_coordinate_of_text, draw_method):
-        draw_coordinate_of_paragraph = draw_coordinate_of_text
+    def draw(self, draw_method):
         for rendered_paragraph in self.__rendered_paragraphs:
-            rendered_paragraph.draw(draw_coordinate_of_paragraph, draw_method)
-            draw_coordinate_of_paragraph -= Point(0, rendered_paragraph.get_height())
+            rendered_paragraph.draw(draw_method)
+
+    def shift_right(self, shift_by):
+        for rendered_paragraph in self.__rendered_paragraphs:
+            rendered_paragraph.shift_right(shift_by)
+
+    def shift_upwards(self, shift_by):
+        for rendered_paragraph in self.__rendered_paragraphs:
+            rendered_paragraph.shift_upwards(shift_by)
 
 
 class RenderedParagraph:
-    def __init__(self, text, draw_coordinate, available_width):
+    def __init__(self, text, available_width):
         """
         :type text: str
         :type available_width: int
@@ -99,12 +104,20 @@ class RenderedParagraph:
         current_line.center(available_width)
         self.__lines.append(current_line)
 
-    def draw(self, coordinate, _draw_method):
+    def draw(self, _draw_method):
         for line in self.__lines:
-            line.draw(coordinate, _draw_method)
+            line.draw(_draw_method)
 
     def get_height(self):
         return self.__height
+
+    def shift_right(self, shift_by):
+        for line in self.__lines:
+            line.shift_right(shift_by)
+
+    def shift_upwards(self, shift_by):
+        for rendered_line in self.__lines:
+            rendered_line.shift_upwards(shift_by)
 
 
 class RenderedLine:
@@ -122,9 +135,9 @@ class RenderedLine:
         space_width = font.render(" ", 0, pygame.Color('black')).get_width()
         self.__current_word_x_position += word_surface.get_width() + space_width
 
-    def draw(self, coordinate, _draw_method):
+    def draw(self, _draw_method):
         for word in self.__words:
-            word.draw(coordinate, _draw_method)
+            word.draw(_draw_method)
 
     def center(self, available_width):
         last_word = self.__words[len(self.__words) - 1]
@@ -136,21 +149,10 @@ class RenderedLine:
         word_width = rendered_word.get_width()
         return self.__current_word_x_position + word_width >= available_width
 
-
-class RenderedWord:
-    def __init__(self, word, draw_coordinate):
-        self.__rendered_word = word
-        self.__draw_coordinate = draw_coordinate
-
-    def draw(self, coordinate, draw_method):
-        draw_coordinate = coordinate + self.__draw_coordinate
-        draw_method(self.__rendered_word, draw_coordinate)
-
     def shift_right(self, shift_by):
-        self.__draw_coordinate += Point(shift_by, 0)
+        for rendered_word in self.__words:
+            rendered_word.shift_right(shift_by)
 
-    def get_right_side(self):
-        return self.__draw_coordinate.get_x() + self.__rendered_word.get_width()
-
-    def get_width(self):
-        return self.__rendered_word.get_width()
+    def shift_upwards(self, shift_by):
+        for rendered_word in self.__words:
+            rendered_word.shift_upwards(shift_by)
