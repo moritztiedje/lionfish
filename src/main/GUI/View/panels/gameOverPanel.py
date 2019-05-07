@@ -5,7 +5,7 @@ from src.main.GUI.View.imageVaults.gameOverImageVault import GameOverImageVault
 from src.main.GUI.View.panels.panel import Panel
 from src.main.constants import GameOverImageEnum
 
-HEIGHT_OF_LINE = 60
+HEIGHT_OF_LINE = 50
 FONT = 'Arial Black'
 TEXT_COLOR = 'darkblue'
 SIDE_MARGIN = 100
@@ -45,6 +45,34 @@ class GameOverPanel(Panel):
 
 class RenderedText:
     def __init__(self, text, available_width):
+        """
+        :type text: str
+        """
+        self.__rendered_paragraphs = []
+
+        paragraphs = text.split('\n')
+        draw_coordinate = Point(0, 0)
+
+        for paragraph in paragraphs:
+            rendered_paragraph = RenderedParagraph(paragraph, draw_coordinate, available_width)
+            draw_coordinate += Point(0, rendered_paragraph.get_height())
+            self.__rendered_paragraphs.append(rendered_paragraph)
+
+    def get_height(self):
+        height = 0
+        for rendered_paragraph in self.__rendered_paragraphs:
+            height += rendered_paragraph.get_height()
+        return height
+
+    def draw(self, draw_coordinate_of_text, draw_method):
+        draw_coordinate_of_paragraph = draw_coordinate_of_text
+        for rendered_paragraph in self.__rendered_paragraphs:
+            rendered_paragraph.draw(draw_coordinate_of_paragraph, draw_method)
+            draw_coordinate_of_paragraph -= Point(0, rendered_paragraph.get_height())
+
+
+class RenderedParagraph:
+    def __init__(self, text, draw_coordinate, available_width):
         """
         :type text: str
         :type available_width: int
@@ -116,7 +144,6 @@ class RenderedWord:
 
     def draw(self, coordinate, draw_method):
         draw_coordinate = coordinate + self.__draw_coordinate
-        print(draw_coordinate.get_x())
         draw_method(self.__rendered_word, draw_coordinate)
 
     def shift_right(self, shift_by):

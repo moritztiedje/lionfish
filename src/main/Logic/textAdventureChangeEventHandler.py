@@ -36,7 +36,8 @@ class TextAdventureChangeEventHandler:
             self.__game_state.get_player().move_to_destination()
         elif result.result == ResultTypes.GAME_OVER:
             self.__game_state.get_panel_state(Panels.GameOverPanel).show()
-            self.__game_state.set_game_over_text("Game Over.")
+            final_text = self.__game_state.get_text_adventure_state().get_current_selection().text
+            self.__game_state.set_game_over_text(final_text + "\nGame Over.")
             self.__game_state.get_panel_state(Panels.TextAdventureBox).deactivate()
 
     def set_initial_adventure_state(self, initial_state):

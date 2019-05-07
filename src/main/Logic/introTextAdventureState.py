@@ -1,4 +1,4 @@
-from src.main.Logic.stateMachine import ChoiceState, ForwardingState, GoBackState, AdvanceState, AttemptState, \
+from src.main.Logic.stateMachine import ChoiceState, ForwardingState, AdvanceState, AttemptState, \
     GameOverState
 
 
@@ -79,11 +79,12 @@ class IntroTextAdventureState(ChoiceState):
 
     def __build_stop_state(self):
         stop = ForwardingState(
-                "For once in your life, you did the right thing. Like a suicidal man walking up to the edge and realising "
-                "what the plunge would truly be, coming to this clearing and looking down at this book helps you to "
-                "realize that it is probably a bad idea to perform milennia-old rituals that are, if your are perfectly "
-                "honest with yourself, much more likely to bring about the end of the world than help it in any way. After "
-                "burning the book then and there, you leave this place and whatever could have happened behind. \n"
+                "For once in your life, you did the right thing. Like a suicidal man walking up to the edge and "
+                "realising what the plunge would be like, coming to this clearing and looking down at this book helped "
+                "you realize that it is probably a bad idea to perform milennia-old rituals that are, if your are "
+                "perfectly honest with yourself, much more likely to bring about the end of the world than help it in "
+                "any way. After burning the book then and there, you leave this place and whatever could have happened "
+                "behind. \n"
         )
         stop.set_next_state(self.__build_old_age_state())
         return stop
@@ -149,9 +150,9 @@ class IntroTextAdventureState(ChoiceState):
     def __build_old_age_state(self):
         return GameOverState(
                 "You continue to live your life, as good as you can, but at an old age you have to admit that it has "
-                "been a rather pointless life of mediocrity. Maybe you did the right thing all those years ago but "
-                "also maybe even the end of the world would have been preferrable to this insignificant blob of "
+                "been a rather dull life. Maybe you did the right thing all those years ago but "
+                "also maybe even the end of the world would have been preferable to this mediocre blob of "
                 "nothing. You are old now and you doubt that you have more than a few years left among the living. "
                 "Maybe you wish that you had done things differently, done more with the one life than you had, but "
-                "the time for wishes has gone by. All you can do now is accept the inevitable. Game Over."
+                "the time for wishes has gone by. All you can do now is accept the inevitable."
         )

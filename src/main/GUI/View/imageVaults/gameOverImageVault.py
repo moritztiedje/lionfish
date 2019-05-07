@@ -9,7 +9,7 @@ class GameOverImageVault(ImageVault):
 
     def _load_images(self):
         background = Image(400, 400, '../../artwork/images/gameOverBackground.png')
-        background.set_alpha(100)
+        background.set_alpha(200)
         return {
             GameOverImageEnum.BACKGROUND: background,
         }
