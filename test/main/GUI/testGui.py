@@ -30,35 +30,13 @@ class TestGUI(unittest.TestCase):
         self.__game_window.clear.assert_called_once()
         self.__panels_manager.draw.assert_called_once()
 
-    def test_mouse_click_recognized_as_change(self):
-        game_controller = create_mock(GameController)
-        game_controller.get_mouse_event = lambda: create_mock(MouseEvent)
-        game_controller.get_key_event = lambda: None
-        gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.draw(create_mock(GameState))
-
-        gui_under_test.trigger_control_logic()
-
-        self.assertTrue(gui_under_test.has_something_changed())
-
-    def test_no_click_or_button_press_recognized_as_no_change(self):
+    def test_no_click_or_button_press_produces_no_change_event(self):
         game_controller = create_mock(GameController)
         game_controller.get_mouse_event = lambda: None
         game_controller.get_key_event = lambda: None
         gui_under_test = gui.GUI(self.__game_window, game_controller)
         gui_under_test.draw(create_mock(GameState))
 
-        gui_under_test.trigger_control_logic()
+        change_event = gui_under_test.trigger_control_logic()
 
-        self.assertFalse(gui_under_test.has_something_changed())
-
-    def test_button_press_recognized_as_change(self):
-        game_controller = create_mock(GameController)
-        game_controller.get_mouse_event = lambda: None
-        game_controller.get_key_event = lambda: create_mock(KeyEventTypes)
-        gui_under_test = gui.GUI(self.__game_window, game_controller)
-        gui_under_test.draw(GameState)
-
-        gui_under_test.trigger_control_logic()
-
-        self.assertTrue(gui_under_test.has_something_changed())
+        self.assertIsNone(change_event)
