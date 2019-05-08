@@ -15,6 +15,7 @@ TOP_BORDER = 10
 RIGHT_BORDER = 20
 LEFT_BORDER = 20
 HEIGHT_OF_LINE = 20
+FONT_NAME = 'Berlin Sans FB'
 
 
 class TextAdventurePanel(Panel):
@@ -152,7 +153,8 @@ class TextAdventurePanel(Panel):
         :rtype: src.main.GUI.View.panels.textAdventurePanel.RenderedText
         """
         rendered_text = RenderedText(text,
-                                     Point(LEFT_BORDER + line_offset, self.__height - TOP_BORDER - self.__y_offset - top_offset),
+                                     Point(LEFT_BORDER + line_offset,
+                                           self.__height - TOP_BORDER - self.__y_offset - top_offset),
                                      self._game_window.get_width() - RIGHT_BORDER,
                                      color=color)
         self.__y_offset += rendered_text.get_hitbox().get_height() + top_offset
@@ -201,7 +203,7 @@ class TextAdventurePanel(Panel):
 
 class RenderedText:
     def __init__(self, text, draw_coordinate, right_border,
-                 font="Berlin Sans FB",
+                 font=FONT_NAME,
                  color=pygame.Color('black')):
         """
         :type text: str
