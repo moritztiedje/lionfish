@@ -1,9 +1,7 @@
-import pygame
-
 from src.main.GUI.BaseComponents.geometry import Point
 from src.main.GUI.View.imageVaults.gameOverImageVault import GameOverImageVault
 from src.main.GUI.View.panels.panel import Panel
-from src.main.GUI.View.panels.renderedText import RenderedWord, LineRenderer
+from src.main.GUI.View.panels.renderedText import ParagraphRenderer
 from src.main.constants import GameOverImageEnum
 
 HEIGHT_OF_LINE = 50
@@ -36,25 +34,27 @@ class GameOverPanel(Panel):
         background.scale_to_width(self._game_window.get_width())
         self._game_window.draw(background.sprite, Point(0, self._game_window.get_height()))
 
-        available_text_width = self._game_window.get_width() - SIDE_MARGIN * 2
-        text = RenderedText(game_state.get_game_over_text(), available_text_width)
+        right_border = self._game_window.get_width() - SIDE_MARGIN
+        text = RenderedText(game_state.get_game_over_text(), right_border)
         text.shift_upwards((self._game_window.get_height() + text.get_height()) / 2)
         text.draw(self._game_window.draw)
 
 
 class RenderedText:
-    def __init__(self, text, available_width):
+    def __init__(self, text, right_border):
         """
         :type text: str
         """
+        paragraph_renderer = ParagraphRenderer(font_name=FONT, font_size=HEIGHT_OF_LINE, color=TEXT_COLOR)
         self.__rendered_paragraphs = []
 
         paragraphs = text.split('\n')
-
+        coordinate_of_paragraph = Point(SIDE_MARGIN, 0)
         for paragraph in paragraphs:
-            rendered_paragraph = RenderedParagraph(paragraph, available_width)
-            rendered_paragraph.shift_upwards(-self.get_height())
+            rendered_paragraph = paragraph_renderer.render_paragraph(paragraph, coordinate_of_paragraph, right_border)
             self.__rendered_paragraphs.append(rendered_paragraph)
+
+            coordinate_of_paragraph -= Point(0, rendered_paragraph.get_height())
 
     def get_height(self):
         height = 0
@@ -73,48 +73,3 @@ class RenderedText:
     def shift_upwards(self, shift_by):
         for rendered_paragraph in self.__rendered_paragraphs:
             rendered_paragraph.shift_upwards(shift_by)
-
-
-class RenderedParagraph:
-    def __init__(self, text, available_width):
-        """
-        :type text: str
-        :type available_width: int
-        """
-        self.__lines = []
-        self.__height = 0
-
-        font = pygame.font.SysFont(FONT, HEIGHT_OF_LINE)
-        text_color = pygame.Color(TEXT_COLOR)
-        line_renderer = LineRenderer(FONT, font_size=HEIGHT_OF_LINE)
-
-        render_coordinate = Point(SIDE_MARGIN, 0)
-        current_line = line_renderer.render_line(render_coordinate)
-        words = text.split(' ')
-        for word_str in words:
-            word = font.render(word_str, 0, text_color)
-            if current_line.word_makes_line_too_long(word, available_width):
-                current_line.center(available_width)
-                self.__lines.append(current_line)
-                render_coordinate -= Point(0, HEIGHT_OF_LINE)
-                current_line = line_renderer.render_line(render_coordinate)
-            current_line.add(word)
-
-        self.__height = -render_coordinate.get_y() + HEIGHT_OF_LINE
-        current_line.center(available_width)
-        self.__lines.append(current_line)
-
-    def draw(self, _draw_method):
-        for line in self.__lines:
-            line.draw(_draw_method)
-
-    def get_height(self):
-        return self.__height
-
-    def shift_right(self, shift_by):
-        for line in self.__lines:
-            line.shift_right(shift_by)
-
-    def shift_upwards(self, shift_by):
-        for rendered_line in self.__lines:
-            rendered_line.shift_upwards(shift_by)
