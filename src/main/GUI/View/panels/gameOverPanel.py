@@ -52,6 +52,7 @@ class RenderedText:
         coordinate_of_paragraph = Point(SIDE_MARGIN, 0)
         for paragraph in paragraphs:
             rendered_paragraph = paragraph_renderer.render_paragraph(paragraph, coordinate_of_paragraph, right_border)
+            rendered_paragraph.align_text_center()
             self.__rendered_paragraphs.append(rendered_paragraph)
 
             coordinate_of_paragraph -= Point(0, rendered_paragraph.get_height())

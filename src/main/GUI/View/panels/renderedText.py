@@ -30,15 +30,17 @@ class RenderedParagraph:
         for word_str in words:
             word = font.render(word_str, 0, color)
             if current_line.word_makes_line_too_long(word):
-                current_line.center()
                 self.__lines.append(current_line)
                 current_line_coordinate -= Point(0, font_size)
                 current_line = line_renderer.create_empty_line(current_line_coordinate, right_border)
             current_line.add(word)
 
         self.__height = coordinate.get_y() - current_line_coordinate.get_y() + font_size
-        current_line.center()
         self.__lines.append(current_line)
+
+    def align_text_center(self):
+        for line in self.__lines:
+            line.center()
 
     def draw(self, _draw_method):
         for line in self.__lines:
