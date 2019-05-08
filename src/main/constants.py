@@ -33,3 +33,44 @@ class AreaImageEnum(Enum):
 
 class GameOverImageEnum(Enum):
     BACKGROUND = 0
+
+
+class PlayerSkills(Enum):
+    ENDURE = 0
+    FORCE = 1
+    FIGHT = 2
+    SNEAK = 3
+    MOVE = 4
+    SHOOT = 5
+    SCOUT = 6
+    COMPREHEND = 7
+    OCCULT_KNOWLEDGE = 8
+    SENSE_EMOTION = 9
+    MANIPULATE = 10
+    HEAL = 11
+
+    def __str__(self):
+        if self is PlayerSkills.ENDURE:
+            return 'endure'
+        if self is PlayerSkills.FORCE:
+            return 'force'
+        if self is PlayerSkills.FIGHT:
+            return 'fight'
+        if self is PlayerSkills.SNEAK:
+            return 'sneak'
+        if self is PlayerSkills.MOVE:
+            return 'move'
+        if self is PlayerSkills.SHOOT:
+            return 'shoot'
+        if self is PlayerSkills.SCOUT:
+            return 'scout'
+        if self is PlayerSkills.COMPREHEND:
+            return 'comprehend'
+        if self is PlayerSkills.OCCULT_KNOWLEDGE:
+            return 'occult knowledge'
+        if self is PlayerSkills.SENSE_EMOTION:
+            return 'sense emotion'
+        if self is PlayerSkills.MANIPULATE:
+            return 'manipulate'
+        if self is PlayerSkills.HEAL:
+            return 'heal'

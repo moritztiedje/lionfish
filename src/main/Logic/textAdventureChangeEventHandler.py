@@ -29,12 +29,12 @@ class TextAdventureChangeEventHandler:
                         result.text,
                         result.selection
                 ))
-        if result.result is ResultTypes.FAIL:
+        if result.result_type is ResultTypes.FAIL:
             self.__game_state.get_text_adventure_state().complete()
-        elif result.result == ResultTypes.SUCCESS:
+        elif result.result_type == ResultTypes.SUCCESS:
             self.__game_state.get_text_adventure_state().complete()
             self.__game_state.get_player().move_to_destination()
-        elif result.result == ResultTypes.GAME_OVER:
+        elif result.result_type == ResultTypes.GAME_OVER:
             self.__game_state.get_panel_state(Panels.GameOverPanel).show()
             final_text = self.__game_state.get_text_adventure_state().get_current_selection().text
             self.__game_state.set_game_over_text(final_text + "\nGame Over.")
@@ -44,7 +44,7 @@ class TextAdventureChangeEventHandler:
         """
         :type initial_state:
         """
-        self.__state_machine = StateMachine(initial_state)
+        self.__state_machine = StateMachine(initial_state, self.__game_state)
         initial_result = self.__state_machine.run_until_next_result()
         self.__game_state.set_text_adventure_state(TextAdventureState(initial_result))
 

@@ -27,3 +27,7 @@ class Player:
 
     def move_to_destination(self):
         self.__position_in_area = self.__destination
+
+    def get_absolute_skill_level(self, skill):
+        # Empty stub, since there is no skill system yet
+        return 1

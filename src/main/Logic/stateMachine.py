@@ -115,17 +115,66 @@ class ForwardingState(State):
         return self.__next_state
 
 
+class SkillCheckState(State):
+    def __init__(self, text, skill, difficulty):
+        super().__init__(StateTypes.AUTO_PROCEED_STATE, text)
+        self.__skill = skill
+        self.__difficulty = difficulty
+        self.__success_chance = None
+        self.__success_state = None
+        self.__fail_state = None
+
+    def get_skill(self):
+        return self.__skill
+
+    def get_difficulty(self):
+        return self.__difficulty
+
+    def set_success_state(self, state):
+        """
+        :type state: State
+        """
+        self.__success_state = state
+
+    def set_fail_state(self, state):
+        """
+        :type state: State
+        """
+        self.__fail_state = state
+
+    def set_success_chance(self, chance):
+        """
+        :type chance: float
+        """
+        self.__success_chance = chance
+
+    def get_next_state(self):
+        """
+        :rtype: State
+        """
+        random_number = random()
+        if random_number <= self.__success_chance:
+            return self.__success_state
+        else:
+            return self.__fail_state
+
+
 class StateMachineResult:
     def __init__(self, text, selection, result):
         self.text = text
         self.selection = selection
-        self.result = result
+        self.result_type = result
 
 
 class StateMachine:
-    def __init__(self, initial_state):
+    def __init__(self, initial_state, game_state):
+        """
+        :type initial_state: State
+        :type game_state: src.main.Model.gameState.GameState
+        """
         self.__current_state = initial_state
         self.__text = ""
+        self.__game_state = game_state
 
     def pick(self, selection):
         """
@@ -144,23 +193,54 @@ class StateMachine:
         if self.__current_state.type == StateTypes.FINAL_STATE:
             return StateMachineResult(self.__text, [], self.__current_state.result)
         elif self.__current_state.type == StateTypes.CHOICE_STATE:
-            selections = []
+            choices = []
             selection_texts = self.__current_state.get_selections()
             for selection_index in range(len(selection_texts)):
-                selected_state = self.__current_state.get_next_state(selection_index)
+                selectable_state = self.__current_state.get_next_state(selection_index)
                 text = selection_texts[selection_index]
-                if isinstance(selected_state, AttemptState):
-                    success_chance = selected_state.get_success_chance()
-                    selections.append(Selection(text, success_chance))
+                if isinstance(selectable_state, AttemptState):
+                    success_chance = selectable_state.get_success_chance()
+                    choices.append(Choice(text, success_chance))
+                elif isinstance(selectable_state, SkillCheckState):
+                    skill = selectable_state.get_skill()
+                    difficulty = selectable_state.get_difficulty()
+                    success_chance = self.__calculate_success_chance(skill, difficulty)
+                    selectable_state.set_success_chance(success_chance)
+                    choices.append(Choice(text + ' (' + str(skill) + ' check: ' + str(difficulty) + ')', success_chance))
                 else:
-                    selections.append(Selection(text, None))
-            return StateMachineResult(self.__text, selections, None)
+                    choices.append(Choice(text, None))
+            return StateMachineResult(self.__text, choices, None)
         elif self.__current_state.type == StateTypes.AUTO_PROCEED_STATE:
             self.__current_state = self.__current_state.get_next_state()
             return self.run_until_next_result()
 
+    def __calculate_success_chance(self, skill, difficulty):
+        """
+        :type skill: src.main.constants.PlayerSkills
+        :type difficulty: int
+        :rtype: float
+        """
+        skill_level = self.__game_state.get_player().get_absolute_skill_level(skill)
+        difference = skill_level - difficulty
+        if difference > 2:
+            return 1.0
+        if difference is 2:
+            return 0.95
+        elif difference is 1:
+            return 0.85
+        elif difference is 0:
+            return 0.7
+        elif difference is -1:
+            return 0.5
+        elif difference is -2:
+            return 0.25
+        elif difference is -3:
+            return 0.1
+        elif difference < -3:
+            return 0.0
 
-class Selection:
+
+class Choice:
     def __init__(self, text, success_chance):
         self.text = text
         self.success_chance = success_chance

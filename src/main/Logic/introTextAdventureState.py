@@ -1,5 +1,6 @@
 from src.main.Logic.stateMachine import ChoiceState, ForwardingState, AdvanceState, AttemptState, \
-    GameOverState
+    GameOverState, SkillCheckState
+from src.main.constants import PlayerSkills
 
 
 class IntroTextAdventureState(ChoiceState):
@@ -90,7 +91,7 @@ class IntroTextAdventureState(ChoiceState):
         return stop
 
     def __build_attempt_hold_on_state(self):
-        state = AttemptState("", 0.25)
+        state = SkillCheckState("", PlayerSkills.ENDURE, 3)
         state.set_fail_state(self.__build_hold_on_fail_state())
         state.set_success_state(self.__build_hold_on_success_state())
         return state
@@ -99,15 +100,15 @@ class IntroTextAdventureState(ChoiceState):
     def __build_hold_on_success_state():
         return GameOverState(
                 "Despite the violent tugging and tearing of the winds, you manage to hold on to the book. It drags you up "
-                "into the air and towards the center of the clearing, towards the eye of the storm. You feel it now, the "
-                "fire and the way it burns. It is like the time you burned yourself on a hot stove, multiplied a "
+                "into the air and towards the center of the clearing, into the eye of the storm. You sense it now, the "
+                "fire and the way it burns. It feels similar to hurting yourself on a hot stove, multiplied a "
                 "hundred-fold and stretched out over an eternity. Through all of the pain your fraying mind realizes that "
-                "this is, what the immeasurable agony of hellfire probably feels like, if hell even exists. In an "
+                "this is, what the immeasurable agony of hellfire probably might be, if hell even exists. In an "
                 "explosion "
                 "of charred meat and fire, your body explodes showering the clearing in your blood and guts. Out of the "
-                "mist of your evaporating blood, strange and awful creatures appear and scurry off into the forest. They "
+                "mist of the evaporating gore, strange and awful creatures appear and scurry off into the forest. They "
                 "are anxious to get out of the way before their bigger siblings arrive. But none of this is your concern "
-                "any more. You are dead and the world is doomed. Game Over. "
+                "any more. You are dead and the world is doomed."
         )
 
     def __build_hold_on_fail_state(self):

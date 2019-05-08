@@ -14,7 +14,7 @@ class TestStateMachine(TestCase):
         state_machine_result = state_machine.run_until_next_result()
 
         self.assertEqual(state_machine_result.text, "You did it!")
-        self.assertEqual(state_machine_result.result, ResultTypes.SUCCESS)
+        self.assertEqual(state_machine_result.result_type, ResultTypes.SUCCESS)
         self.assertEqual(len(state_machine_result.selection), 0)
 
     def test_returns_fail_when_fail_state_is_reached(self):
@@ -24,7 +24,7 @@ class TestStateMachine(TestCase):
         state_machine_result = state_machine.run_until_next_result()
 
         self.assertEqual(state_machine_result.text, "You messed it up!")
-        self.assertEqual(state_machine_result.result, ResultTypes.FAIL)
+        self.assertEqual(state_machine_result.result_type, ResultTypes.FAIL)
         self.assertEqual(len(state_machine_result.selection), 0)
 
     def test_returns_selections_when_choice_state_is_reached(self):
@@ -35,7 +35,7 @@ class TestStateMachine(TestCase):
         state_machine_result = state_machine.run_until_next_result()
 
         self.assertEqual(state_machine_result.text, "Pick One:")
-        self.assertIsNone(state_machine_result.result)
+        self.assertIsNone(state_machine_result.result_type)
         self.assertEqual(state_machine_result.selection[0].text, "Some Option")
 
     def test_proceeds_to_next_state_when_option_is_picked(self):
