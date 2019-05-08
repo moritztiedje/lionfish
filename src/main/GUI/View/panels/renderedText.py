@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.GUI.BaseComponents.geometry import Point
+from src.main.GUI.BaseComponents.geometry import Point, Rectangle
 
 
 class ParagraphRenderer:
@@ -21,6 +21,7 @@ class RenderedParagraph:
         """
         self.__lines = []
         self.__height = 0
+        self.__highlighted = False
 
         line_renderer = LineRenderer(font)
 
@@ -38,24 +39,53 @@ class RenderedParagraph:
         self.__height = coordinate.get_y() - current_line_coordinate.get_y() + font_size
         self.__lines.append(current_line)
 
+        if self.__height <= font_size:
+            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
+                    coordinate,
+                    current_line_coordinate + Point(current_line.get_width(), -self.__height))
+        else:
+            bottom_y_coordinate = coordinate.get_y() - self.get_height()
+            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
+                    coordinate,
+                    Point(right_border, bottom_y_coordinate))
+
     def align_text_center(self):
         for line in self.__lines:
             line.center()
 
-    def draw(self, _draw_method):
+    def draw(self, draw_method, draw_rectangle_method=None):
+        if self.is_highlighted():
+            draw_rectangle_method(self.get_hitbox(), 'darkgrey')
         for line in self.__lines:
-            line.draw(_draw_method)
+            line.draw(draw_method)
 
     def get_height(self):
         return self.__height
 
     def shift_right(self, shift_by):
+        self.__hitbox += Point(shift_by, 0)
         for line in self.__lines:
             line.shift_right(shift_by)
 
     def shift_upwards(self, shift_by):
+        self.__hitbox += Point(0, shift_by)
         for rendered_line in self.__lines:
             rendered_line.shift_upwards(shift_by)
+
+    def get_hitbox(self):
+        """
+        :rtype:
+        """
+        return self.__hitbox
+
+    def is_highlighted(self):
+        return self.__highlighted
+
+    def highlight(self):
+        self.__highlighted = True
+
+    def un_highlight(self):
+        self.__highlighted = False
 
 
 class LineRenderer:
@@ -81,9 +111,9 @@ class RenderedLine:
 
         self.__current_word_x_position += word_surface.get_width() + self.__space_width
 
-    def draw(self, _draw_method):
+    def draw(self, draw_method):
         for word in self.__words:
-            word.draw(_draw_method)
+            word.draw(draw_method)
 
     def center(self):
         for word in self.__words:

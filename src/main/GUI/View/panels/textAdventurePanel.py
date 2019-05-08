@@ -1,19 +1,17 @@
-import pygame
-
 from src.main.GUI.BaseComponents.geometry import Point, Rectangle
 from src.main.GUI.Controller.keyEvent import KeyEventTypes
 from src.main.GUI.Controller.mouseEvent import MouseEventTypes
 from src.main.GUI.View.image import Image
 from src.main.GUI.View.imageVaults.textAdventureImageVault import TextAdventureImageVault, TextAdventureImageEnum
 from src.main.GUI.View.panels.panel import Panel
-from src.main.GUI.View.panels.renderedText import RenderedWord
+from src.main.GUI.View.panels.renderedText import ParagraphRenderer
 from src.main.Model.gameStateChangeEvent import GameStateChangeEvent, GameStateChangeEventTypes
 
 MINIMUM_HEIGHT = 200
-BOTTOM_BORDER = 10
+BOTTOM_MARGIN = 10
 TOP_BORDER = 10
-RIGHT_BORDER = 20
-LEFT_BORDER = 20
+RIGHT_MARGIN = 20
+LEFT_MARGIN = 20
 HEIGHT_OF_LINE = 20
 FONT_NAME = 'Berlin Sans FB'
 
@@ -37,7 +35,7 @@ class TextAdventurePanel(Panel):
         :type key_event: src.main.GUI.Controller.keyEvent.KeyEventTypes
         """
         if self.__height == self.__max_height:
-            top_of_displayed_text = self.__max_height - self.__y_offset - BOTTOM_BORDER
+            top_of_displayed_text = self.__max_height - self.__y_offset - BOTTOM_MARGIN
             if key_event == KeyEventTypes.DOWN_PRESS and self._camera_position.get_y() >= top_of_displayed_text:
                 self._camera_position -= Point(0, 10)
                 self.__draw_rendered_content()
@@ -105,8 +103,8 @@ class TextAdventurePanel(Panel):
             self.__height = self.__max_height
             self.__resize_panel()
             self._camera_position = Point(0, self.__max_height - self.__y_offset - HEIGHT_OF_LINE)
-        elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_BORDER:
-            self.__height = self.__y_offset + TOP_BORDER + BOTTOM_BORDER
+        elif self.__y_offset > self.__height - TOP_BORDER - BOTTOM_MARGIN:
+            self.__height = self.__y_offset + TOP_BORDER + BOTTOM_MARGIN
             self.__resize_panel()
 
         if game_state.get_text_adventure_state().is_completed():
@@ -129,9 +127,9 @@ class TextAdventurePanel(Panel):
         :type game_state: src.main.Model.gameState.GameState
         """
         for selection in game_state.get_text_adventure_state().get_old_selections():
-            self.__render_paragraphs(selection.text, color=pygame.Color('darkgray'))
+            self.__render_paragraphs(selection.text, color='darkgray')
             for option in selection.options:
-                self.__lines.append(self.__render_new_line(option.text, line_offset=10, color=pygame.Color('darkgray')))
+                self.__lines.append(self.__render_new_line(option.text, line_offset=10, color='darkgray'))
             self.__lines.append(self.__render_new_line(""))
 
         current_selection = game_state.get_text_adventure_state().get_current_selection()
@@ -140,11 +138,11 @@ class TextAdventurePanel(Panel):
             text_color = self.__determine_color_of(option.success_chance)
             self.__options.append(self.__render_new_line(option.text, top_offset=5, line_offset=10, color=text_color))
 
-    def __render_paragraphs(self, text, line_offset=0, color=pygame.Color('black')):
+    def __render_paragraphs(self, text, line_offset=0, color='black'):
         for paragraph in text.split('\n'):
             self.__lines.append(self.__render_new_line(paragraph, line_offset=line_offset, color=color))
 
-    def __render_new_line(self, text, top_offset=0, line_offset=0, color=pygame.Color('black')):
+    def __render_new_line(self, text, top_offset=0, line_offset=0, color='black'):
         """
         :type text: str
         :type top_offset: int
@@ -152,12 +150,12 @@ class TextAdventurePanel(Panel):
         :type color: pygame.Color
         :rtype: src.main.GUI.View.panels.textAdventurePanel.RenderedText
         """
-        rendered_text = RenderedText(text,
-                                     Point(LEFT_BORDER + line_offset,
-                                           self.__height - TOP_BORDER - self.__y_offset - top_offset),
-                                     self._game_window.get_width() - RIGHT_BORDER,
-                                     color=color)
-        self.__y_offset += rendered_text.get_hitbox().get_height() + top_offset
+        renderer = ParagraphRenderer(font_name=FONT_NAME, font_size=HEIGHT_OF_LINE, color=color)
+        rendered_text = renderer.render_paragraph(text,
+                                                  Point(LEFT_MARGIN + line_offset,
+                                                        self.__height - TOP_BORDER - self.__y_offset - top_offset),
+                                                  self._game_window.get_width() - RIGHT_MARGIN)
+        self.__y_offset += rendered_text.get_height() + top_offset
         return rendered_text
 
     def __draw_rendered_content(self):
@@ -193,84 +191,12 @@ class TextAdventurePanel(Panel):
         :type success_chance: float
         """
         if not success_chance:
-            return pygame.Color('black')
+            return 'black'
         elif success_chance > 0.75:
-            return pygame.Color('green')
+            return 'green'
         elif success_chance > 0.25:
-            return pygame.Color('yellow')
-        return pygame.Color('red')
-
-
-class RenderedText:
-    def __init__(self, text, draw_coordinate, right_border,
-                 font=FONT_NAME,
-                 color=pygame.Color('black')):
-        """
-        :type text: str
-        :type draw_coordinate: src.main.GUI.BaseComponents.geometry.Point
-        :type right_border: int
-        :type color: pygame.color.Color
-        :type font: str
-        """
-        self.__is_highlighted = False
-        self.__words = []
-
-        sys_font = pygame.font.SysFont(font, HEIGHT_OF_LINE)
-        words = text.split(' ')
-        draw_coordinate_of_word = draw_coordinate
-        draw_coordinate_of_next_word = draw_coordinate
-        space_width = sys_font.render(" ", 0, color).get_width()
-        for word in words:
-            rendered_word = sys_font.render(word, 0, color)
-            word_width = rendered_word.get_width()
-            if draw_coordinate_of_word.get_x() + word_width >= right_border:
-                draw_coordinate_of_word = Point(draw_coordinate.get_x(),
-                                                draw_coordinate_of_word.get_y() - HEIGHT_OF_LINE)
-            draw_coordinate_of_next_word = draw_coordinate_of_word + Point(word_width + space_width, 0)
-            self.__words.append(RenderedWord(rendered_word, draw_coordinate_of_word))
-
-            draw_coordinate_of_word = draw_coordinate_of_next_word
-
-        if draw_coordinate_of_word.get_y() == draw_coordinate.get_y():
-            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
-                    draw_coordinate,
-                    draw_coordinate_of_next_word - Point(space_width, HEIGHT_OF_LINE))
-        else:
-            self.__hitbox = Rectangle.from_upper_left_and_lower_right(
-                    draw_coordinate,
-                    Point(right_border, draw_coordinate_of_next_word.get_y() - HEIGHT_OF_LINE))
-
-    def draw(self, _draw_relative_to_camera, _draw_rectangle_relative_to_camera):
-        if self.is_highlighted():
-            _draw_rectangle_relative_to_camera(self.get_hitbox(), 'darkgrey')
-        for word in self.__words:
-            word.draw(_draw_relative_to_camera)
-
-    def shift_upwards(self, shift_by):
-        """
-        :type shift_by: int
-        """
-        self.__hitbox += Point(0, shift_by)
-        for word in self.__words:
-            word.shift_upwards(shift_by)
-
-    def highlight(self):
-        self.__is_highlighted = True
-
-    def is_highlighted(self):
-        """
-        :rtype: bool
-        """
-        return self.__is_highlighted
-
-    def un_highlight(self):
-        self.__is_highlighted = False
-
-    def get_hitbox(self):
-        """
-        :rtype: src.main.GUI.BaseComponents.geometry.Rectangle
-        """
-        return self.__hitbox
+            return 'yellow'
+        return 'red'
 
 
 class CloseButton:
@@ -296,7 +222,7 @@ class CloseButton:
 
     def handle_mouse_click(self, mouse_coordinate):
         """
-        :type point:
+        :type mouse_coordinate: src.main.GUI.BaseComponents.geometry.Point
         """
         if self.__get_close_button_hitbox() and self.__get_close_button_hitbox().contains(mouse_coordinate):
             self.__close_button_hitbox = None
