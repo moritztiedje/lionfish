@@ -118,6 +118,7 @@ class TextAdventurePanel(Panel):
             option.shift_upwards(self.__height - MINIMUM_HEIGHT)
 
     def __reset_rendered_content(self):
+        self._camera_position = Point(0, 0)
         self.__y_offset = 0
         self.__options = []
         self.__lines = []
